@@ -1,0 +1,68 @@
+{
+  "name": "@walletconnect/randombytes",
+  "description": "Isomorphic Library for Random Bytes",
+  "version": "1.0.0",
+  "author": "WalletConnect <walletconnect.org>",
+  "license": "MIT",
+  "keywords": [
+    "crypto",
+    "cryptography",
+    "isomorphic",
+    "random",
+    "bytes"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "dist/cjs/node/index.js",
+  "react-native": "dist/cjs/node/index.js",
+  "module": "dist/esm/node/index.js",
+  "browser": "dist/esm/browser/index.js",
+  "types": "./dist/cjs/node/index.d.ts",
+  "unpkg": "dist/umd/index.min.js",
+  "homepage": "https://github.com/walletconnect/walletconnect-utils",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walletconnect/walletconnect-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/walletconnect/walletconnect-utils/issues"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build:cjs": "run-s tsc -p tsconfig.cjs.json",
+    "build:umd": "webpack",
+    "build:esm": "run-s tsc -p tsconfig.esm.json",
+    "build": "run-s clean build:cjs build:umd build:esm",
+    "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --exit -r ts-node/register ./test/**/*.test.ts",
+    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
+    "prepare": "run-s lint build test"
+  },
+  "dependencies": {
+    "@walletconnect/encoding": "^1.0.0",
+    "@walletconnect/environment": "^1.0.0",
+    "randombytes": "^2.1.0"
+  },
+  "devDependencies": {
+    "@peculiar/webcrypto": "^1.1.3",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.7",
+    "@types/randombytes": "^2.0.0",
+    "husky": "^4.3.0",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "run-s lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  }
+}

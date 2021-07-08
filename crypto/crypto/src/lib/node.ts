@@ -1,0 +1,74 @@
+import crypto from 'crypto';
+import { bufferToArray, concatBuffers } from 'enc-utils';
+
+import {
+  HMAC_NODE_ALGO,
+  AES_NODE_ALGO,
+  SHA512_NODE_ALGO,
+  SHA256_NODE_ALGO,
+  RIPEMD160_NODE_ALGO,
+} from '../constants';
+
+export function nodeAesEncrypt(
+  iv: Uint8Array,
+  key: Uint8Array,
+  data: Uint8Array
+): Uint8Array {
+  const cipher = crypto.createCipheriv(AES_NODE_ALGO, key, iv);
+  return bufferToArray(concatBuffers(cipher.update(data), cipher.final()));
+}
+
+export function nodeAesDecrypt(
+  iv: Uint8Array,
+  key: Uint8Array,
+  data: Uint8Array
+): Uint8Array {
+  const decipher = crypto.createDecipheriv(AES_NODE_ALGO, key, iv);
+  return bufferToArray(concatBuffers(decipher.update(data), decipher.final()));
+}
+
+export function nodeHmacSha256Sign(
+  key: Uint8Array,
+  data: Uint8Array
+): Uint8Array {
+  const buf = crypto
+    .createHmac(HMAC_NODE_ALGO, new Uint8Array(key))
+    .update(data)
+    .digest();
+  return bufferToArray(buf);
+}
+
+export function nodeHmacSha512Sign(
+  key: Uint8Array,
+  data: Uint8Array
+): Uint8Array {
+  const buf = crypto
+    .createHmac(SHA512_NODE_ALGO, new Uint8Array(key))
+    .update(data)
+    .digest();
+  return bufferToArray(buf);
+}
+
+export function nodeSha256(data: Uint8Array): Uint8Array {
+  const buf = crypto
+    .createHash(SHA256_NODE_ALGO)
+    .update(data)
+    .digest();
+  return bufferToArray(buf);
+}
+
+export function nodeSha512(data: Uint8Array): Uint8Array {
+  const buf = crypto
+    .createHash(SHA512_NODE_ALGO)
+    .update(data)
+    .digest();
+  return bufferToArray(buf);
+}
+
+export function nodeRipemd160(data: Uint8Array): Uint8Array {
+  const buf = crypto
+    .createHash(RIPEMD160_NODE_ALGO)
+    .update(data)
+    .digest();
+  return bufferToArray(buf);
+}
