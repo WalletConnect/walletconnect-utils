@@ -15,6 +15,7 @@
     "dist"
   ],
   "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "browser": "dist/esm/index.js",
   "types": "dist/cjs/index.d.ts",
   "unpkg": "dist/umd/index.min.js",
@@ -29,9 +30,9 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build:cjs": "run-s tsc -p tsconfig.cjs.json",
-    "build:umd": "webpack",
     "build:esm": "run-s tsc -p tsconfig.esm.json",
-    "build": "run-s clean build:cjs build:umd build:esm",
+    "build:umd": "webpack",
+    "build": "run-s clean build:cjs build:esm build:umd ",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --exit -r ts-node/register ./test/**/*.test.ts",
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
     "prepare": "run-s lint build test"

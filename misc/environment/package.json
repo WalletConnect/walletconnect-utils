@@ -28,9 +28,10 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build:cjs": "./node_modules/.bin/tsc -p tsconfig.cjs.json",
+    "build:cjs": "run-s tsc -p tsconfig.cjs.json",
+    "build:esm": "run-s tsc -p tsconfig.esm.json",
     "build:umd": "webpack",
-    "build": "run-s clean build:cjs build:umd",
+    "build": "run-s clean build:cjs build:esm build:umd ",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --exit -r ts-node/register ./test/**/*.test.ts",
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
     "prepare": "run-s lint build test"

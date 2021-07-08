@@ -1,3 +1,6 @@
+import 'mocha';
+import * as chai from 'chai';
+
 import { concatArrays, hexToArray, utf8ToArray } from 'enc-utils';
 import {
   testHmacSign,
@@ -24,15 +27,15 @@ describe('HMAC', () => {
   });
 
   it('should sign sucessfully', async () => {
-    expect(output).toEqual(expectedOutput);
+    chai.expect(output).to.eql(expectedOutput);
   });
 
   it('should output with expected length', async () => {
-    expect(output.length).toEqual(expectedLength);
+    chai.expect(output.length).to.eql(expectedLength);
   });
 
   it('should verify sucessfully', async () => {
     const macGood = await testHmacVerify(macKey, dataToMac, output);
-    expect(macGood).toBeTruthy();
+    chai.expect(macGood).to.be.true;
   });
 });

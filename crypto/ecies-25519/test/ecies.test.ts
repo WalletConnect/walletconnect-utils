@@ -1,3 +1,5 @@
+import 'mocha';
+import * as chai from 'chai';
 import { arrayToUtf8, hexToArray } from 'enc-utils';
 import * as ecies25519 from '../src';
 import {
@@ -19,38 +21,38 @@ describe('ECIES', () => {
 
   it('should generate the same key pair for given entropy', async () => {
     const keyPair = await ecies25519.generateKeyPair(entropy);
-    expect(keyPair).toBeTruthy();
-    expect(keyPair.privateKey).toEqual(hexToArray(TEST_PRIVATE_KEY));
-    expect(keyPair.publicKey).toEqual(hexToArray(TEST_PUBLIC_KEY));
+    chai.expect(keyPair).to.be.true;
+    chai.expect(keyPair.privateKey).to.eql(hexToArray(TEST_PRIVATE_KEY));
+    chai.expect(keyPair.publicKey).to.eql(hexToArray(TEST_PUBLIC_KEY));
   });
 
   it('should derive shared keys succesfully', async () => {
     const { sharedKey1, sharedKey2 } = await testSharedKeys();
-    expect(sharedKey1).toBeTruthy();
-    expect(sharedKey2).toBeTruthy();
-    expect(sharedKey1).toEqual(sharedKey2);
+    chai.expect(sharedKey1).to.be.true;
+    chai.expect(sharedKey2).to.be.true;
+    chai.expect(sharedKey1).to.eql(sharedKey2);
   });
 
   it('should encrypt successfully', async () => {
     const { encrypted } = await testEncrypt(keyPair.publicKey);
-    expect(encrypted).toBeTruthy();
+    chai.expect(encrypted).to.be.true;
   });
 
   it('should decrypt successfully', async () => {
     const { encrypted } = await testEncrypt(keyPair.publicKey);
     const decrypted = await ecies25519.decrypt(encrypted, keyPair.privateKey);
-    expect(decrypted).toBeTruthy();
+    chai.expect(decrypted).to.be.true;
   });
 
   it('decrypted result should match input', async () => {
     const { str, msg, encrypted } = await testEncrypt(keyPair.publicKey);
 
     const decrypted = await ecies25519.decrypt(encrypted, keyPair.privateKey);
-    expect(decrypted).toBeTruthy();
+    chai.expect(decrypted).to.be.true;
 
     const text = arrayToUtf8(decrypted);
-    expect(decrypted).toEqual(msg);
-    expect(text).toEqual(str);
+    chai.expect(decrypted).to.eql(msg);
+    chai.expect(text).to.eql(str);
   });
 
   it('should serialize & deserialize successfully', async () => {
@@ -58,7 +60,7 @@ describe('ECIES', () => {
     const expectedLength = encrypted.length;
     const deserialized = ecies25519.deserialize(encrypted);
     const serialized = ecies25519.serialize(deserialized);
-    expect(serialized).toBeTruthy();
-    expect(serialized.length).toEqual(expectedLength);
+    chai.expect(serialized).to.be.true;
+    chai.expect(serialized.length).to.eql(expectedLength);
   });
 });

@@ -1,3 +1,6 @@
+import 'mocha';
+import * as chai from 'chai';
+
 import {
   isSubscribeRequest,
   isPublishRequest,
@@ -60,84 +63,100 @@ const TEST_SUBSCRIPTION_REQUEST = {
 describe('Validators', () => {
   describe('request', () => {
     it('subscribe', async () => {
-      expect(isSubscribeRequest(TEST_SUBSCRIBE_REQUEST)).toBeTruthy();
-      expect(isSubscribeRequest(TEST_PUBLISH_REQUEST)).toBeFalsy();
-      expect(isSubscribeRequest(TEST_UNSUBSCRIBE_REQUEST)).toBeFalsy();
-      expect(isSubscribeRequest(TEST_SUBSCRIPTION_REQUEST)).toBeFalsy();
+      chai.expect(isSubscribeRequest(TEST_SUBSCRIBE_REQUEST)).to.be.true;
+      chai.expect(isSubscribeRequest(TEST_PUBLISH_REQUEST)).to.be.false;
+      chai.expect(isSubscribeRequest(TEST_UNSUBSCRIBE_REQUEST)).to.be.false;
+      chai.expect(isSubscribeRequest(TEST_SUBSCRIPTION_REQUEST)).to.be.false;
     });
     it('publish', async () => {
-      expect(isPublishRequest(TEST_SUBSCRIBE_REQUEST)).toBeFalsy();
-      expect(isPublishRequest(TEST_PUBLISH_REQUEST)).toBeTruthy();
-      expect(isPublishRequest(TEST_UNSUBSCRIBE_REQUEST)).toBeFalsy();
-      expect(isPublishRequest(TEST_SUBSCRIPTION_REQUEST)).toBeFalsy();
+      chai.expect(isPublishRequest(TEST_SUBSCRIBE_REQUEST)).to.be.false;
+      chai.expect(isPublishRequest(TEST_PUBLISH_REQUEST)).to.be.true;
+      chai.expect(isPublishRequest(TEST_UNSUBSCRIBE_REQUEST)).to.be.false;
+      chai.expect(isPublishRequest(TEST_SUBSCRIPTION_REQUEST)).to.be.false;
     });
     it('unsubscribe', async () => {
-      expect(isUnsubscribeRequest(TEST_SUBSCRIBE_REQUEST)).toBeFalsy();
-      expect(isUnsubscribeRequest(TEST_PUBLISH_REQUEST)).toBeFalsy();
-      expect(isUnsubscribeRequest(TEST_UNSUBSCRIBE_REQUEST)).toBeTruthy();
-      expect(isUnsubscribeRequest(TEST_SUBSCRIPTION_REQUEST)).toBeFalsy();
+      chai.expect(isUnsubscribeRequest(TEST_SUBSCRIBE_REQUEST)).to.be.false;
+      chai.expect(isUnsubscribeRequest(TEST_PUBLISH_REQUEST)).to.be.false;
+      chai.expect(isUnsubscribeRequest(TEST_UNSUBSCRIBE_REQUEST)).to.be.true;
+      chai.expect(isUnsubscribeRequest(TEST_SUBSCRIPTION_REQUEST)).to.be.false;
     });
     it('subscription', async () => {
-      expect(isSubscriptionRequest(TEST_SUBSCRIBE_REQUEST)).toBeFalsy();
-      expect(isSubscriptionRequest(TEST_PUBLISH_REQUEST)).toBeFalsy();
-      expect(isSubscriptionRequest(TEST_UNSUBSCRIBE_REQUEST)).toBeFalsy();
-      expect(isSubscriptionRequest(TEST_SUBSCRIPTION_REQUEST)).toBeTruthy();
+      chai.expect(isSubscriptionRequest(TEST_SUBSCRIBE_REQUEST)).to.be.false;
+      chai.expect(isSubscriptionRequest(TEST_PUBLISH_REQUEST)).to.be.false;
+      chai.expect(isSubscriptionRequest(TEST_UNSUBSCRIBE_REQUEST)).to.be.false;
+      chai.expect(isSubscriptionRequest(TEST_SUBSCRIPTION_REQUEST)).to.be.true;
     });
   });
   describe('method', () => {
     it('subscribe', async () => {
-      expect(isSubscribeMethod(TEST_SUBSCRIBE_REQUEST.method)).toBeTruthy();
-      expect(isSubscribeMethod(TEST_PUBLISH_REQUEST.method)).toBeFalsy();
-      expect(isSubscribeMethod(TEST_UNSUBSCRIBE_REQUEST.method)).toBeFalsy();
-      expect(isSubscribeMethod(TEST_SUBSCRIPTION_REQUEST.method)).toBeFalsy();
+      chai.expect(isSubscribeMethod(TEST_SUBSCRIBE_REQUEST.method)).to.be.true;
+      chai.expect(isSubscribeMethod(TEST_PUBLISH_REQUEST.method)).to.be.false;
+      chai.expect(isSubscribeMethod(TEST_UNSUBSCRIBE_REQUEST.method)).to.be
+        .false;
+      chai.expect(isSubscribeMethod(TEST_SUBSCRIPTION_REQUEST.method)).to.be
+        .false;
     });
     it('publish', async () => {
-      expect(isPublishMethod(TEST_SUBSCRIBE_REQUEST.method)).toBeFalsy();
-      expect(isPublishMethod(TEST_PUBLISH_REQUEST.method)).toBeTruthy();
-      expect(isPublishMethod(TEST_UNSUBSCRIBE_REQUEST.method)).toBeFalsy();
-      expect(isPublishMethod(TEST_SUBSCRIPTION_REQUEST.method)).toBeFalsy();
+      chai.expect(isPublishMethod(TEST_SUBSCRIBE_REQUEST.method)).to.be.false;
+      chai.expect(isPublishMethod(TEST_PUBLISH_REQUEST.method)).to.be.true;
+      chai.expect(isPublishMethod(TEST_UNSUBSCRIBE_REQUEST.method)).to.be.false;
+      chai.expect(isPublishMethod(TEST_SUBSCRIPTION_REQUEST.method)).to.be
+        .false;
     });
     it('unsubscribe', async () => {
-      expect(isUnsubscribeMethod(TEST_SUBSCRIBE_REQUEST.method)).toBeFalsy();
-      expect(isUnsubscribeMethod(TEST_PUBLISH_REQUEST.method)).toBeFalsy();
-      expect(isUnsubscribeMethod(TEST_UNSUBSCRIBE_REQUEST.method)).toBeTruthy();
-      expect(isUnsubscribeMethod(TEST_SUBSCRIPTION_REQUEST.method)).toBeFalsy();
+      chai.expect(isUnsubscribeMethod(TEST_SUBSCRIBE_REQUEST.method)).to.be
+        .false;
+      chai.expect(isUnsubscribeMethod(TEST_PUBLISH_REQUEST.method)).to.be.false;
+      chai.expect(isUnsubscribeMethod(TEST_UNSUBSCRIBE_REQUEST.method)).to.be
+        .true;
+      chai.expect(isUnsubscribeMethod(TEST_SUBSCRIPTION_REQUEST.method)).to.be
+        .false;
     });
     it('subscription', async () => {
-      expect(isSubscriptionMethod(TEST_SUBSCRIBE_REQUEST.method)).toBeFalsy();
-      expect(isSubscriptionMethod(TEST_PUBLISH_REQUEST.method)).toBeFalsy();
-      expect(isSubscriptionMethod(TEST_UNSUBSCRIBE_REQUEST.method)).toBeFalsy();
-      expect(
-        isSubscriptionMethod(TEST_SUBSCRIPTION_REQUEST.method)
-      ).toBeTruthy();
+      chai.expect(isSubscriptionMethod(TEST_SUBSCRIBE_REQUEST.method)).to.be
+        .false;
+      chai.expect(isSubscriptionMethod(TEST_PUBLISH_REQUEST.method)).to.be
+        .false;
+      chai.expect(isSubscriptionMethod(TEST_UNSUBSCRIBE_REQUEST.method)).to.be
+        .false;
+      chai.expect(isSubscriptionMethod(TEST_SUBSCRIPTION_REQUEST.method)).to.be
+        .true;
     });
   });
   describe('params', () => {
     it('subscribe', async () => {
-      expect(isSubscribeParams(TEST_SUBSCRIBE_REQUEST.params)).toBeTruthy();
-      expect(isSubscribeParams(TEST_PUBLISH_REQUEST.params)).toBeFalsy();
-      expect(isSubscribeParams(TEST_UNSUBSCRIBE_REQUEST.params)).toBeFalsy();
-      expect(isSubscribeParams(TEST_SUBSCRIPTION_REQUEST.params)).toBeFalsy();
+      chai.expect(isSubscribeParams(TEST_SUBSCRIBE_REQUEST.params)).to.be.true;
+      chai.expect(isSubscribeParams(TEST_PUBLISH_REQUEST.params)).to.be.false;
+      chai.expect(isSubscribeParams(TEST_UNSUBSCRIBE_REQUEST.params)).to.be
+        .false;
+      chai.expect(isSubscribeParams(TEST_SUBSCRIPTION_REQUEST.params)).to.be
+        .false;
     });
     it('publish', async () => {
-      expect(isPublishParams(TEST_SUBSCRIBE_REQUEST.params)).toBeFalsy();
-      expect(isPublishParams(TEST_PUBLISH_REQUEST.params)).toBeTruthy();
-      expect(isPublishParams(TEST_UNSUBSCRIBE_REQUEST.params)).toBeFalsy();
-      expect(isPublishParams(TEST_SUBSCRIPTION_REQUEST.params)).toBeFalsy();
+      chai.expect(isPublishParams(TEST_SUBSCRIBE_REQUEST.params)).to.be.false;
+      chai.expect(isPublishParams(TEST_PUBLISH_REQUEST.params)).to.be.true;
+      chai.expect(isPublishParams(TEST_UNSUBSCRIBE_REQUEST.params)).to.be.false;
+      chai.expect(isPublishParams(TEST_SUBSCRIPTION_REQUEST.params)).to.be
+        .false;
     });
     it('unsubscribe', async () => {
-      expect(isUnsubscribeParams(TEST_SUBSCRIBE_REQUEST.params)).toBeFalsy();
-      expect(isUnsubscribeParams(TEST_PUBLISH_REQUEST.params)).toBeFalsy();
-      expect(isUnsubscribeParams(TEST_UNSUBSCRIBE_REQUEST.params)).toBeTruthy();
-      expect(isUnsubscribeParams(TEST_SUBSCRIPTION_REQUEST.params)).toBeFalsy();
+      chai.expect(isUnsubscribeParams(TEST_SUBSCRIBE_REQUEST.params)).to.be
+        .false;
+      chai.expect(isUnsubscribeParams(TEST_PUBLISH_REQUEST.params)).to.be.false;
+      chai.expect(isUnsubscribeParams(TEST_UNSUBSCRIBE_REQUEST.params)).to.be
+        .true;
+      chai.expect(isUnsubscribeParams(TEST_SUBSCRIPTION_REQUEST.params)).to.be
+        .false;
     });
     it('subscription', async () => {
-      expect(isSubscriptionParams(TEST_SUBSCRIBE_REQUEST.params)).toBeFalsy();
-      expect(isSubscriptionParams(TEST_PUBLISH_REQUEST.params)).toBeFalsy();
-      expect(isSubscriptionParams(TEST_UNSUBSCRIBE_REQUEST.params)).toBeFalsy();
-      expect(
-        isSubscriptionParams(TEST_SUBSCRIPTION_REQUEST.params)
-      ).toBeTruthy();
+      chai.expect(isSubscriptionParams(TEST_SUBSCRIBE_REQUEST.params)).to.be
+        .false;
+      chai.expect(isSubscriptionParams(TEST_PUBLISH_REQUEST.params)).to.be
+        .false;
+      chai.expect(isSubscriptionParams(TEST_UNSUBSCRIBE_REQUEST.params)).to.be
+        .false;
+      chai.expect(isSubscriptionParams(TEST_SUBSCRIPTION_REQUEST.params)).to.be
+        .true;
     });
   });
 });

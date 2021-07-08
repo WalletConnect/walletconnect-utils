@@ -1,3 +1,6 @@
+import 'mocha';
+import * as chai from 'chai';
+
 import pino, { Logger } from 'pino';
 
 import {
@@ -8,41 +11,41 @@ import {
 
 describe('Logger', () => {
   let logger: Logger;
-  beforeAll(() => {
+  before(() => {
     logger = pino(getDefaultLoggerOptions());
   });
   it('init', () => {
-    expect(logger).toBeTruthy();
+    chai.expect(logger).to.be.true;
   });
   it('context', async () => {
     const alphaContext = 'alpha';
     const alphaContextResult = formatChildLoggerContext(logger, alphaContext);
     const alphaContextExpected = alphaContext;
-    expect(alphaContextResult).toEqual(alphaContextExpected);
+    chai.expect(alphaContextResult).to.eql(alphaContextExpected);
     const alpha = generateChildLogger(logger, alphaContext);
-    expect(alpha.custom_context).toBeTruthy();
-    expect(alpha.custom_context).toEqual(alphaContextExpected);
-    expect(alpha.bindings().context).toEqual(alphaContextExpected);
-    expect(alphaContextResult).toEqual(alphaContextExpected);
+    chai.expect(alpha.custom_context).to.be.true;
+    chai.expect(alpha.custom_context).to.eql(alphaContextExpected);
+    chai.expect(alpha.bindings().context).to.eql(alphaContextExpected);
+    chai.expect(alphaContextResult).to.eql(alphaContextExpected);
 
     const betaContext = 'beta';
     const betaContextResult = formatChildLoggerContext(alpha, betaContext);
     const betaContextExpected = alphaContextExpected + '/' + betaContext;
-    expect(betaContextResult).toEqual(betaContextExpected);
+    chai.expect(betaContextResult).to.eql(betaContextExpected);
     const beta = generateChildLogger(alpha, betaContext);
-    expect(beta.custom_context).toBeTruthy();
-    expect(beta.custom_context).toEqual(betaContextExpected);
-    expect(beta.bindings().context).toEqual(betaContextExpected);
-    expect(betaContextResult).toEqual(betaContextExpected);
+    chai.expect(beta.custom_context).to.be.true;
+    chai.expect(beta.custom_context).to.eql(betaContextExpected);
+    chai.expect(beta.bindings().context).to.eql(betaContextExpected);
+    chai.expect(betaContextResult).to.eql(betaContextExpected);
 
     const gammaContext = 'gamma';
     const gammaContextExpected = betaContextExpected + '/' + gammaContext;
     const gammaContextResult = formatChildLoggerContext(beta, gammaContext);
-    expect(gammaContextResult).toEqual(gammaContextExpected);
+    chai.expect(gammaContextResult).to.eql(gammaContextExpected);
     const gamma = generateChildLogger(beta, gammaContext);
-    expect(gamma.custom_context).toBeTruthy();
-    expect(gamma.custom_context).toEqual(gammaContextExpected);
-    expect(gamma.bindings().context).toEqual(gammaContextExpected);
-    expect(gammaContextResult).toEqual(gammaContextExpected);
+    chai.expect(gamma.custom_context).to.be.true;
+    chai.expect(gamma.custom_context).to.eql(gammaContextExpected);
+    chai.expect(gamma.bindings().context).to.eql(gammaContextExpected);
+    chai.expect(gammaContextResult).to.eql(gammaContextExpected);
   });
 });

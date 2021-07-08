@@ -1,3 +1,6 @@
+import 'mocha';
+import * as chai from 'chai';
+
 import {
   getTestMessageToEncrypt,
   testRandomBytes,
@@ -23,18 +26,18 @@ describe('AES', () => {
 
   it('should encrypt sucessfully', async () => {
     const ciphertext = await testAesEncrypt(iv, key, data);
-    expect(ciphertext).toBeTruthy();
+    chai.expect(ciphertext).to.be.true;
   });
 
   it('should decrypt sucessfully', async () => {
     const ciphertext = await testAesEncrypt(iv, key, data);
     const result = await testAesDecrypt(iv, key, ciphertext);
-    expect(result).toBeTruthy();
+    chai.expect(result).to.be.true;
   });
 
   it('decrypted should match input', async () => {
     const ciphertext = await testAesEncrypt(iv, key, data);
     const result = await testAesDecrypt(iv, key, ciphertext);
-    expect(result).toEqual(data);
+    chai.expect(result).to.eql(data);
   });
 });

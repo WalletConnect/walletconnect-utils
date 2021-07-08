@@ -1,3 +1,5 @@
+import 'mocha';
+import * as chai from 'chai';
 import { Crypto } from '@peculiar/webcrypto';
 
 import * as fallbackCrypto from '../src/fallback';
@@ -22,11 +24,11 @@ describe('Fallback', () => {
     });
 
     it('should generate random bytes sucessfully', async () => {
-      expect(key).toBeTruthy();
+      chai.expect(key).to.be.true;
     });
 
     it('should match request byte length', async () => {
-      expect(key.length).toEqual(length);
+      chai.expect(key.length).to.eql(length);
     });
   });
 });

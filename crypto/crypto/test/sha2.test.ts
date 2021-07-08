@@ -1,3 +1,6 @@
+import 'mocha';
+import * as chai from 'chai';
+
 import { hexToArray, utf8ToArray } from 'enc-utils';
 import * as isoCrypto from '../src/node';
 import { TEST_MESSAGE_STR, TEST_SHA256_HASH, TEST_SHA512_HASH } from './common';
@@ -14,13 +17,13 @@ describe('SHA256', () => {
   it('should hash buffer sucessfully', async () => {
     const input = utf8ToArray(TEST_MESSAGE_STR);
     const output = await isoCrypto.sha256(input);
-    expect(output).toEqual(expectedOutput);
+    chai.expect(output).to.eql(expectedOutput);
   });
 
   it('should output with expected length', async () => {
     const input = utf8ToArray(TEST_MESSAGE_STR);
     const output = await isoCrypto.sha256(input);
-    expect(output.length).toEqual(expectedLength);
+    chai.expect(output.length).to.eql(expectedLength);
   });
 });
 
@@ -36,12 +39,12 @@ describe('SHA512', () => {
   it('should hash buffer sucessfully', async () => {
     const input = utf8ToArray(TEST_MESSAGE_STR);
     const output = await isoCrypto.sha512(input);
-    expect(output).toEqual(expectedOutput);
+    chai.expect(output).to.eql(expectedOutput);
   });
 
   it('should output with expected length', async () => {
     const input = utf8ToArray(TEST_MESSAGE_STR);
     const output = await isoCrypto.sha512(input);
-    expect(output.length).toEqual(expectedLength);
+    chai.expect(output.length).to.eql(expectedLength);
   });
 });

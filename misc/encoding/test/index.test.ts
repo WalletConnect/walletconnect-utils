@@ -1,3 +1,6 @@
+import 'mocha';
+import * as chai from 'chai';
+
 import * as encUtils from '../src/';
 
 function compare(a: any, b: any) {
@@ -42,37 +45,37 @@ describe('EncUtils', () => {
     const input = TEST_STRING_BUF;
     const expected = TEST_STRING_ARR;
     const result = encUtils.bufferToArray(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('bufferToHex', async () => {
     const input = TEST_STRING_BUF;
     const expected = TEST_STRING_HEX;
     const result = encUtils.bufferToHex(input);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.startsWith('0x')).toBeFalsy();
-    expect(result.length % 2).toBeFalsy();
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.startsWith('0x')).to.be.false;
+    chai.expect(result.length % 2).to.be.false;
   });
 
   it('bufferToUtf8', async () => {
     const input = TEST_STRING_BUF;
     const expected = TEST_STRING_UTF8;
     const result = encUtils.bufferToUtf8(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('bufferToNumber', async () => {
     const input = TEST_NUMBER_BUF;
     const expected = TEST_NUMBER_NUM;
     const result = encUtils.bufferToNumber(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('bufferToBinary', async () => {
     const input = TEST_STRING_BUF;
     const expected = TEST_STRING_BIN;
     const result = encUtils.bufferToBinary(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   // -- Uint8Array -------------------------------------------- //
@@ -81,37 +84,37 @@ describe('EncUtils', () => {
     const input = TEST_STRING_ARR;
     const expected = TEST_STRING_BUF;
     const result = encUtils.arrayToBuffer(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('arrayToHex', async () => {
     const input = TEST_STRING_ARR;
     const expected = TEST_STRING_HEX;
     const result = encUtils.arrayToHex(input);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.startsWith('0x')).toBeFalsy();
-    expect(result.length % 2).toBeFalsy();
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.startsWith('0x')).to.be.false;
+    chai.expect(result.length % 2).to.be.false;
   });
 
   it('arrayToUtf8', async () => {
     const input = TEST_STRING_ARR;
     const expected = TEST_STRING_UTF8;
     const result = encUtils.arrayToUtf8(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('arrayToNumber', async () => {
     const input = TEST_NUMBER_ARR;
     const expected = TEST_NUMBER_NUM;
     const result = encUtils.arrayToNumber(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('arrayToBinary', async () => {
     const input = TEST_STRING_ARR;
     const expected = TEST_STRING_BIN;
     const result = encUtils.arrayToBinary(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   // -- Hex -------------------------------------------------- //
@@ -120,35 +123,35 @@ describe('EncUtils', () => {
     const input = TEST_STRING_HEX;
     const expected = TEST_STRING_BUF;
     const result = encUtils.hexToBuffer(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('hexToArray', async () => {
     const input = TEST_NUMBER_HEX;
     const expected = TEST_NUMBER_ARR;
     const result = encUtils.hexToArray(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('hexToUtf8', async () => {
     const input = TEST_STRING_HEX;
     const expected = TEST_STRING_UTF8;
     const result = encUtils.hexToUtf8(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('hexToNumber', async () => {
     const input = TEST_NUMBER_HEX;
     const expected = TEST_NUMBER_NUM;
     const result = encUtils.hexToNumber(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('hexToBinary', async () => {
     const input = TEST_STRING_HEX;
     const expected = TEST_STRING_BIN;
     const result = encUtils.hexToBinary(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   // -- Utf8 ------------------------------------------------- //
@@ -157,37 +160,37 @@ describe('EncUtils', () => {
     const input = TEST_STRING_UTF8;
     const expected = TEST_STRING_BUF;
     const result = encUtils.utf8ToBuffer(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('utf8ToArray', async () => {
     const input = TEST_STRING_UTF8;
     const expected = TEST_STRING_ARR;
     const result = encUtils.utf8ToArray(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('utf8ToHex', async () => {
     const input = TEST_STRING_UTF8;
     const expected = TEST_STRING_HEX;
     const result = encUtils.utf8ToHex(input);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.startsWith('0x')).toBeFalsy();
-    expect(result.length % 2).toBeFalsy();
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.startsWith('0x')).to.be.false;
+    chai.expect(result.length % 2).to.be.false;
   });
 
   it('utf8ToNumber', async () => {
     const input = TEST_NUMBER_UTF8;
     const expected = TEST_NUMBER_NUM;
     const result = encUtils.utf8ToNumber(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('utf8ToBinary', async () => {
     const input = TEST_STRING_UTF8;
     const expected = TEST_STRING_BIN;
     const result = encUtils.utf8ToBinary(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   // -- Number ----------------------------------------------- //
@@ -196,37 +199,37 @@ describe('EncUtils', () => {
     const input = TEST_NUMBER_NUM;
     const expected = TEST_NUMBER_BUF;
     const result = encUtils.numberToBuffer(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('numberToArray', async () => {
     const input = TEST_NUMBER_NUM;
     const expected = TEST_NUMBER_ARR;
     const result = encUtils.numberToArray(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('numberToUtf8', async () => {
     const input = TEST_NUMBER_NUM;
     const expected = TEST_NUMBER_UTF8;
     const result = encUtils.numberToUtf8(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('numberToHex', async () => {
     const input = TEST_NUMBER_NUM;
     const expected = TEST_NUMBER_HEX;
     const result = encUtils.numberToHex(input);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.startsWith('0x')).toBeFalsy();
-    expect(result.length % 2).toBeFalsy();
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.startsWith('0x')).to.be.false;
+    chai.expect(result.length % 2).to.be.false;
   });
 
   it('numberToBinary', async () => {
     const input = TEST_NUMBER_NUM;
     const expected = TEST_NUMBER_BIN;
     const result = encUtils.numberToBinary(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   // -- Binary ----------------------------------------------- //
@@ -235,88 +238,89 @@ describe('EncUtils', () => {
     const input = TEST_STRING_BIN;
     const expected = TEST_STRING_BUF;
     const result = encUtils.binaryToBuffer(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('binaryToArray', async () => {
     const input = TEST_STRING_BIN;
     const expected = TEST_STRING_ARR;
     const result = encUtils.binaryToArray(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('binaryToHex', async () => {
     const input = TEST_STRING_BIN;
     const expected = TEST_STRING_HEX;
     const result = encUtils.binaryToHex(input);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.startsWith('0x')).toBeFalsy();
-    expect(result.length % 2).toBeFalsy();
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.startsWith('0x')).to.be.false;
+    chai.expect(result.length % 2).to.be.false;
   });
 
   it('binaryToUtf8', async () => {
     const input = TEST_STRING_BIN;
     const expected = TEST_STRING_UTF8;
     const result = encUtils.binaryToUtf8(input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('binaryToNumber', async () => {
     const input = TEST_NUMBER_BIN;
     const expected = TEST_NUMBER_NUM;
     const result = encUtils.binaryToNumber(input);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result).toEqual(parseInt(input, 2));
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result).to.eql(parseInt(input, 2));
   });
 
   // -- Validators ----------------------------------------- //
 
   it('isBinaryString', async () => {
-    expect(encUtils.isBinaryString(TEST_STRING_UTF8)).toBeFalsy();
-    expect(encUtils.isBinaryString(TEST_STRING_HEX)).toBeFalsy();
-    expect(encUtils.isBinaryString(TEST_INVALID_BIN)).toBeFalsy();
-    expect(encUtils.isBinaryString(TEST_STRING_BIN)).toBeTruthy();
+    chai.expect(encUtils.isBinaryString(TEST_STRING_UTF8)).to.be.false;
+    chai.expect(encUtils.isBinaryString(TEST_STRING_HEX)).to.be.false;
+    chai.expect(encUtils.isBinaryString(TEST_INVALID_BIN)).to.be.false;
+    chai.expect(encUtils.isBinaryString(TEST_STRING_BIN)).to.be.true;
   });
 
   it('isHexString', async () => {
-    expect(encUtils.isHexString(TEST_STRING_BIN)).toBeFalsy();
-    expect(encUtils.isHexString(TEST_STRING_UTF8)).toBeFalsy();
-    expect(
-      encUtils.isHexString(encUtils.addHexPrefix(TEST_STRING_HEX))
-    ).toBeTruthy();
+    chai.expect(encUtils.isHexString(TEST_STRING_BIN)).to.be.false;
+    chai.expect(encUtils.isHexString(TEST_STRING_UTF8)).to.be.false;
+    chai.expect(encUtils.isHexString(encUtils.addHexPrefix(TEST_STRING_HEX))).to
+      .be.true;
   });
 
   it('isBuffer', async () => {
-    expect(encUtils.isBuffer(TEST_STRING_ARR)).toBeFalsy();
-    expect(encUtils.isBuffer(TEST_STRING_BUF)).toBeTruthy();
+    chai.expect(encUtils.isBuffer(TEST_STRING_ARR)).to.be.false;
+    chai.expect(encUtils.isBuffer(TEST_STRING_BUF)).to.be.true;
   });
 
   it('isTypedArray', async () => {
-    expect(encUtils.isTypedArray(TEST_STRING_BUF)).toBeFalsy();
-    expect(encUtils.isTypedArray(TEST_STRING_ARR)).toBeTruthy();
+    chai.expect(encUtils.isTypedArray(TEST_STRING_BUF)).to.be.false;
+    chai.expect(encUtils.isTypedArray(TEST_STRING_ARR)).to.be.true;
   });
 
   it('isArrayBuffer', async () => {
-    expect(encUtils.isArrayBuffer(TEST_STRING_ARR)).toBeFalsy();
-    expect(encUtils.isArrayBuffer(TEST_STRING_ARR.buffer)).toBeTruthy();
+    chai.expect(encUtils.isArrayBuffer(TEST_STRING_ARR)).to.be.false;
+    chai.expect(encUtils.isArrayBuffer(TEST_STRING_ARR.buffer)).to.be.true;
   });
 
   it('getType', async () => {
-    expect(encUtils.getType([0, 1])).toEqual('array');
-    expect(encUtils.getType(TEST_NUMBER_NUM)).toEqual('number');
-    expect(encUtils.getType(TEST_NUMBER_HEX)).toEqual('string');
-    expect(encUtils.getType(TEST_NUMBER_UTF8)).toEqual('string');
-    expect(encUtils.getType(TEST_NUMBER_BUF)).toEqual('buffer');
-    expect(encUtils.getType(TEST_NUMBER_ARR)).toEqual('typed-array');
-    expect(encUtils.getType(TEST_NUMBER_ARR.buffer)).toEqual('array-buffer');
+    chai.expect(encUtils.getType([0, 1])).to.eql('array');
+    chai.expect(encUtils.getType(TEST_NUMBER_NUM)).to.eql('number');
+    chai.expect(encUtils.getType(TEST_NUMBER_HEX)).to.eql('string');
+    chai.expect(encUtils.getType(TEST_NUMBER_UTF8)).to.eql('string');
+    chai.expect(encUtils.getType(TEST_NUMBER_BUF)).to.eql('buffer');
+    chai.expect(encUtils.getType(TEST_NUMBER_ARR)).to.eql('typed-array');
+    chai
+      .expect(encUtils.getType(TEST_NUMBER_ARR.buffer))
+      .to.eql('array-buffer');
   });
 
   it('getEncoding', async () => {
-    expect(encUtils.getEncoding(TEST_NUMBER_BIN)).toEqual('binary');
-    expect(
-      encUtils.getEncoding(encUtils.addHexPrefix(TEST_NUMBER_HEX))
-    ).toEqual('hex');
-    expect(encUtils.getEncoding(TEST_NUMBER_UTF8)).toEqual('utf8');
+    chai.expect(encUtils.getEncoding(TEST_NUMBER_BIN)).to.eql('binary');
+    chai
+      .expect(encUtils.getEncoding(encUtils.addHexPrefix(TEST_NUMBER_HEX)))
+      .to.eql('hex');
+    chai.expect(encUtils.getEncoding(TEST_NUMBER_UTF8)).to.eql('utf8');
   });
 
   // -- Misc ----------------------------------------------- //
@@ -325,7 +329,7 @@ describe('EncUtils', () => {
     const input = [TEST_STRING_BUF, TEST_STRING_BUF];
     const expected = Buffer.concat(input);
     const result = encUtils.concatBuffers(...input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('concatArrays', async () => {
@@ -334,113 +338,116 @@ describe('EncUtils', () => {
       Array.from(TEST_STRING_ARR).concat(Array.from(TEST_STRING_ARR))
     );
     const result = encUtils.concatArrays(...input);
-    expect(compare(result, expected)).toBeTruthy();
+    chai.expect(compare(result, expected)).to.be.true;
   });
 
   it('trimLeft', async () => {
     const input = Buffer.concat([TEST_EMPTY_BUF, TEST_STRING_BUF]);
     const expected = TEST_STRING_BUF;
     const result = encUtils.trimLeft(input, TEST_EMPTY_BYTES);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.length).toEqual(expected.length);
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.length).to.eql(expected.length);
   });
 
   it('trimRight', async () => {
     const input = Buffer.concat([TEST_STRING_BUF, TEST_EMPTY_BUF]);
     const expected = TEST_STRING_BUF;
     const result = encUtils.trimRight(input, TEST_EMPTY_BYTES);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.length).toEqual(expected.length);
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.length).to.eql(expected.length);
   });
 
   it('calcByteLength', async () => {
-    expect(encUtils.calcByteLength(0)).toEqual(0);
-    expect(encUtils.calcByteLength(7)).toEqual(8);
-    expect(encUtils.calcByteLength(8)).toEqual(8);
-    expect(encUtils.calcByteLength(9)).toEqual(16);
-    expect(encUtils.calcByteLength(15)).toEqual(16);
-    expect(encUtils.calcByteLength(16)).toEqual(16);
-    expect(encUtils.calcByteLength(17)).toEqual(24);
+    chai.expect(encUtils.calcByteLength(0)).to.eql(0);
+    chai.expect(encUtils.calcByteLength(7)).to.eql(8);
+    chai.expect(encUtils.calcByteLength(8)).to.eql(8);
+    chai.expect(encUtils.calcByteLength(9)).to.eql(16);
+    chai.expect(encUtils.calcByteLength(15)).to.eql(16);
+    chai.expect(encUtils.calcByteLength(16)).to.eql(16);
+    chai.expect(encUtils.calcByteLength(17)).to.eql(24);
   });
 
   it('splitBytes', async () => {
-    expect(encUtils.splitBytes(TEST_INVALID_BIN)).toEqual([TEST_SIMPLE_BIN]);
-    expect(encUtils.splitBytes(TEST_SIMPLE_BIN)).toEqual([TEST_SIMPLE_BIN]);
-    expect(encUtils.splitBytes(TEST_SIMPLE_BIN + TEST_SIMPLE_BIN)).toEqual([
-      TEST_SIMPLE_BIN,
-      TEST_SIMPLE_BIN,
-    ]);
+    chai
+      .expect(encUtils.splitBytes(TEST_INVALID_BIN))
+      .to.eql([TEST_SIMPLE_BIN]);
+    chai.expect(encUtils.splitBytes(TEST_SIMPLE_BIN)).to.eql([TEST_SIMPLE_BIN]);
+    chai
+      .expect(encUtils.splitBytes(TEST_SIMPLE_BIN + TEST_SIMPLE_BIN))
+      .to.eql([TEST_SIMPLE_BIN, TEST_SIMPLE_BIN]);
   });
 
   it('sanitizeBytes', async () => {
-    expect(encUtils.sanitizeBytes('001')).toEqual('00000001');
-    expect(encUtils.sanitizeBytes('001', 2)).toEqual('0001');
-    expect(encUtils.sanitizeBytes('1', 2, '1')).toEqual('11');
+    chai.expect(encUtils.sanitizeBytes('001')).to.eql('00000001');
+    chai.expect(encUtils.sanitizeBytes('001', 2)).to.eql('0001');
+    chai.expect(encUtils.sanitizeBytes('1', 2, '1')).to.eql('11');
   });
 
   it('swapBytes', async () => {
-    expect(encUtils.swapBytes(TEST_SIMPLE_BIN)).toEqual(TEST_SWAPPED_BIN);
+    chai.expect(encUtils.swapBytes(TEST_SIMPLE_BIN)).to.eql(TEST_SWAPPED_BIN);
   });
   it('swapHex', async () => {
-    expect(encUtils.swapHex(TEST_STRING_HEX)).toEqual(TEST_SWAPPED_HEX);
+    chai.expect(encUtils.swapHex(TEST_STRING_HEX)).to.eql(TEST_SWAPPED_HEX);
   });
 
   it('padLeft', async () => {
     const input = TEST_STRING_HEX;
     const expected = TEST_EMPTY_HEX + TEST_STRING_HEX;
     const result = encUtils.padLeft(input, expected.length);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.length).toEqual(expected.length);
-    expect(result.replace(input, '')).toEqual(
-      '0'.repeat(expected.length - input.length)
-    );
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.length).to.eql(expected.length);
+    chai
+      .expect(result.replace(input, ''))
+      .to.eql('0'.repeat(expected.length - input.length));
   });
 
   it('padRight', async () => {
     const input = TEST_STRING_HEX;
     const expected = TEST_STRING_HEX + TEST_EMPTY_HEX;
     const result = encUtils.padRight(input, expected.length);
-    expect(compare(result, expected)).toBeTruthy();
-    expect(result.length).toEqual(expected.length);
-    expect(result.replace(input, '')).toEqual(
-      '0'.repeat(expected.length - input.length)
-    );
+    chai.expect(compare(result, expected)).to.be.true;
+    chai.expect(result.length).to.eql(expected.length);
+    chai
+      .expect(result.replace(input, ''))
+      .to.eql('0'.repeat(expected.length - input.length));
   });
 
   it('removeHexPrefix', async () => {
-    expect(encUtils.removeHexPrefix(TEST_STRING_HEX)).toEqual(TEST_STRING_HEX);
-    expect(encUtils.removeHexPrefix('0x' + TEST_STRING_HEX)).toEqual(
-      TEST_STRING_HEX
-    );
+    chai
+      .expect(encUtils.removeHexPrefix(TEST_STRING_HEX))
+      .to.eql(TEST_STRING_HEX);
+    chai
+      .expect(encUtils.removeHexPrefix('0x' + TEST_STRING_HEX))
+      .to.eql(TEST_STRING_HEX);
   });
 
   it('addHexPrefix', async () => {
-    expect(encUtils.addHexPrefix(TEST_STRING_HEX)).toEqual(
-      '0x' + TEST_STRING_HEX
-    );
-    expect(encUtils.addHexPrefix('0x' + TEST_STRING_HEX)).toEqual(
-      '0x' + TEST_STRING_HEX
-    );
+    chai
+      .expect(encUtils.addHexPrefix(TEST_STRING_HEX))
+      .to.eql('0x' + TEST_STRING_HEX);
+    chai
+      .expect(encUtils.addHexPrefix('0x' + TEST_STRING_HEX))
+      .to.eql('0x' + TEST_STRING_HEX);
   });
 
   it('sanitizeHex', async () => {
-    expect(encUtils.sanitizeHex('0x' + TEST_STRING_HEX)).toEqual(
-      '0x' + TEST_STRING_HEX
-    );
-    expect(encUtils.sanitizeHex(TEST_STRING_HEX)).toEqual(
-      '0x' + TEST_STRING_HEX
-    );
-    expect(encUtils.sanitizeHex('0x0' + TEST_STRING_HEX)).toEqual(
-      '0x00' + TEST_STRING_HEX
-    );
+    chai
+      .expect(encUtils.sanitizeHex('0x' + TEST_STRING_HEX))
+      .to.eql('0x' + TEST_STRING_HEX);
+    chai
+      .expect(encUtils.sanitizeHex(TEST_STRING_HEX))
+      .to.eql('0x' + TEST_STRING_HEX);
+    chai
+      .expect(encUtils.sanitizeHex('0x0' + TEST_STRING_HEX))
+      .to.eql('0x00' + TEST_STRING_HEX);
   });
 
   it('removeHexLeadingZeros', async () => {
-    expect(encUtils.removeHexLeadingZeros(TEST_STRING_HEX)).toEqual(
-      TEST_STRING_HEX
-    );
-    expect(encUtils.removeHexLeadingZeros('0' + TEST_STRING_HEX)).toEqual(
-      TEST_STRING_HEX
-    );
+    chai
+      .expect(encUtils.removeHexLeadingZeros(TEST_STRING_HEX))
+      .to.eql(TEST_STRING_HEX);
+    chai
+      .expect(encUtils.removeHexLeadingZeros('0' + TEST_STRING_HEX))
+      .to.eql(TEST_STRING_HEX);
   });
 });

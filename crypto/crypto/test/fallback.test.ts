@@ -1,3 +1,5 @@
+import 'mocha';
+import * as chai from 'chai';
 import { Crypto } from '@peculiar/webcrypto';
 
 import * as nodeCrypto from '../src/lib/node';
@@ -43,42 +45,42 @@ describe('Fallback', () => {
 
     it('should encrypt successfully', async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
-      expect(ciphertext).toBeTruthy();
+      chai.expect(ciphertext).to.be.true;
     });
 
     it('should decrypt successfully', async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('ciphertext should be decrypted by NodeJS', async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('should decrypt ciphertext from NodeJS', async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('ciphertext should be decrypted by Browser', async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = await browserCrypto.browserAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('should decrypt ciphertext from Browser', async () => {
       const ciphertext = await browserCrypto.browserAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
   });
 
@@ -94,13 +96,13 @@ describe('Fallback', () => {
       it('should hash buffer sucessfully', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = fallbackCrypto.fallbackSha256(input);
-        expect(output).toEqual(expectedOutput);
+        chai.expect(output).to.eql(expectedOutput);
       });
 
       it('should output with expected length', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = fallbackCrypto.fallbackSha256(input);
-        expect(output.length).toEqual(expectedLength);
+        chai.expect(output.length).to.eql(expectedLength);
       });
     });
 
@@ -116,13 +118,13 @@ describe('Fallback', () => {
       it('should hash buffer sucessfully', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = fallbackCrypto.fallbackSha512(input);
-        expect(output).toEqual(expectedOutput);
+        chai.expect(output).to.eql(expectedOutput);
       });
 
       it('should output with expected length', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = fallbackCrypto.fallbackSha512(input);
-        expect(output.length).toEqual(expectedLength);
+        chai.expect(output.length).to.eql(expectedLength);
       });
     });
   });
@@ -143,11 +145,11 @@ describe('Fallback', () => {
     });
 
     it('should sign sucessfully', async () => {
-      expect(output).toEqual(expectedOutput);
+      chai.expect(output).to.eql(expectedOutput);
     });
 
     it('should output with expected length', async () => {
-      expect(output.length).toEqual(expectedLength);
+      chai.expect(output.length).to.eql(expectedLength);
     });
   });
 });

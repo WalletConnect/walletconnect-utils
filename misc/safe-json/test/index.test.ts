@@ -1,3 +1,6 @@
+import 'mocha';
+import * as chai from 'chai';
+
 import { safeJsonParse, safeJsonStringify } from '../src';
 
 const json = { something: true };
@@ -9,31 +12,31 @@ const missing = { something: true, missing: undefined };
 describe('safe-json-utils', () => {
   describe('safeJsonParse', () => {
     it('should throw when value is not a string', () => {
-      expect(() => safeJsonParse(json as any)).toThrow(
-        'Cannot safe json parse value of type object'
-      );
+      chai
+        .expect(() => safeJsonParse(json as any))
+        .toThrow('Cannot safe json parse value of type object');
     });
     it('should return an object when valid json', () => {
       const result = safeJsonParse(valid);
-      expect(result).toEqual(json);
+      chai.expect(result).to.eql(json);
     });
     it('should return the same input when invalid json', () => {
       const result = safeJsonParse(invalid);
-      expect(result).toEqual(invalid);
+      chai.expect(result).to.eql(invalid);
     });
   });
   describe('safeJsonStringify', () => {
     it('should return a stringfied json', () => {
       const result = safeJsonStringify(json);
-      expect(result).toEqual(valid);
+      chai.expect(result).to.eql(valid);
     });
     it('should ignored undefined values', () => {
       const result = safeJsonStringify(missing);
-      expect(result).toEqual(valid);
+      chai.expect(result).to.eql(valid);
     });
     it('should return input when already a string', () => {
       const result = safeJsonStringify(str);
-      expect(result).toEqual(str);
+      chai.expect(result).to.eql(str);
     });
   });
 });

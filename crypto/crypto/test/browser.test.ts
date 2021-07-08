@@ -1,3 +1,5 @@
+import 'mocha';
+import * as chai from 'chai';
 import { Crypto } from '@peculiar/webcrypto';
 
 import * as isoCrypto from '../src/node';
@@ -30,7 +32,7 @@ describe('Browser', () => {
   describe('isBrowserCryptoAvailable', () => {
     it('should return true', () => {
       const result = isoCrypto.isBrowserCryptoAvailable();
-      expect(result).toBeTruthy();
+      chai.expect(result).to.be.true;
     });
   });
 
@@ -52,47 +54,47 @@ describe('Browser', () => {
 
     it('should import key from buffer successfully', async () => {
       const result = await browserCrypto.browserImportKey(key);
-      expect(result).toBeTruthy();
+      chai.expect(result).to.be.true;
     });
 
     it('should encrypt successfully', async () => {
       const ciphertext = await browserCrypto.browserAesEncrypt(iv, key, data);
-      expect(ciphertext).toBeTruthy();
+      chai.expect(ciphertext).to.be.true;
     });
 
     it('should decrypt successfully', async () => {
       const ciphertext = await browserCrypto.browserAesEncrypt(iv, key, data);
       const result = await browserCrypto.browserAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('ciphertext should be decrypted by NodeJS', async () => {
       const ciphertext = await browserCrypto.browserAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('should decrypt ciphertext from NodeJS', async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = await browserCrypto.browserAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('ciphertext should be decrypted by Fallback', async () => {
       const ciphertext = await browserCrypto.browserAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('should decrypt ciphertext from Fallback', async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = await browserCrypto.browserAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
   });
 
@@ -108,13 +110,13 @@ describe('Browser', () => {
       it('should hash buffer sucessfully', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = await browserCrypto.browserSha256(input);
-        expect(output).toEqual(expectedOutput);
+        chai.expect(output).to.eql(expectedOutput);
       });
 
       it('should output with expected length', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = await browserCrypto.browserSha256(input);
-        expect(output.length).toEqual(expectedLength);
+        chai.expect(output.length).to.eql(expectedLength);
       });
     });
 
@@ -130,13 +132,13 @@ describe('Browser', () => {
       it('should hash buffer sucessfully', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = await browserCrypto.browserSha512(input);
-        expect(output).toEqual(expectedOutput);
+        chai.expect(output).to.eql(expectedOutput);
       });
 
       it('should output with expected length', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = await browserCrypto.browserSha512(input);
-        expect(output.length).toEqual(expectedLength);
+        chai.expect(output.length).to.eql(expectedLength);
       });
     });
   });
@@ -157,11 +159,11 @@ describe('Browser', () => {
     });
 
     it('should sign sucessfully', async () => {
-      expect(output).toEqual(expectedOutput);
+      chai.expect(output).to.eql(expectedOutput);
     });
 
     it('should output with expected length', async () => {
-      expect(output.length).toEqual(expectedLength);
+      chai.expect(output.length).to.eql(expectedLength);
     });
   });
 });

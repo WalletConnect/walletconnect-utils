@@ -1,3 +1,6 @@
+import 'mocha';
+import * as chai from 'chai';
+
 import { Crypto } from '@peculiar/webcrypto';
 import { concatArrays, hexToArray, utf8ToArray } from 'enc-utils';
 
@@ -29,7 +32,7 @@ describe('NodeJS', () => {
   describe('isNode', () => {
     it('should return true', () => {
       const result = isoCrypto.isNode();
-      expect(result).toBeTruthy();
+      chai.expect(result).to.be.true;
     });
   });
 
@@ -51,42 +54,42 @@ describe('NodeJS', () => {
 
     it('should encrypt successfully', async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
-      expect(ciphertext).toBeTruthy();
+      chai.expect(ciphertext).to.be.true;
     });
 
     it('should decrypt successfully', async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('ciphertext should be decrypted by Fallback', async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('should decrypt ciphertext from Fallback', async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('ciphertext should be decrypted by Browser', async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = await browserCrypto.browserAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
 
     it('should decrypt ciphertext from Browser', async () => {
       const ciphertext = await browserCrypto.browserAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      expect(result).toBeTruthy();
-      expect(result).toEqual(data);
+      chai.expect(result).to.be.true;
+      chai.expect(result).to.eql(data);
     });
   });
 
@@ -102,13 +105,13 @@ describe('NodeJS', () => {
       it('should hash buffer sucessfully', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = nodeCrypto.nodeSha256(input);
-        expect(output).toEqual(expectedOutput);
+        chai.expect(output).to.eql(expectedOutput);
       });
 
       it('should output with expected length', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = nodeCrypto.nodeSha256(input);
-        expect(output.length).toEqual(expectedLength);
+        chai.expect(output.length).to.eql(expectedLength);
       });
     });
 
@@ -124,13 +127,13 @@ describe('NodeJS', () => {
       it('should hash buffer sucessfully', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = nodeCrypto.nodeSha512(input);
-        expect(output).toEqual(expectedOutput);
+        chai.expect(output).to.eql(expectedOutput);
       });
 
       it('should output with expected length', async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = nodeCrypto.nodeSha512(input);
-        expect(output.length).toEqual(expectedLength);
+        chai.expect(output.length).to.eql(expectedLength);
       });
     });
   });
@@ -151,11 +154,11 @@ describe('NodeJS', () => {
     });
 
     it('should sign sucessfully', async () => {
-      expect(output).toEqual(expectedOutput);
+      chai.expect(output).to.eql(expectedOutput);
     });
 
     it('should output with expected length', async () => {
-      expect(output.length).toEqual(expectedLength);
+      chai.expect(output.length).to.eql(expectedLength);
     });
   });
 });
