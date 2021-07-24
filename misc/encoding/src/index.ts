@@ -1,18 +1,18 @@
-import _isTypedArray from 'is-typedarray';
-import typedArrayToBuffer from 'typedarray-to-buffer';
+import _isTypedArray from "is-typedarray";
+import typedArrayToBuffer from "typedarray-to-buffer";
 
 // -- Constants ------------------------------------------ //
 
-const ENC_HEX = 'hex';
-const ENC_UTF8 = 'utf8';
-const ENC_BIN = 'binary';
+const ENC_HEX = "hex";
+const ENC_UTF8 = "utf8";
+const ENC_BIN = "binary";
 
-const TYPE_BUFFER = 'buffer';
-const TYPE_ARRAY = 'array';
-const TYPE_TYPED_ARRAY = 'typed-array';
-const TYPE_ARRAY_BUFFER = 'array-buffer';
+const TYPE_BUFFER = "buffer";
+const TYPE_ARRAY = "array";
+const TYPE_TYPED_ARRAY = "typed-array";
+const TYPE_ARRAY_BUFFER = "array-buffer";
 
-const STRING_ZERO = '0';
+const STRING_ZERO = "0";
 
 // -- Buffer --------------------------------------------- //
 
@@ -58,7 +58,7 @@ export function arrayToNumber(arr: Uint8Array): number {
 export function arrayToBinary(arr: Uint8Array): string {
   return Array.from(arr)
     .map(numberToBinary)
-    .join('');
+    .join("");
 }
 
 // -- Hex ------------------------------------------------ //
@@ -99,7 +99,7 @@ export function utf8ToHex(utf8: string, prefixed = false): string {
 
 export function utf8ToNumber(utf8: string): number {
   const num = parseInt(utf8, 10);
-  assert(isDefined(num), 'Number can only safely store up to 53 bits');
+  assert(isDefined(num), "Number can only safely store up to 53 bits");
   return num;
 }
 
@@ -155,7 +155,7 @@ export function binaryToNumber(bin: string): number {
 // -- Validators ----------------------------------------- //
 
 export function isBinaryString(str: any): boolean {
-  if (typeof str !== 'string' || !new RegExp(/^[01]+$/).test(str)) {
+  if (typeof str !== "string" || !new RegExp(/^[01]+$/).test(str)) {
     return false;
   }
   if (str.length % 8 !== 0) {
@@ -165,7 +165,7 @@ export function isBinaryString(str: any): boolean {
 }
 
 export function isHexString(str: any, length?: number): boolean {
-  if (typeof str !== 'string' || !str.match(/^0x[0-9A-Fa-f]*$/)) {
+  if (typeof str !== "string" || !str.match(/^0x[0-9A-Fa-f]*$/)) {
     return false;
   }
   if (length && str.length !== 2 + 2 * length) {
@@ -186,7 +186,7 @@ export function isArrayBuffer(val: any): boolean {
   return (
     !isTypedArray(val) &&
     !isBuffer(val) &&
-    typeof val.byteLength !== 'undefined'
+    typeof val.byteLength !== "undefined"
   );
 }
 
@@ -247,14 +247,14 @@ export function calcByteLength(length: number, byteSize = 8): number {
 }
 
 export function splitBytes(str: string, byteSize = 8): string[] {
-  const bytes = sanitizeBytes(str).match(new RegExp(`.{${byteSize}}`, 'gi'));
+  const bytes = sanitizeBytes(str).match(new RegExp(`.{${byteSize}}`, "gi"));
   return Array.from(bytes || []);
 }
 
 export function swapBytes(str: string): string {
   return splitBytes(str)
     .map(reverseString)
-    .join('');
+    .join("");
 }
 
 export function swapHex(str: string): string {
@@ -286,11 +286,11 @@ export function padRight(
 }
 
 export function removeHexPrefix(hex: string): string {
-  return hex.replace(/^0x/, '');
+  return hex.replace(/^0x/, "");
 }
 
 export function addHexPrefix(hex: string): string {
-  return hex.startsWith('0x') ? hex : `0x${hex}`;
+  return hex.startsWith("0x") ? hex : `0x${hex}`;
 }
 
 export function sanitizeHex(hex: string): string {
@@ -303,7 +303,7 @@ export function sanitizeHex(hex: string): string {
 }
 
 export function removeHexLeadingZeros(hex: string): string {
-  const prefixed = hex.startsWith('0x');
+  const prefixed = hex.startsWith("0x");
   hex = removeHexPrefix(hex);
   hex = hex.startsWith(STRING_ZERO) ? hex.substring(1) : hex;
   return prefixed ? addHexPrefix(hex) : hex;
@@ -312,7 +312,7 @@ export function removeHexLeadingZeros(hex: string): string {
 // -- Private ----------------------------------------------- //
 
 function isUndefined(value: any): boolean {
-  return typeof value === 'undefined';
+  return typeof value === "undefined";
 }
 
 function isDefined(value: any): boolean {
@@ -327,9 +327,9 @@ function assert(assertion: boolean, errorMessage: string) {
 
 function reverseString(str: string) {
   return str
-    .split('')
+    .split("")
     .reverse()
-    .join('');
+    .join("");
 }
 
 function padString(

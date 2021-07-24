@@ -1,1 +1,1 @@
-export * from '@pedrouid/environment';
+export * from "@pedrouid/environment";

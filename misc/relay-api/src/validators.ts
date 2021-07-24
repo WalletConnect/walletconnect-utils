@@ -1,6 +1,6 @@
-import { JsonRpcRequest } from '@json-rpc-tools/types';
-import { hasParamsLength, methodEndsWith } from './misc';
-import { RelayJsonRpc } from './types';
+import { JsonRpcRequest } from "@json-rpc-tools/types";
+import { hasParamsLength, methodEndsWith } from "./misc";
+import { RelayJsonRpc } from "./types";
 
 // ---------- Subscribe ----------------------------------------------- //
 
@@ -11,13 +11,13 @@ export function isSubscribeRequest(
 }
 
 export function isSubscribeMethod(method: string): boolean {
-  return methodEndsWith(method, 'subscribe');
+  return methodEndsWith(method, "subscribe");
 }
 
 export function isSubscribeParams(
   params: any
 ): params is RelayJsonRpc.SubscribeParams {
-  return hasParamsLength(params, 1) && 'topic' in params;
+  return hasParamsLength(params, 1) && "topic" in params;
 }
 
 // ---------- Publish ----------------------------------------------- //
@@ -29,7 +29,7 @@ export function isPublishRequest(
 }
 
 export function isPublishMethod(method: string): boolean {
-  return methodEndsWith(method, 'publish');
+  return methodEndsWith(method, "publish");
 }
 
 export function isPublishParams(
@@ -37,9 +37,9 @@ export function isPublishParams(
 ): params is RelayJsonRpc.PublishParams {
   return (
     hasParamsLength(params, 3) &&
-    'message' in params &&
-    'topic' in params &&
-    'ttl' in params
+    "message" in params &&
+    "topic" in params &&
+    "ttl" in params
   );
 }
 
@@ -54,13 +54,13 @@ export function isUnsubscribeRequest(
 }
 
 export function isUnsubscribeMethod(method: string): boolean {
-  return methodEndsWith(method, 'unsubscribe');
+  return methodEndsWith(method, "unsubscribe");
 }
 
 export function isUnsubscribeParams(
   params: any
 ): params is RelayJsonRpc.UnsubscribeParams {
-  return hasParamsLength(params, 1) && 'id' in params;
+  return hasParamsLength(params, 1) && "id" in params;
 }
 
 // ---------- Subscription ----------------------------------------------- //
@@ -74,11 +74,11 @@ export function isSubscriptionRequest(
 }
 
 export function isSubscriptionMethod(method: string): boolean {
-  return methodEndsWith(method, 'subscription');
+  return methodEndsWith(method, "subscription");
 }
 
 export function isSubscriptionParams(
   params: any
 ): params is RelayJsonRpc.SubscriptionParams {
-  return hasParamsLength(params, 2) && 'id' in params && 'data' in params;
+  return hasParamsLength(params, 2) && "id" in params && "data" in params;
 }

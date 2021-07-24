@@ -1,4 +1,4 @@
-import { fallbackAesEncrypt, fallbackAesDecrypt } from '../lib/fallback';
+import { fallbackAesEncrypt, fallbackAesDecrypt } from "../lib/fallback";
 
 export async function aesCbcEncrypt(
   iv: Uint8Array,

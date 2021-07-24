@@ -1,6 +1,6 @@
 export function getFromWindow<T>(name: string): T | undefined {
   let res: T | undefined = undefined;
-  if (typeof window !== 'undefined' && typeof window[name] !== 'undefined') {
+  if (typeof window !== "undefined" && typeof window[name] !== "undefined") {
     res = window[name];
   }
   return res;
@@ -15,41 +15,41 @@ export function getFromWindowOrThrow<T>(name: string): T {
 }
 
 export function getDocumentOrThrow(): Document {
-  return getFromWindowOrThrow<Document>('document');
+  return getFromWindowOrThrow<Document>("document");
 }
 
 export function getDocument(): Document | undefined {
-  return getFromWindow<Document>('document');
+  return getFromWindow<Document>("document");
 }
 
 export function getNavigatorOrThrow(): Navigator {
-  return getFromWindowOrThrow<Navigator>('navigator');
+  return getFromWindowOrThrow<Navigator>("navigator");
 }
 
 export function getNavigator(): Navigator | undefined {
-  return getFromWindow<Navigator>('navigator');
+  return getFromWindow<Navigator>("navigator");
 }
 
 export function getLocationOrThrow(): Location {
-  return getFromWindowOrThrow<Location>('location');
+  return getFromWindowOrThrow<Location>("location");
 }
 
 export function getLocation(): Location | undefined {
-  return getFromWindow<Location>('location');
+  return getFromWindow<Location>("location");
 }
 
 export function getCryptoOrThrow(): Crypto {
-  return getFromWindowOrThrow<Crypto>('crypto');
+  return getFromWindowOrThrow<Crypto>("crypto");
 }
 
 export function getCrypto(): Crypto | undefined {
-  return getFromWindow<Crypto>('crypto');
+  return getFromWindow<Crypto>("crypto");
 }
 
 export function getLocalStorageOrThrow(): Storage {
-  return getFromWindowOrThrow<Storage>('localStorage');
+  return getFromWindowOrThrow<Storage>("localStorage");
 }
 
 export function getLocalStorage(): Storage | undefined {
-  return getFromWindow<Storage>('localStorage');
+  return getFromWindow<Storage>("localStorage");
 }

@@ -1,6 +1,6 @@
-import { Logger, LoggerOptions } from 'pino';
+import { Logger, LoggerOptions } from "pino";
 
-import { PINO_CUSTOM_CONTEXT_KEY, PINO_LOGGER_DEFAULTS } from './constants';
+import { PINO_CUSTOM_CONTEXT_KEY, PINO_LOGGER_DEFAULTS } from "./constants";
 
 export function getDefaultLoggerOptions(opts?: LoggerOptions): LoggerOptions {
   return {
@@ -14,7 +14,7 @@ export function getBrowserLoggerContext(
   logger: Logger,
   customContextKey: string = PINO_CUSTOM_CONTEXT_KEY
 ): string {
-  return (logger as any)[customContextKey] || '';
+  return (logger as any)[customContextKey] || "";
 }
 
 export function setBrowserLoggerContext(
@@ -30,12 +30,12 @@ export function getLoggerContext(
   logger: Logger,
   customContextKey: string = PINO_CUSTOM_CONTEXT_KEY
 ): string {
-  let context = '';
+  let context = "";
   // logger.bindings is undefined in browser
-  if (typeof logger.bindings === 'undefined') {
+  if (typeof logger.bindings === "undefined") {
     context = getBrowserLoggerContext(logger, customContextKey);
   } else {
-    context = logger.bindings().context || '';
+    context = logger.bindings().context || "";
   }
   return context;
 }

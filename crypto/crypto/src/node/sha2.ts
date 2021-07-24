@@ -1,4 +1,4 @@
-import { nodeSha256, nodeSha512, nodeRipemd160 } from '../lib/node';
+import { nodeSha256, nodeSha512, nodeRipemd160 } from "../lib/node";
 
 export async function sha256(msg: Uint8Array): Promise<Uint8Array> {
   const result = nodeSha256(msg);

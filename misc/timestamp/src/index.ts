@@ -1,7 +1,7 @@
-import Timestamp from './time';
+import Timestamp from "./time";
 
-export * from './delay';
-export * from './time';
-export * from './types';
+export * from "./delay";
+export * from "./time";
+export * from "./types";
 
 export default Timestamp;

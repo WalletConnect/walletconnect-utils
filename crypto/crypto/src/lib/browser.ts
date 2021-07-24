@@ -1,4 +1,4 @@
-import * as env from '@pedrouid/environment';
+import * as env from "@pedrouid/environment";
 import {
   ENCRYPT_OP,
   DECRYPT_OP,
@@ -12,7 +12,7 @@ import {
   SHA256_BROWSER_ALGO,
   SHA512_BROWSER_ALGO,
   LENGTH_512,
-} from '../constants';
+} from "../constants";
 
 export function getAlgo(type: string): AesKeyAlgorithm | HmacImportParams {
   return type === AES_BROWSER_ALGO
@@ -34,7 +34,7 @@ export async function browserExportKey(
   type: string = AES_BROWSER_ALGO
 ): Promise<Uint8Array> {
   const subtle = env.getSubtleCrypto();
-  return new Uint8Array(await subtle.exportKey('raw', cryptoKey));
+  return new Uint8Array(await subtle.exportKey("raw", cryptoKey));
 }
 
 export async function browserImportKey(
@@ -42,7 +42,7 @@ export async function browserImportKey(
   type: string = AES_BROWSER_ALGO
 ): Promise<CryptoKey> {
   return (env.getSubtleCrypto() as any).importKey(
-    'raw',
+    "raw",
     buffer,
     getAlgo(type),
     true,

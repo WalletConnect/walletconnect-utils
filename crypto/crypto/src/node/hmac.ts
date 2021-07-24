@@ -1,6 +1,6 @@
-import { isConstantTime } from '../helpers';
+import { isConstantTime } from "../helpers";
 
-import { nodeHmacSha256Sign, nodeHmacSha512Sign } from '../lib/node';
+import { nodeHmacSha256Sign, nodeHmacSha512Sign } from "../lib/node";
 
 export async function hmacSha256Sign(
   key: Uint8Array,

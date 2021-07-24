@@ -1,9 +1,9 @@
-import { isConstantTime } from '../helpers';
+import { isConstantTime } from "../helpers";
 
 import {
   fallbackHmacSha256Sign,
   fallbackHmacSha512Sign,
-} from '../lib/fallback';
+} from "../lib/fallback";
 
 export async function hmacSha256Sign(
   key: Uint8Array,

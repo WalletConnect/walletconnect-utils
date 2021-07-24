@@ -1,5 +1,5 @@
-import crypto from 'crypto';
-import { bufferToArray, concatBuffers } from 'enc-utils';
+import crypto from "crypto";
+import { bufferToArray, concatBuffers } from "enc-utils";
 
 import {
   HMAC_NODE_ALGO,
@@ -7,7 +7,7 @@ import {
   SHA512_NODE_ALGO,
   SHA256_NODE_ALGO,
   RIPEMD160_NODE_ALGO,
-} from '../constants';
+} from "../constants";
 
 export function nodeAesEncrypt(
   iv: Uint8Array,

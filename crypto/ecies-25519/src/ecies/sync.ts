@@ -9,8 +9,8 @@ import {
   ERROR_BAD_MAC,
   EncryptOpts,
   assert,
-} from '@walletconnect/crypto/sync';
-import { concatArrays } from 'enc-utils';
+} from "@walletconnect/crypto/sync";
+import { concatArrays } from "enc-utils";
 
 import {
   getEncryptionKey,
@@ -19,7 +19,7 @@ import {
   getSenderKeyPair,
   serialize,
   deserialize,
-} from './shared';
+} from "./shared";
 
 function getEciesKeysSync(sharedKey: Uint8Array) {
   const hash = sha512Sync(sharedKey);

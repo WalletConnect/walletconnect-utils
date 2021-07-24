@@ -1,4 +1,4 @@
-import { getDocumentOrThrow, getLocationOrThrow } from 'window-getters';
+import { getDocumentOrThrow, getLocationOrThrow } from "window-getters";
 
 export interface IWebsiteMetadata {
   description: string;
@@ -20,37 +20,37 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
 
   function getIcons(): string[] {
     const links: HTMLCollectionOf<HTMLLinkElement> = doc.getElementsByTagName(
-      'link'
+      "link"
     );
     const icons: string[] = [];
 
     for (let i = 0; i < links.length; i++) {
       const link: HTMLLinkElement = links[i];
 
-      const rel: string | null = link.getAttribute('rel');
+      const rel: string | null = link.getAttribute("rel");
       if (rel) {
-        if (rel.toLowerCase().indexOf('icon') > -1) {
-          const href: string | null = link.getAttribute('href');
+        if (rel.toLowerCase().indexOf("icon") > -1) {
+          const href: string | null = link.getAttribute("href");
 
           if (href) {
             if (
-              href.toLowerCase().indexOf('https:') === -1 &&
-              href.toLowerCase().indexOf('http:') === -1 &&
-              href.indexOf('//') !== 0
+              href.toLowerCase().indexOf("https:") === -1 &&
+              href.toLowerCase().indexOf("http:") === -1 &&
+              href.indexOf("//") !== 0
             ) {
-              let absoluteHref: string = loc.protocol + '//' + loc.host;
+              let absoluteHref: string = loc.protocol + "//" + loc.host;
 
-              if (href.indexOf('/') === 0) {
+              if (href.indexOf("/") === 0) {
                 absoluteHref += href;
               } else {
-                const path: string[] = loc.pathname.split('/');
+                const path: string[] = loc.pathname.split("/");
                 path.pop();
-                const finalPath: string = path.join('/');
-                absoluteHref += finalPath + '/' + href;
+                const finalPath: string = path.join("/");
+                absoluteHref += finalPath + "/" + href;
               }
 
               icons.push(absoluteHref);
-            } else if (href.indexOf('//') === 0) {
+            } else if (href.indexOf("//") === 0) {
               const absoluteUrl: string = loc.protocol + href;
 
               icons.push(absoluteUrl);
@@ -67,12 +67,12 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
 
   function getWindowMetadataOfAny(...args: string[]): string {
     const metaTags: HTMLCollectionOf<HTMLMetaElement> = doc.getElementsByTagName(
-      'meta'
+      "meta"
     );
 
     for (let i = 0; i < metaTags.length; i++) {
       const tag: HTMLMetaElement = metaTags[i];
-      const attributes: Array<string | null> = ['itemprop', 'property', 'name']
+      const attributes: Array<string | null> = ["itemprop", "property", "name"]
         .map((target: string) => tag.getAttribute(target))
         .filter((attr: string | null) => {
           if (attr) {
@@ -82,22 +82,22 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
         });
 
       if (attributes.length && attributes) {
-        const content: string | null = tag.getAttribute('content');
+        const content: string | null = tag.getAttribute("content");
         if (content) {
           return content;
         }
       }
     }
 
-    return '';
+    return "";
   }
 
   function getName(): string {
     let name: string = getWindowMetadataOfAny(
-      'name',
-      'og:site_name',
-      'og:title',
-      'twitter:title'
+      "name",
+      "og:site_name",
+      "og:title",
+      "twitter:title"
     );
 
     if (!name) {
@@ -109,10 +109,10 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
 
   function getDescription(): string {
     const description: string = getWindowMetadataOfAny(
-      'description',
-      'og:description',
-      'twitter:description',
-      'keywords'
+      "description",
+      "og:description",
+      "twitter:description",
+      "keywords"
     );
 
     return description;

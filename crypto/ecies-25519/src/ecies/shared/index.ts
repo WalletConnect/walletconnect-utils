@@ -1,5 +1,5 @@
-import * as x25519 from '@stablelib/x25519';
-import { concatArrays } from 'enc-utils';
+import * as x25519 from "@stablelib/x25519";
+import { concatArrays } from "enc-utils";
 import {
   KeyPair,
   PNRG,
@@ -9,7 +9,7 @@ import {
   IV_LENGTH,
   MAC_LENGTH,
   EncryptOpts,
-} from '@walletconnect/crypto';
+} from "@walletconnect/crypto";
 
 export function derive(
   privateKey: Uint8Array,
@@ -27,7 +27,7 @@ export function generatePnrgFromEntropy(entropy: Uint8Array): PNRG {
 
 export function generateKeyPair(entropy?: Uint8Array): KeyPair {
   const prng =
-    typeof entropy !== 'undefined'
+    typeof entropy !== "undefined"
       ? generatePnrgFromEntropy(entropy)
       : undefined;
   const keyPair = x25519.generateKeyPair(prng);

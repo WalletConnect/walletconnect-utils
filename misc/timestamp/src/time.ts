@@ -1,4 +1,4 @@
-import { ITimestamp, TimestampInfo } from './types';
+import { ITimestamp, TimestampInfo } from "./types";
 
 export class Timestamp implements ITimestamp {
   public timestamps = new Map<string, TimestampInfo>();
@@ -12,7 +12,7 @@ export class Timestamp implements ITimestamp {
 
   public stop(label: string) {
     const timestamp = this.get(label);
-    if (typeof timestamp.elapsed !== 'undefined') {
+    if (typeof timestamp.elapsed !== "undefined") {
       throw new Error(`Timestamp already stopped for label: ${label}`);
     }
     const elapsed = Date.now() - timestamp.started;
@@ -21,7 +21,7 @@ export class Timestamp implements ITimestamp {
 
   public get(label: string): TimestampInfo {
     const timestamp = this.timestamps.get(label);
-    if (typeof timestamp === 'undefined') {
+    if (typeof timestamp === "undefined") {
       throw new Error(`No timestamp found for label: ${label}`);
     }
     return timestamp;

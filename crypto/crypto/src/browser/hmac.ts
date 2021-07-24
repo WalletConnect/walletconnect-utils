@@ -1,6 +1,6 @@
-import { browserHmacSha256Sign, browserHmacSha512Sign } from '../lib/browser';
+import { browserHmacSha256Sign, browserHmacSha512Sign } from "../lib/browser";
 
-import { isConstantTime } from '../helpers';
+import { isConstantTime } from "../helpers";
 
 export async function hmacSha256Sign(
   key: Uint8Array,

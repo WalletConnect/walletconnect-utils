@@ -29,22 +29,21 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build:cjs": "run-s tsc -p tsconfig.cjs.json",
-    "build:esm": "run-s tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
     "build:umd": "webpack",
     "build": "run-s clean build:cjs build:esm build:umd ",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --exit -r ts-node/register ./test/**/*.test.ts",
-    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
-    "prepare": "run-s lint build test"
+    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "devDependencies": {
-    "@types/jest": "25.1.1",
-    "@types/node": "13.7.0",
-    "husky": "4.2.1",
-    "tslib": "1.10.0",
-    "typescript": "3.7.5",
-    "webpack": "4.41.6",
-    "webpack-cli": "3.3.11"
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.7",
+    "husky": "^4.3.0",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   },
   "husky": {
     "hooks": {
@@ -54,7 +53,7 @@
   "prettier": {
     "printWidth": 80,
     "semi": true,
-    "singleQuote": true,
+    "singleQuote": false,
     "trailingComma": "es5"
   },
   "dependencies": {

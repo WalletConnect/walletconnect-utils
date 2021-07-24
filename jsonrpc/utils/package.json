@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@walletconnect/jsonrpc-types": "^1.0.0",
-    "@walletconnect/environment": "^1.0.0",
+    "@walletconnect/environment": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -55,10 +55,10 @@
     "@babel/register": "^7.12.1",
     "@walletconnect/timestamp": "^1.0.0",
     "@types/chai": "^4.2.14",
-    "@types/jest": "^22.2.3",
+    "@types/jest": "^26.0.15",
     "@types/lodash.isequal": "^4.5.5",
     "@types/mocha": "^8.2.0",
-    "@types/node": "^14.14.2",
+    "@types/node": "^14.14.7",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "chai": "^4.2.0",
@@ -78,7 +78,7 @@
     "prettier": "^1.19.1",
     "ts-node": "^9.0.0",
     "typescript": "^3.7.5",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   }
 }
