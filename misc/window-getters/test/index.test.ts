@@ -1,8 +1,8 @@
-import 'mocha';
-import * as chai from 'chai';
+import "mocha";
+import * as chai from "chai";
 
-describe('@walletconnect/window-getters', () => {
-  it('needs tests', () => {
+describe("@walletconnect/window-getters", () => {
+  it("needs tests", () => {
     // needs tests
   });
 });

@@ -1,4 +1,4 @@
-import { JsonRpcRequest } from "@json-rpc-tools/types";
+import { JsonRpcRequest } from "@walletconnect/jsonrpc-types";
 
 import { RelayJsonRpc } from "./types";
 import { assertType } from "./misc";

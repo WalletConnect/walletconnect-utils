@@ -14,7 +14,7 @@ describe("@walletconnect/safe-json", () => {
     it("should throw when value is not a string", () => {
       chai
         .expect(() => safeJsonParse(json as any))
-        .toThrow("Cannot safe json parse value of type object");
+        .to.throw("Cannot safe json parse value of type object");
     });
     it("should return an object when valid json", () => {
       const result = safeJsonParse(valid);

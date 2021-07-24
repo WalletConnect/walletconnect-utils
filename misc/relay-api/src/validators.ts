@@ -1,4 +1,5 @@
-import { JsonRpcRequest } from "@json-rpc-tools/types";
+import { JsonRpcRequest } from "@walletconnect/jsonrpc-types";
+
 import { hasParamsLength, methodEndsWith } from "./misc";
 import { RelayJsonRpc } from "./types";
 

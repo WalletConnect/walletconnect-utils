@@ -23,7 +23,7 @@ declare global {
   }
 }
 
-//  using msCrypto because Typescript was complaing read-only
+//  using msCrypto because Typescript was complaining read-only
 window.msCrypto = new Crypto();
 
 describe("Fallback", () => {

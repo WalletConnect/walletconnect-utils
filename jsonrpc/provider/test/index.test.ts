@@ -1,8 +1,8 @@
 import "mocha";
 import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-import HttpConnection from "@json-rpc-tools/http-connection";
-import WsConnection from "@json-rpc-tools/ws-connection";
+import HttpConnection from "@walletconnect/jsonrpc-http-connection";
+import WsConnection from "@walletconnect/jsonrpc-ws-connection";
 
 import JsonRpcProvider from "../src";
 

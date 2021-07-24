@@ -5,7 +5,7 @@ import {
   RESERVED_ERROR_CODES,
   STANDARD_ERROR_MAP,
 } from "./constants";
-import { JsonRpcError, JsonRpcValidation } from "@json-rpc-tools/types";
+import { JsonRpcError, JsonRpcValidation } from "@walletconnect/jsonrpc-types";
 
 export function isServerErrorCode(code: number): boolean {
   return code <= SERVER_ERROR_CODE_RANGE[0] && code >= SERVER_ERROR_CODE_RANGE[1];
