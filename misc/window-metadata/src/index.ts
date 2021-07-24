@@ -1,4 +1,7 @@
-import { getDocumentOrThrow, getLocationOrThrow } from "window-getters";
+import {
+  getDocumentOrThrow,
+  getLocationOrThrow,
+} from "@walletconnect/window-getters";
 
 export interface IWebsiteMetadata {
   description: string;

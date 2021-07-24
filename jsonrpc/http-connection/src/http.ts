@@ -1,13 +1,13 @@
 import { EventEmitter } from "events";
 import fetch from "cross-fetch";
-import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
+import { safeJsonParse, safeJsonStringify } from "@walletconnect/safe-json";
 import {
   formatJsonRpcError,
   IJsonRpcConnection,
   JsonRpcPayload,
   isHttpUrl,
   parseConnectionError,
-} from "@json-rpc-tools/utils";
+} from "@walletconnect/jsonrpc-utils";
 
 const DEFAULT_HTTP_HEADERS = {
   Accept: "application/json",

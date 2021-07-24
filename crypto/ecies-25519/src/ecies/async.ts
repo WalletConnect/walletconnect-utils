@@ -10,7 +10,7 @@ import {
   EncryptOpts,
   assert,
 } from "@walletconnect/crypto";
-import { concatArrays } from "enc-utils";
+import { concatArrays } from "@walletconnect/encoding";
 
 import {
   getEncryptionKey,

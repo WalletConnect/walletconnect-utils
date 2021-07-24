@@ -1,6 +1,6 @@
 import "mocha";
 import * as chai from "chai";
-import { delay } from "@pedrouid/timestamp";
+import { delay } from "@walletconnect/timestamp";
 
 import { payloadId } from "../src";
 import { findDuplicates } from "./shared";

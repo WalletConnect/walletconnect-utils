@@ -1,7 +1,7 @@
-import * as encUtils from 'enc-utils';
+import * as encUtils from "@walletconnect/encoding";
 
-import * as eccies25519 from '../../src';
-import { TEST_MESSAGE_STR } from './constants';
+import * as eccies25519 from "../../src";
+import { TEST_MESSAGE_STR } from "./constants";
 
 export function testGenerateKeyPair() {
   const keyPair = eccies25519.generateKeyPair();

@@ -1,4 +1,4 @@
-import * as env from "@pedrouid/environment";
+import * as env from "@walletconnect/environment";
 
 export function randomBytes(length: number): Uint8Array {
   const browserCrypto = env.getBrowerCrypto();

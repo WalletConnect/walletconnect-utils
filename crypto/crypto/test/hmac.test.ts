@@ -1,7 +1,7 @@
-import 'mocha';
-import * as chai from 'chai';
+import "mocha";
+import * as chai from "chai";
 
-import { concatArrays, hexToArray, utf8ToArray } from 'enc-utils';
+import { concatArrays, hexToArray, utf8ToArray } from "@walletconnect/encoding";
 import {
   testHmacSign,
   testHmacVerify,
@@ -9,9 +9,9 @@ import {
   TEST_PRIVATE_KEY,
   TEST_FIXED_IV,
   TEST_HMAC_SIG,
-} from './common';
+} from "./common";
 
-describe('HMAC', () => {
+describe("HMAC", () => {
   const msg = utf8ToArray(TEST_MESSAGE_STR);
   const iv = hexToArray(TEST_FIXED_IV);
   const key = hexToArray(TEST_PRIVATE_KEY);
@@ -26,15 +26,15 @@ describe('HMAC', () => {
     output = await testHmacSign(macKey, dataToMac);
   });
 
-  it('should sign sucessfully', async () => {
+  it("should sign sucessfully", async () => {
     chai.expect(output).to.eql(expectedOutput);
   });
 
-  it('should output with expected length', async () => {
+  it("should output with expected length", async () => {
     chai.expect(output.length).to.eql(expectedLength);
   });
 
-  it('should verify sucessfully', async () => {
+  it("should verify sucessfully", async () => {
     const macGood = await testHmacVerify(macKey, dataToMac, output);
     chai.expect(macGood).to.be.true;
   });

@@ -1,6 +1,6 @@
-import { isNode } from "@pedrouid/environment";
+import { isNode } from "@walletconnect/environment";
 
 // for backwards-compatibility
 export const isNodeJs = isNode;
 
-export * from "@pedrouid/environment";
+export * from "@walletconnect/environment";

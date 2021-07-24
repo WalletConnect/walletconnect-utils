@@ -1,25 +1,6 @@
-import { Schema } from "./schema";
-
-export type JsonSchema = Schema;
-
 export interface JsonRpcProviderMessage<T = any> {
   type: string;
   data: T;
-}
-
-export interface JsonRpcSchema {
-  name: string;
-  description: string;
-  params: JsonSchema;
-  result: JsonSchema;
-}
-
-export interface JsonRpcSchemaMap {
-  [method: string]: JsonRpcSchema;
-}
-
-export interface JsonRpcSchemas {
-  schemas: JsonRpcSchemaMap;
 }
 
 export interface RequestArguments<T = any> {

@@ -1,5 +1,5 @@
 import * as x25519 from "@stablelib/x25519";
-import { concatArrays } from "enc-utils";
+import { concatArrays } from "@walletconnect/encoding";
 import {
   KeyPair,
   PNRG,

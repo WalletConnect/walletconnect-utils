@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
+import { safeJsonParse, safeJsonStringify } from "@walletconnect/safe-json";
 import {
   formatJsonRpcError,
   IJsonRpcConnection,
@@ -8,7 +8,7 @@ import {
   isWsUrl,
   isLocalhostUrl,
   parseConnectionError,
-} from "@json-rpc-tools/utils";
+} from "@walletconnect/jsonrpc-utils";
 
 const WS =
   // @ts-ignore

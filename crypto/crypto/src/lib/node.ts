@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { bufferToArray, concatBuffers } from "enc-utils";
+import { bufferToArray, concatBuffers } from "@walletconnect/encoding";
 
 import {
   HMAC_NODE_ALGO,

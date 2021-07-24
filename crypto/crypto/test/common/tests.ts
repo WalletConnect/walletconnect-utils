@@ -1,8 +1,8 @@
-import crypto from 'crypto';
-import * as encUtils from 'enc-utils';
+import crypto from "crypto";
+import * as encUtils from "@walletconnect/encoding";
 
-import * as isoCrypto from '../../src/node';
-import { TEST_MESSAGE_STR } from './constants';
+import * as isoCrypto from "../../src/node";
+import { TEST_MESSAGE_STR } from "./constants";
 
 export async function testSha2(msg: Uint8Array, algo: string) {
   // @ts-ignore

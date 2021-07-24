@@ -9,7 +9,7 @@ import {
   isJsonRpcResponse,
   formatJsonRpcRequest,
   isJsonRpcError,
-} from "@json-rpc-tools/utils";
+} from "@walletconnect/jsonrpc-utils";
 
 export class JsonRpcProvider extends IJsonRpcProvider {
   public events = new EventEmitter();
