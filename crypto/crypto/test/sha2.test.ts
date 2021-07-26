@@ -9,7 +9,7 @@ describe("SHA256", () => {
   let expectedLength: number;
   let expectedOutput: Uint8Array;
 
-  beforeEach(async () => {
+  before(async () => {
     expectedLength = 32;
     expectedOutput = hexToArray(TEST_SHA256_HASH);
   });
@@ -31,7 +31,7 @@ describe("SHA512", () => {
   let expectedLength: number;
   let expectedOutput: Uint8Array;
 
-  beforeEach(async () => {
+  before(async () => {
     expectedLength = 64;
     expectedOutput = hexToArray(TEST_SHA512_HASH);
   });

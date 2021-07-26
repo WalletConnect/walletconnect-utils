@@ -19,20 +19,13 @@ import {
   TEST_HMAC_SIG,
 } from "./common";
 
-declare global {
-  interface Window {
-    msCrypto: Crypto;
-  }
-}
-
-//  using msCrypto because Typescript was complaining read-only
-window.msCrypto = new Crypto();
+global.crypto = new Crypto();
 
 describe("NodeJS", () => {
   describe("isNode", () => {
     it("should return true", () => {
       const result = isoCrypto.isNode();
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
     });
   });
 
@@ -43,7 +36,7 @@ describe("NodeJS", () => {
     let iv: Uint8Array;
     let data: Uint8Array;
 
-    beforeEach(async () => {
+    before(async () => {
       keyLength = 32;
       key = testRandomBytes(keyLength);
       ivLength = 16;
@@ -54,41 +47,41 @@ describe("NodeJS", () => {
 
     it("should encrypt successfully", async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
-      chai.expect(ciphertext).to.be.true;
+      chai.expect(ciphertext).to.not.be.undefined;
     });
 
     it("should decrypt successfully", async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
 
     it("ciphertext should be decrypted by Fallback", async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
 
     it("should decrypt ciphertext from Fallback", async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
 
     it("ciphertext should be decrypted by Browser", async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = await browserCrypto.browserAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
 
     it("should decrypt ciphertext from Browser", async () => {
       const ciphertext = await browserCrypto.browserAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
   });
@@ -98,7 +91,7 @@ describe("NodeJS", () => {
       let expectedLength: number;
       let expectedOutput: Uint8Array;
 
-      beforeEach(async () => {
+      before(async () => {
         expectedLength = 32;
         expectedOutput = hexToArray(TEST_SHA256_HASH);
       });
@@ -119,7 +112,7 @@ describe("NodeJS", () => {
       let expectedLength: number;
       let expectedOutput: Uint8Array;
 
-      beforeEach(async () => {
+      before(async () => {
         expectedLength = 64;
         expectedOutput = hexToArray(TEST_SHA512_HASH);
       });
@@ -149,7 +142,7 @@ describe("NodeJS", () => {
 
     let output: Uint8Array;
 
-    beforeEach(async () => {
+    before(async () => {
       output = nodeCrypto.nodeHmacSha256Sign(macKey, dataToMac);
     });
 

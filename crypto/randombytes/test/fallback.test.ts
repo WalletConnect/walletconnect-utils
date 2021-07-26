@@ -4,14 +4,7 @@ import { Crypto } from "@peculiar/webcrypto";
 
 import * as fallbackCrypto from "../src/fallback";
 
-declare global {
-  interface Window {
-    msCrypto: Crypto;
-  }
-}
-
-//  using msCrypto because Typescript was complaining read-only
-window.msCrypto = new Crypto();
+global.crypto = new Crypto();
 
 describe("Fallback", () => {
   describe("RandomBytes", () => {

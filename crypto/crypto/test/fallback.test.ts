@@ -17,14 +17,7 @@ import {
 } from "./common";
 import { concatArrays, hexToArray, utf8ToArray } from "@walletconnect/encoding";
 
-declare global {
-  interface Window {
-    msCrypto: Crypto;
-  }
-}
-
-//  using msCrypto because Typescript was complaining read-only
-window.msCrypto = new Crypto();
+global.crypto = new Crypto();
 
 describe("Fallback", () => {
   describe("AES", () => {
@@ -34,7 +27,7 @@ describe("Fallback", () => {
     let iv: Uint8Array;
     let data: Uint8Array;
 
-    beforeEach(async () => {
+    before(async () => {
       keyLength = 32;
       key = testRandomBytes(keyLength);
       ivLength = 16;
@@ -45,41 +38,41 @@ describe("Fallback", () => {
 
     it("should encrypt successfully", async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
-      chai.expect(ciphertext).to.be.true;
+      chai.expect(ciphertext).to.not.be.undefined;
     });
 
     it("should decrypt successfully", async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
 
     it("ciphertext should be decrypted by NodeJS", async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = nodeCrypto.nodeAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
 
     it("should decrypt ciphertext from NodeJS", async () => {
       const ciphertext = nodeCrypto.nodeAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
 
     it("ciphertext should be decrypted by Browser", async () => {
       const ciphertext = fallbackCrypto.fallbackAesEncrypt(iv, key, data);
       const result = await browserCrypto.browserAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
 
     it("should decrypt ciphertext from Browser", async () => {
       const ciphertext = await browserCrypto.browserAesEncrypt(iv, key, data);
       const result = fallbackCrypto.fallbackAesDecrypt(iv, key, ciphertext);
-      chai.expect(result).to.be.true;
+      chai.expect(result).to.not.be.undefined;
       chai.expect(result).to.eql(data);
     });
   });
@@ -89,7 +82,7 @@ describe("Fallback", () => {
       let expectedLength: number;
       let expectedOutput: Uint8Array;
 
-      beforeEach(async () => {
+      before(async () => {
         expectedLength = 32;
         expectedOutput = hexToArray(TEST_SHA256_HASH);
       });
@@ -110,7 +103,7 @@ describe("Fallback", () => {
       let expectedLength: number;
       let expectedOutput: Uint8Array;
 
-      beforeEach(async () => {
+      before(async () => {
         expectedLength = 64;
         expectedOutput = hexToArray(TEST_SHA512_HASH);
       });
@@ -140,7 +133,7 @@ describe("Fallback", () => {
 
     let output: Uint8Array;
 
-    beforeEach(async () => {
+    before(async () => {
       output = fallbackCrypto.fallbackHmacSha256Sign(macKey, dataToMac);
     });
 

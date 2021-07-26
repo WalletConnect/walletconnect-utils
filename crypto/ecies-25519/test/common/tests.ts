@@ -5,8 +5,8 @@ import { TEST_MESSAGE_STR } from "./constants";
 
 export function testGenerateKeyPair() {
   const keyPair = eccies25519.generateKeyPair();
-  chai.expect(keyPair.privateKey).to.be.true;
-  chai.expect(keyPair.publicKey).to.be.true;
+  chai.expect(keyPair.privateKey).to.not.be.undefined;
+  chai.expect(keyPair.publicKey).to.not.be.undefined;
   return keyPair;
 }
 

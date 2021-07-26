@@ -22,7 +22,7 @@ describe("HMAC", () => {
 
   let output: Uint8Array;
 
-  beforeEach(async () => {
+  before(async () => {
     output = await testHmacSign(macKey, dataToMac);
   });
 
@@ -36,6 +36,6 @@ describe("HMAC", () => {
 
   it("should verify sucessfully", async () => {
     const macGood = await testHmacVerify(macKey, dataToMac, output);
-    chai.expect(macGood).to.be.true;
+    chai.expect(macGood).to.not.be.undefined;
   });
 });
