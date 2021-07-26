@@ -1,6 +1,6 @@
 # WalletConnect Utils
 
-Monorepo for multiple utility libraries used for WalletConnect Javascript packages on NPM
+Monorepo for Javascript Utilities for WalletConnect
 
 ## License
 

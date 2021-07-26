@@ -1,8 +1,8 @@
 {
   "name": "walletconnect-utils",
-  "description": "Monorepo for JSON-RPC Tooling",
+  "description": "Monorepo for Javascript Utilities for WalletConnect",
   "private": true,
-  "author": "WalletConnect  <walletconnect.org>",
+  "author": "WalletConnect <walletconnect.org>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
   "repository": {
