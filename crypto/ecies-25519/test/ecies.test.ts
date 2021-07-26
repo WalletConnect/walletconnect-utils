@@ -18,10 +18,11 @@ describe("ECIES", () => {
 
   before(() => {
     keyPair = testGenerateKeyPair();
+    chai.expect(keyPair).to.not.be.undefined;
   });
 
   it("should generate the same key pair for given entropy", async () => {
-    const keyPair = await ecies25519.generateKeyPair(entropy);
+    const keyPair = ecies25519.generateKeyPair(entropy);
     chai.expect(keyPair).to.not.be.undefined;
     chai.expect(keyPair.privateKey).to.eql(hexToArray(TEST_PRIVATE_KEY));
     chai.expect(keyPair.publicKey).to.eql(hexToArray(TEST_PUBLIC_KEY));
