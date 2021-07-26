@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-utils",
   "description": "Utilities for JSON-RPC",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "author": "WalletConnect  <walletconnect.org>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -38,12 +38,11 @@
     "build:esm": "npx tsc -p tsconfig.esm.json",
     "build": "run-s build:pre build:cjs build:esm build:umd",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha -r ts-node/register ./test/**/*.{test,spec}.ts",
-    
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@walletconnect/jsonrpc-types": "^1.0.0",
-    "@walletconnect/environment": "^1.0.0"
+    "@walletconnect/jsonrpc-types": "^1.0.0-beta.0",
+    "@walletconnect/environment": "^1.0.0-beta.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -53,7 +52,7 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
     "@babel/register": "^7.12.1",
-    "@walletconnect/timestamp": "^1.0.0",
+    "@walletconnect/timestamp": "^1.0.0-beta.0",
     "@types/chai": "^4.2.14",
     "@types/jest": "^26.0.15",
     "@types/lodash.isequal": "^4.5.5",

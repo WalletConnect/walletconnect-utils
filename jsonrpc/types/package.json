@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-types",
   "description": "Typings for JSON-RPC",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "author": "WalletConnect  <walletconnect.org>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -38,7 +38,6 @@
     "build:esm": "npx tsc -p tsconfig.esm.json",
     "build": "run-s build:pre build:cjs build:esm build:umd",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --exit -r ts-node/register ./test/**/*.test.ts",
-    
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
