@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-utils",
   "description": "Utilities for JSON-RPC",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "author": "WalletConnect  <walletconnect.org>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -41,8 +41,8 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@walletconnect/jsonrpc-types": "^1.0.0-beta.0",
-    "@walletconnect/environment": "^1.0.0-beta.0"
+    "@walletconnect/environment": "^1.0.0-beta.1",
+    "@walletconnect/jsonrpc-types": "^1.0.0-beta.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -52,7 +52,6 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
     "@babel/register": "^7.12.1",
-    "@walletconnect/timestamp": "^1.0.0-beta.0",
     "@types/chai": "^4.2.14",
     "@types/jest": "^26.0.15",
     "@types/lodash.isequal": "^4.5.5",
@@ -60,6 +59,7 @@
     "@types/node": "^14.14.7",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
+    "@walletconnect/timestamp": "^1.0.0-beta.1",
     "chai": "^4.2.0",
     "core-js": "^3.6.5",
     "eslint": "^5.16.0",

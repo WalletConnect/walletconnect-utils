@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/window-metadata",
   "description": "Scrape Window Metadata",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "author": "WalletConnect <walletconnect.org>",
   "license": "MIT",
   "keywords": [
@@ -35,7 +35,7 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@walletconnect/window-getters": "^1.0.0-beta.0"
+    "@walletconnect/window-getters": "^1.0.0-beta.1"
   },
   "devDependencies": {
     "@types/bn.js": "4.11.6",

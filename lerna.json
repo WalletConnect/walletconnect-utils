@@ -1,4 +1,8 @@
 {
-  "version": "1.0.0-beta.0",
-  "packages": ["jsonrpc/*", "crypto/*", "misc/*"]
+  "version": "1.0.0-beta.1",
+  "packages": [
+    "jsonrpc/*",
+    "crypto/*",
+    "misc/*"
+  ]
 }
