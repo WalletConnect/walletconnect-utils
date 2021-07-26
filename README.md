@@ -1,6 +1,6 @@
-# JSON-RPC Tooling
+# WalletConnect Utils
 
-Monorepo for JSON-RPC Tooling (Types, Utils, Provider, and MultiService)
+Monorepo for multiple utility libraries used for WalletConnect Javascript packages on NPM
 
 ## License
 
