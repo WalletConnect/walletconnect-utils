@@ -1,3 +1,5 @@
+import "mocha";
+import * as chai from "chai";
 import * as encUtils from "@walletconnect/encoding";
 
 import * as eccies25519 from "../../src";
