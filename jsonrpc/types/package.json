@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-types",
   "description": "Typings for JSON-RPC",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "author": "WalletConnect <walletconnect.org>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
