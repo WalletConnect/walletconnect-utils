@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/window-getters",
   "description": "Safe Window Getters",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0",
   "author": "WalletConnect <walletconnect.org>",
   "license": "MIT",
   "keywords": [
