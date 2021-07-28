@@ -31,5 +31,6 @@ export declare namespace RelayJsonRpc {
 
   export interface UnsubscribeParams {
     id: string;
+    topic: string;
   }
 }

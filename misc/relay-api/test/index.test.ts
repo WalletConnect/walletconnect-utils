@@ -43,6 +43,7 @@ const TEST_UNSUBSCRIBE_REQUEST = {
   method: "bridge_unsubscribe",
   params: {
     id: "bd745387ddcc888f077157d1d4389fee2f28faf3fcb2b9b2993c114a1448bd32",
+    topic: "b6052f059b3bb31e9e76b1a8bc04a3f6d4e08579e518a482c566de15e0ca5c04",
   },
 };
 

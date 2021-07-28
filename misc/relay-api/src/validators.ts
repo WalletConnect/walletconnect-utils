@@ -61,7 +61,7 @@ export function isUnsubscribeMethod(method: string): boolean {
 export function isUnsubscribeParams(
   params: any
 ): params is RelayJsonRpc.UnsubscribeParams {
-  return hasParamsLength(params, 1) && "id" in params;
+  return hasParamsLength(params, 2) && "id" in params && "topic" in params;
 }
 
 // ---------- Subscription ----------------------------------------------- //
