@@ -20,13 +20,8 @@
     "test": "lerna run test",
     "check": "run-s lint build test",
     "reset": "run-s clean bootstrap check",
-    "commit-version": "node ops/js/commit-version.js",
     "new-version": "lerna version --no-git-tag-version",
-    "pre-publish": "run-s new-version reset commit-version",
-    "npm-publish": "lerna exec -- npm publish --access public",
-    "npm-publish:beta": "lerna exec -- npm publish --access public --tag beta",
-    "publish": "run-s pre-publish npm-publish",
-    "publish:beta": "run-s pre-publish npm-publish:beta"
+    "pre-publish": "run-s new-version reset"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
