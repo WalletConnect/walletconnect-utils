@@ -7,9 +7,9 @@ import {
   testGenerateKeyPair,
   testEncrypt,
   testSharedKeys,
-  TEST_PRIVATE_KEY,
-  TEST_PUBLIC_KEY,
   TEST_ENTROPY,
+  TEST_KEY_PAIR,
+  TEST_SHARED_KEY,
 } from "./common";
 
 describe("ECIES", () => {
@@ -24,14 +24,27 @@ describe("ECIES", () => {
   it("should generate the same key pair for given entropy", async () => {
     const keyPair = ecies25519.generateKeyPair(entropy);
     chai.expect(keyPair).to.not.be.undefined;
-    chai.expect(keyPair.privateKey).to.eql(hexToArray(TEST_PRIVATE_KEY));
-    chai.expect(keyPair.publicKey).to.eql(hexToArray(TEST_PUBLIC_KEY));
+    chai
+      .expect(keyPair.privateKey)
+      .to.eql(hexToArray(TEST_KEY_PAIR.a.privateKey));
+    chai
+      .expect(keyPair.publicKey)
+      .to.eql(hexToArray(TEST_KEY_PAIR.a.publicKey));
   });
 
   it("should derive shared keys succesfully", async () => {
-    const { sharedKey1, sharedKey2 } = await testSharedKeys();
-    chai.expect(sharedKey1).to.not.be.undefined;
-    chai.expect(sharedKey2).to.not.be.undefined;
+    const keyPairA = {
+      privateKey: hexToArray(TEST_KEY_PAIR.a.privateKey),
+      publicKey: hexToArray(TEST_KEY_PAIR.a.publicKey),
+    };
+    const keyPairB = {
+      privateKey: hexToArray(TEST_KEY_PAIR.b.privateKey),
+      publicKey: hexToArray(TEST_KEY_PAIR.b.publicKey),
+    };
+    const { sharedKey1, sharedKey2 } = await testSharedKeys(keyPairA, keyPairB);
+    const sharedKey = hexToArray(TEST_SHARED_KEY);
+    chai.expect(sharedKey1).to.eql(sharedKey);
+    chai.expect(sharedKey2).to.eql(sharedKey);
     chai.expect(sharedKey1).to.eql(sharedKey2);
   });
 

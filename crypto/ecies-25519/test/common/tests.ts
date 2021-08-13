@@ -12,9 +12,10 @@ export function testGenerateKeyPair() {
   return keyPair;
 }
 
-export async function testSharedKeys() {
-  const keyPairA = testGenerateKeyPair();
-  const keyPairB = testGenerateKeyPair();
+export async function testSharedKeys(
+  keyPairA: eccies25519.KeyPair,
+  keyPairB: eccies25519.KeyPair
+) {
   const sharedKey1 = eccies25519.derive(
     keyPairA.privateKey,
     keyPairB.publicKey
