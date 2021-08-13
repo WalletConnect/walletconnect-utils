@@ -1,4 +1,4 @@
-# enc-utils [![npm version](https://badge.fury.io/js/enc-utils.svg)](https://badge.fury.io/js/enc-utils)
+# @walletconnect/encoding [![npm version](https://badge.fury.io/js/@walletconnect/encoding.svg)](https://badge.fury.io/js/@walletconnect/encoding)
 
 Byte encoding utils
 

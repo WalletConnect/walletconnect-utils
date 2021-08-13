@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import * as encUtils from "@walletconnect/encoding";
+import * as encoding from "@walletconnect/encoding";
 
 import * as isoCrypto from "../../src/node";
 import { TEST_MESSAGE_STR } from "./constants";
@@ -50,5 +50,5 @@ export function testHmacVerify(
 }
 
 export function getTestMessageToEncrypt(str = TEST_MESSAGE_STR) {
-  return { str, msg: encUtils.utf8ToArray(str) };
+  return { str, msg: encoding.utf8ToArray(str) };
 }

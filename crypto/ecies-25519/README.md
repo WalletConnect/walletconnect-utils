@@ -13,13 +13,13 @@ AES, HMAC and SHA methods are supported through native NodeJS and Browser APIs w
 ### ECIES
 
 ```typescript
-import * as ecies25519 from 'ecies-25519';
-import * as encUtils from 'enc-utils';
+import * as ecies25519 from "ecies-25519";
+import * as encoding from "@walletconnect/encoding";
 
 const keyPair = ecies25519.generateKeyPair();
 
-const str = 'test message to encrypt';
-const msg = encUtils.utf8ToArray(str);
+const str = "test message to encrypt";
+const msg = encoding.utf8ToArray(str);
 
 const encrypted = await ecies25519.encrypt(msg, keyPairB.publicKey);
 
@@ -31,7 +31,7 @@ const decrypted = await ecies25519.decrypt(encrypted, keyPairB.privateKey);
 ### ECDH
 
 ```typescript
-import * as ecies25519 from 'ecies-25519';
+import * as ecies25519 from "ecies-25519";
 
 const keyPairA = ecies25519.generateKeyPair();
 const keyPairB = ecies25519.generateKeyPair();
@@ -52,7 +52,7 @@ const sharedKey2 = await ecies25519.derive(
 ### RandomBytes
 
 ```typescript
-import * as ecies25519 from 'ecies-25519';
+import * as ecies25519 from "ecies-25519";
 
 const length = 32;
 const key = ecies25519.randomBytes(length);
@@ -63,14 +63,14 @@ const key = ecies25519.randomBytes(length);
 ### AES
 
 ```typescript
-import * as ecies25519 from 'ecies-25519';
-import * as encUtils from 'enc-utils';
+import * as ecies25519 from "ecies-25519";
+import * as encoding from "@walletconnect/encoding";
 
 const key = ecies25519.randomBytes(32);
 const iv = ecies25519.randomBytes(16);
 
-const str = 'test message to encrypt';
-const msg = encUtils.utf8ToArray(str);
+const str = "test message to encrypt";
+const msg = encoding.utf8ToArray(str);
 
 const ciphertext = await ecies25519.aesCbcEncrypt(iv, key, msg);
 
@@ -82,14 +82,14 @@ const decrypted = await ecies25519.aesCbcDecrypt(iv, key, ciphertext);
 ### HMAC
 
 ```typescript
-import * as ecies25519 from 'ecies-25519';
-import * as encUtils from 'enc-utils';
+import * as ecies25519 from "ecies-25519";
+import * as encoding from "@walletconnect/encoding";
 
 const key = ecies25519.randomBytes(32);
 const iv = ecies25519.randomBytes(16);
 
-const macKey = encUtils.concatArrays(iv, key);
-const dataToMac = encUtils.concatArrays(iv, key, msg);
+const macKey = encoding.concatArrays(iv, key);
+const dataToMac = encoding.concatArrays(iv, key, msg);
 
 const mac = await ecies25519.hmacSha256Sign(macKey, dataToMac);
 
@@ -101,17 +101,17 @@ const result = await ecies25519.hmacSha256Verify(macKey, dataToMac, mac);
 ### SHA2
 
 ```typescript
-import * as ecies25519 from 'ecies-25519';
-import * as encUtils from 'enc-utils';
+import * as ecies25519 from "ecies-25519";
+import * as encoding from "@walletconnect/encoding";
 
 // SHA256
-const str = 'test message to hash';
-const msg = encUtils.utf8ToArray(str);
+const str = "test message to hash";
+const msg = encoding.utf8ToArray(str);
 const hash = await ecies25519.sha256(str);
 
 // SHA512
-const str = 'test message to hash';
-const msg = encUtils.utf8ToArray(str);
+const str = "test message to hash";
+const msg = encoding.utf8ToArray(str);
 const hash = await ecies25519.sha512(str);
 ```
 

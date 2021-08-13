@@ -7,13 +7,11 @@ import {
   testGenerateKeyPair,
   testEncrypt,
   testSharedKeys,
-  TEST_ENTROPY,
   TEST_KEY_PAIR,
   TEST_SHARED_KEY,
 } from "./common";
 
 describe("ECIES", () => {
-  const entropy = hexToArray(TEST_ENTROPY);
   let keyPair: ecies25519.KeyPair;
 
   before(() => {
@@ -22,7 +20,8 @@ describe("ECIES", () => {
   });
 
   it("should generate the same key pair for given entropy", async () => {
-    const keyPair = ecies25519.generateKeyPair(entropy);
+    const privateKey = hexToArray(TEST_KEY_PAIR.a.privateKey);
+    const keyPair = ecies25519.generateKeyPair(privateKey);
     chai.expect(keyPair).to.not.be.undefined;
     chai
       .expect(keyPair.privateKey)

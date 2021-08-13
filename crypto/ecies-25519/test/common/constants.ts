@@ -1,8 +1,5 @@
 export const TEST_MESSAGE_STR = "test message to sign";
 
-export const TEST_ENTROPY =
-  "1fb63fca5c6ac731246f2f069d3bc2454345d5208254aa8ea7bffc6d110c8862";
-
 export const TEST_FIXED_IV = "64391e133b04b98aa2fb0479242fb60a";
 
 export const TEST_KEY_PAIR = {
