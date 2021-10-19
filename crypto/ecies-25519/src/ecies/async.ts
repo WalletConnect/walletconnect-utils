@@ -21,7 +21,7 @@ import {
   deserialize,
 } from "./shared";
 
-async function getEciesKeys(sharedKey: Uint8Array) {
+export async function getEciesKeys(sharedKey: Uint8Array) {
   const hash = await sha512(sharedKey);
   return { encryptionKey: getEncryptionKey(hash), macKey: getMacKey(hash) };
 }
