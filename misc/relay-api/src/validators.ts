@@ -1,6 +1,6 @@
 import { JsonRpcRequest } from "@walletconnect/jsonrpc-types";
 
-import { hasParamsLength, methodEndsWith } from "./misc";
+import { checkParams, methodEndsWith } from "./misc";
 import { RelayJsonRpc } from "./types";
 
 // ---------- Subscribe ----------------------------------------------- //
@@ -18,7 +18,9 @@ export function isSubscribeMethod(method: string): boolean {
 export function isSubscribeParams(
   params: any
 ): params is RelayJsonRpc.SubscribeParams {
-  return hasParamsLength(params, 1) && "topic" in params;
+  const required = ["topic"];
+  const optional = [];
+  return checkParams(params, required, optional);
 }
 
 // ---------- Publish ----------------------------------------------- //
@@ -36,12 +38,9 @@ export function isPublishMethod(method: string): boolean {
 export function isPublishParams(
   params: any
 ): params is RelayJsonRpc.PublishParams {
-  return (
-    hasParamsLength(params, 3) &&
-    "message" in params &&
-    "topic" in params &&
-    "ttl" in params
-  );
+  const required = ["message", "topic", "ttl"];
+  const optional = ["prompt"];
+  return checkParams(params, required, optional);
 }
 
 // ---------- Unsubscribe ----------------------------------------------- //
@@ -61,7 +60,9 @@ export function isUnsubscribeMethod(method: string): boolean {
 export function isUnsubscribeParams(
   params: any
 ): params is RelayJsonRpc.UnsubscribeParams {
-  return hasParamsLength(params, 2) && "id" in params && "topic" in params;
+  const required = ["id", "topic"];
+  const optional = [];
+  return checkParams(params, required, optional);
 }
 
 // ---------- Subscription ----------------------------------------------- //
@@ -81,5 +82,7 @@ export function isSubscriptionMethod(method: string): boolean {
 export function isSubscriptionParams(
   params: any
 ): params is RelayJsonRpc.SubscriptionParams {
-  return hasParamsLength(params, 2) && "id" in params && "data" in params;
+  const required = ["id", "data"];
+  const optional = [];
+  return checkParams(params, required, optional);
 }

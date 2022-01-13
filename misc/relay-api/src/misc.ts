@@ -4,10 +4,43 @@ export function assertType(obj: any, key: string, type = "string") {
   }
 }
 
-export function hasParamsLength(params: any, length: number): boolean {
+export function hasRequiredParams(params: any, required: string[]) {
+  let matches = true;
+  required.forEach(key => {
+    const exists = key in params;
+    if (!exists) {
+      matches = false;
+    }
+  });
+  return matches;
+}
+
+export function hasExactParamsLength(params: any, length: number): boolean {
   return Array.isArray(params)
     ? params.length === length
     : Object.keys(params).length === length;
+}
+
+export function hasRequiredParamsLength(
+  params: any,
+  minLength: number
+): boolean {
+  return Array.isArray(params)
+    ? params.length >= minLength
+    : Object.keys(params).length >= minLength;
+}
+
+export function checkParams(
+  params: any,
+  required: string[],
+  optional: string[]
+) {
+  const exact = !optional.length;
+  const matchesLength = exact
+    ? hasExactParamsLength(params, required.length)
+    : hasRequiredParamsLength(params, required.length);
+  if (!matchesLength) return false;
+  return hasRequiredParams(params, required);
 }
 
 export function methodEndsWith(
