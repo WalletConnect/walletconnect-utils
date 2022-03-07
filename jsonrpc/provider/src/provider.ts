@@ -19,6 +19,9 @@ export class JsonRpcProvider extends IJsonRpcProvider {
   constructor(connection: IJsonRpcConnection) {
     super(connection);
     this.connection = this.setConnection(connection);
+    if (this.connection.connected) {
+      this.registerConnectionEvents();
+    }
   }
 
   public async connect(connection: string | IJsonRpcConnection = this.connection): Promise<void> {
@@ -106,15 +109,21 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     }
     this.connection = this.setConnection(connection);
     await this.connection.open();
-    this.connection.on("payload", (payload: JsonRpcPayload) => this.onPayload(payload));
-    this.connection.on("close", () => this.events.emit("disconnect"));
-    this.connection.on("error", (error: Error) => this.events.emit("error", error));
+    this.registerConnectionEvents();
     this.events.emit("connect");
   }
 
   protected async close() {
     await this.connection.close();
     this.events.emit("disconnect");
+  }
+
+  // ---------- Private ----------------------------------------------- //
+
+  private registerConnectionEvents() {
+    this.connection.on("payload", (payload: JsonRpcPayload) => this.onPayload(payload));
+    this.connection.on("close", () => this.events.emit("disconnect"));
+    this.connection.on("error", (error: Error) => this.events.emit("error", error));
   }
 }
 
