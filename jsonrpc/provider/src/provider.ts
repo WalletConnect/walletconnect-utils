@@ -19,7 +19,9 @@ export class JsonRpcProvider extends IJsonRpcProvider {
   constructor(connection: IJsonRpcConnection) {
     super(connection);
     this.connection = this.setConnection(connection);
-    this.registerEventListeners();
+    if (this.connection.connected) {
+      this.registerEventListeners();
+    }
   }
 
   public async connect(connection: string | IJsonRpcConnection = this.connection): Promise<void> {
@@ -107,6 +109,7 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     }
     this.connection = this.setConnection(connection);
     await this.connection.open();
+    this.registerEventListeners();
     this.events.emit("connect");
   }
 
