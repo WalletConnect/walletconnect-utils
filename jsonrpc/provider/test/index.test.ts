@@ -14,7 +14,7 @@ const TEST_ETH_REQUEST = {
   method: "eth_chainId",
   params: [],
 };
-const TEST_ETH_RESULT = "0x2a";
+const TEST_ETH_RESULT = "0x1";
 
 const TEST_WAKU_REQUEST = {
   method: "waku_subscribe",
@@ -25,7 +25,7 @@ const TEST_WAKU_REQUEST = {
 
 const TEST_URL = {
   http: {
-    good: `https://kovan.poa.network`,
+    good: `https://cloudflare-eth.com`,
     bad: `http://${TEST_RANDOM_HOST}`,
   },
   ws: {
