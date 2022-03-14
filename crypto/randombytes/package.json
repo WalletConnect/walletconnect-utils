@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/randombytes",
   "description": "Isomorphic Library for Random Bytes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "WalletConnect <walletconnect.org>",
   "license": "MIT",
   "keywords": [
@@ -37,7 +37,7 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@walletconnect/encoding": "^1.0.0",
+    "@walletconnect/encoding": "^1.0.1",
     "@walletconnect/environment": "^1.0.0",
     "randombytes": "^2.1.0"
   },

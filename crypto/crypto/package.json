@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/crypto",
   "description": "Isomorphic Cryptography Library for AES, HMAC and SHA2",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "WalletConnect <walletconnect.org>",
   "license": "MIT",
   "keywords": [
@@ -39,9 +39,9 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@walletconnect/encoding": "^1.0.0",
+    "@walletconnect/encoding": "^1.0.1",
     "@walletconnect/environment": "^1.0.0",
-    "@walletconnect/randombytes": "^1.0.1",
+    "@walletconnect/randombytes": "^1.0.2",
     "aes-js": "^3.1.2",
     "hash.js": "^1.1.7"
   },
