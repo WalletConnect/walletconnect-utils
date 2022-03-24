@@ -110,7 +110,7 @@ export class HttpConnection implements IJsonRpcConnection {
       await fetch(url, { ...DEFAULT_FETCH_OPTS, body });
       this.onOpen();
     } catch (e) {
-      const error = this.parseError(e);
+      const error = this.parseError(e as any);
       this.events.emit("register_error", error);
       this.onClose();
       throw error;
@@ -118,15 +118,19 @@ export class HttpConnection implements IJsonRpcConnection {
   }
 
   private onOpen() {
+    if (!this.connected) {
+      this.events.emit("open");
+    }
     this.isAvailable = true;
     this.registering = false;
-    this.events.emit("open");
   }
 
   private onClose() {
+    if (this.connected) {
+      this.events.emit("close");
+    }
     this.isAvailable = false;
     this.registering = false;
-    this.events.emit("close");
   }
 
   private onPayload(e: { data: any }) {

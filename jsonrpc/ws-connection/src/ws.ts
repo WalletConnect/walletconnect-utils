@@ -114,6 +114,10 @@ export class WsConnection implements IJsonRpcConnection {
   }
 
   private onOpen(socket: WebSocket) {
+    if (!this.connected) {
+      console.log("WS-CONNECTION > onOpen");
+      this.events.emit("open");
+    }
     socket.onmessage = (event: MessageEvent) => this.onPayload(event);
     socket.onclose = () => this.onClose();
     socket.onerror = (event: Event) => {
@@ -122,13 +126,15 @@ export class WsConnection implements IJsonRpcConnection {
     };
     this.socket = socket;
     this.registering = false;
-    this.events.emit("open");
   }
 
   private onClose() {
+    if (this.connected) {
+      console.log("WS-CONNECTION > onClose");
+      this.events.emit("close");
+    }
     this.socket = undefined;
     this.registering = false;
-    this.events.emit("close");
   }
 
   private onPayload(e: { data: any }) {
