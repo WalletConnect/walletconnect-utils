@@ -23,7 +23,6 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     this.connection = this.setConnection(connection);
     if (this.connection.connected) {
       this.registerEventListeners();
-      this.hasRegisteredEventListeners = true;
     }
   }
 
@@ -112,10 +111,7 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     }
     this.connection = this.setConnection(connection);
     await this.connection.open();
-    if (!this.hasRegisteredEventListeners) {
-      this.registerEventListeners();
-      this.hasRegisteredEventListeners = true;
-    }
+    this.registerEventListeners();
     this.events.emit("connect");
   }
 
@@ -126,9 +122,11 @@ export class JsonRpcProvider extends IJsonRpcProvider {
   // ---------- Private ----------------------------------------------- //
 
   private registerEventListeners() {
+    if (this.hasRegisteredEventListeners) return;
     this.connection.on("payload", (payload: JsonRpcPayload) => this.onPayload(payload));
     this.connection.on("close", () => this.events.emit("disconnect"));
     this.connection.on("error", (error: Error) => this.events.emit("error", error));
+    this.hasRegisteredEventListeners = true;
   }
 }
 
