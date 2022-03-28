@@ -36,7 +36,7 @@ const TEST_URL = {
 
 describe("@walletconnect/jsonrpc-provider", () => {
   describe("HTTP", () => {
-    it("Succesfully connects and requests", async () => {
+    it("Successfully connects and requests", async () => {
       const connection = new HttpConnection(TEST_URL.http.good);
       const provider = new JsonRpcProvider(connection);
       await provider.connect();
@@ -65,7 +65,7 @@ describe("@walletconnect/jsonrpc-provider", () => {
         .expect(promise)
         .to.eventually.be.rejectedWith(`Unavailable HTTP RPC url at ${TEST_URL.http.bad}`);
     });
-    it("Reconnect with new provided host url", async () => {
+    it("Reconnects with new provided host url", async () => {
       const connection = new HttpConnection(TEST_URL.http.bad);
       const provider = new JsonRpcProvider(connection);
       chai.expect((provider.connection as HttpConnection).url).to.equal(TEST_URL.http.bad);
@@ -75,9 +75,29 @@ describe("@walletconnect/jsonrpc-provider", () => {
       chai.expect(!!result).to.be.true;
       chai.expect(result).to.eql(TEST_ETH_RESULT);
     });
+    it("does not re-register event listeners if previously registered", async () => {
+      const connection = new HttpConnection(TEST_URL.http.good);
+      const provider = new JsonRpcProvider(connection);
+
+      const expectedDisconnectCount = 3;
+      let disconnectCount = 0;
+
+      provider.on("disconnect", () => {
+        disconnectCount++;
+      });
+
+      await provider.connect();
+      await provider.disconnect();
+      await provider.connect();
+      await provider.disconnect();
+      await provider.connect();
+      await provider.disconnect();
+      chai.expect(disconnectCount).to.equal(expectedDisconnectCount);
+    });
   });
+
   describe("WS", () => {
-    it("Succesfully connects and requests", async () => {
+    it("Successfully connects and requests", async () => {
       const connection = new WsConnection(TEST_URL.ws.good);
       const provider = new JsonRpcProvider(connection);
       await provider.connect();
@@ -106,7 +126,7 @@ describe("@walletconnect/jsonrpc-provider", () => {
         .expect(promise)
         .to.eventually.be.rejectedWith(`Unavailable WS RPC url at ${TEST_URL.ws.bad}`);
     });
-    it("Reconnect with new provided host url", async () => {
+    it("Reconnects with new provided host url", async () => {
       const connection = new WsConnection(TEST_URL.ws.bad);
       const provider = new JsonRpcProvider(connection);
       chai.expect((provider.connection as WsConnection).url).to.equal(TEST_URL.ws.bad);
@@ -114,6 +134,27 @@ describe("@walletconnect/jsonrpc-provider", () => {
       chai.expect((provider.connection as WsConnection).url).to.equal(TEST_URL.ws.good);
       const result = await provider.request(TEST_WAKU_REQUEST);
       chai.expect(!!result).to.be.true;
+    });
+    it("does not re-register event listeners if previously registered", async () => {
+      const connection = new WsConnection(TEST_URL.ws.good);
+      const provider = new JsonRpcProvider(connection);
+
+      // The socket is emitting an additional `close` event for each reconnection,
+      // i.e. 3 explicit disconnects + 2 reconnections in between -> 5 `disconnect` emits.
+      const expectedDisconnectCount = 5;
+      let disconnectCount = 0;
+
+      provider.on("disconnect", () => {
+        disconnectCount++;
+      });
+
+      await provider.connect();
+      await provider.disconnect();
+      await provider.connect();
+      await provider.disconnect();
+      await provider.connect();
+      await provider.disconnect();
+      chai.expect(disconnectCount).to.equal(expectedDisconnectCount);
     });
   });
 });
