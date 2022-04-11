@@ -161,8 +161,7 @@ describe("KeyValueStorage", () => {
       chai.expect(itemB.name).to.not.be.undefined;
       chai.expect(itemB.name).to.eql(value.name);
     });
-    // FIXME: test is currently timing out at 2000ms
-    it.only("three storages can write synchronously", async () => {
+    it("three storages can write synchronously", async () => {
       const storageA = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
       storageA.setItem(key, { ...value, owner: "storageA" });
 
