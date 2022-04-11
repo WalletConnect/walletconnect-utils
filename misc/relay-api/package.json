@@ -2,7 +2,7 @@
   "name": "@walletconnect/relay-api",
   "description": "PubSub Relay JSON-RPC Provider",
   "version": "1.0.2",
-  "author": "WalletConnect <walletconnect.org>",
+  "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
     "relay",
@@ -33,7 +33,7 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:umd": "webpack",
     "build": "run-s clean build:cjs build:esm build:umd ",
-    "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --exit -r ts-node/register ./test/**/*.test.ts",
+    "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 5000 --exit -r ts-node/register ./test/**/*.test.ts",
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "devDependencies": {

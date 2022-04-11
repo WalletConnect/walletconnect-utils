@@ -2,7 +2,7 @@
   "name": "@walletconnect/jsonrpc-utils",
   "description": "Utilities for JSON-RPC",
   "version": "1.0.0",
-  "author": "WalletConnect <walletconnect.org>",
+  "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
   "repository": {
