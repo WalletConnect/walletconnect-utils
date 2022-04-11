@@ -40,17 +40,21 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.3",
-    "better-sqlite3": "^7.1.2",
     "keyvaluestorage-interface": "^1.0.0",
     "localStorage": "^1.0.4",
     "safe-json-utils": "^1.1.1"
   },
+  "optionalDependencies": {
+    "@react-native-async-storage/async-storage": "1.x",
+    "better-sqlite3": "7.x"
+  },
   "devDependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.3",
     "@types/better-sqlite3": "^5.4.1",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
     "@walletconnect/time": "^1.0.1",
+    "better-sqlite3": "^7.5.1",
     "deepmerge": "^4.2.2",
     "husky": "^4.3.0",
     "proxyquire": "^2.1.3",
