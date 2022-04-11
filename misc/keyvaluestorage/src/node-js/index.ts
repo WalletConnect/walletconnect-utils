@@ -1,26 +1,19 @@
 import Database, { Database as IDatabase } from "better-sqlite3";
 import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
 
-import {
-  IKeyValueStorage,
-  KeyValueStorageOptions,
-  getNodeJSOptions,
-  parseEntry,
-} from "../shared";
+import { IKeyValueStorage, parseEntry } from "../shared";
 import { Statements } from "./sqlite";
+
+const DB_NAME = "walletconnect_kvs.db";
+const TABLE_NAME = "keyvaluestorage";
 
 export class KeyValueStorage implements IKeyValueStorage {
   private readonly database: IDatabase;
   private readonly statements: Statements;
 
-  constructor(opts?: KeyValueStorageOptions) {
-    const options = getNodeJSOptions(opts);
-    this.database =
-      typeof options.database === "string"
-        ? new Database(options.database)
-        : options.database;
-    const tableName = options.tableName || "keyvaluestorage";
-    this.statements = new Statements(tableName);
+  constructor() {
+    this.database = new Database(DB_NAME);
+    this.statements = new Statements(TABLE_NAME);
     this.database.prepare(this.statements.createTable()).run();
   }
 

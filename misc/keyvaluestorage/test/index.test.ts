@@ -13,14 +13,6 @@ const TEST_REACT_NATIVE_OPTIONS = {
   asyncStorage: new MockAsyncStorage(),
 };
 
-const TEST_NODE_JS_OPTIONS_MEMORY = {
-  database: ":memory:",
-};
-
-const TEST_NODE_JS_OPTIONS_PERSISTED = {
-  database: "test/test.db",
-};
-
 describe("KeyValueStorage", () => {
   const key = "yolo";
   const value = { name: "john doe" };
@@ -94,7 +86,7 @@ describe("KeyValueStorage", () => {
 
   describe("node-js", () => {
     before(async () => {
-      storage = new NodeJSStorage(TEST_NODE_JS_OPTIONS_MEMORY);
+      storage = new NodeJSStorage();
       await storage.setItem(key, value);
     });
     it("getItem", async () => {
@@ -127,7 +119,7 @@ describe("KeyValueStorage", () => {
 
   describe("persistence", () => {
     it("two storages can access the same item", async () => {
-      const storageA = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageA = new NodeJSStorage();
       await storageA.setItem(key, value);
       const itemA = await storageA.getItem<typeof value>(key);
       if (typeof itemA === "undefined")
@@ -135,7 +127,7 @@ describe("KeyValueStorage", () => {
       chai.expect(itemA).to.not.be.undefined;
       chai.expect(itemA.name).to.not.be.undefined;
       chai.expect(itemA.name).to.eql(value.name);
-      const storageB = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageB = new NodeJSStorage();
       const itemB = await storageB.getItem<typeof value>(key);
       if (typeof itemB === "undefined")
         throw new Error("item expected to be undefined");
@@ -144,7 +136,7 @@ describe("KeyValueStorage", () => {
       chai.expect(itemB.name).to.eql(value.name);
     });
     it("two classes can share the same storage", async () => {
-      const storage = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storage = new NodeJSStorage();
       const storeA = new MockStore(storage);
       await storeA.set(key, value);
       const itemA = await storeA.get<typeof value>(key);
@@ -162,13 +154,13 @@ describe("KeyValueStorage", () => {
       chai.expect(itemB.name).to.eql(value.name);
     });
     it("three storages can write synchronously", async () => {
-      const storageA = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageA = new NodeJSStorage();
       storageA.setItem(key, { ...value, owner: "storageA" });
 
-      const storageB = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageB = new NodeJSStorage();
       storageB.setItem(key, { ...value, owner: "storageB" });
 
-      const storageC = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageC = new NodeJSStorage();
       storageC.setItem(key, { ...value, owner: "storageC" });
 
       await delay(2000);

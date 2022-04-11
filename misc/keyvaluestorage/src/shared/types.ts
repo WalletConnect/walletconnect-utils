@@ -5,11 +5,4 @@ export interface ReactNativeStorageOptions {
   asyncStorage: IAsyncStorage;
 }
 
-export interface NodeJSStorageOptions {
-  database: string;
-  tableName?: string;
-}
-
-export type KeyValueStorageOptions = Partial<
-  ReactNativeStorageOptions & NodeJSStorageOptions
->;
+export type KeyValueStorageOptions = Partial<ReactNativeStorageOptions>;
