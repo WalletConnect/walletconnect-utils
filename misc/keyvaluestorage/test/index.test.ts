@@ -1,17 +1,23 @@
 import "mocha";
 import * as chai from "chai";
+import proxyquire from "proxyquire";
 import { delay } from "@walletconnect/time";
 
 import BrowserStorage from "../src/browser";
-import ReactNativeStorage from "../src/react-native";
 import NodeJSStorage from "../src/node-js";
 import { IKeyValueStorage } from "../src/shared";
 
 import { MockStore, MockAsyncStorage } from "./mock";
 
-const TEST_REACT_NATIVE_OPTIONS = {
-  asyncStorage: new MockAsyncStorage(),
-};
+// Mock the external `async-storage` dependency imported inside ReactNativeStorage.
+const { KeyValueStorage: ReactNativeStorage } = proxyquire(
+  "../src/react-native",
+  {
+    "@react-native-async-storage/async-storage": {
+      default: new MockAsyncStorage(),
+    },
+  }
+);
 
 describe("KeyValueStorage", () => {
   const key = "yolo";
@@ -53,7 +59,7 @@ describe("KeyValueStorage", () => {
 
   describe("react-native", () => {
     before(async () => {
-      storage = new ReactNativeStorage(TEST_REACT_NATIVE_OPTIONS);
+      storage = new ReactNativeStorage();
       await storage.setItem(key, value);
     });
     it("getItem", async () => {

@@ -1,28 +1,20 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
 
-import {
-  IKeyValueStorage,
-  KeyValueStorageOptions,
-  getReactNativeOptions,
-  parseEntry,
-} from "../shared";
-
-import { IAsyncStorage } from "./types";
+import { parseEntry, IKeyValueStorage } from "../shared";
 
 export class KeyValueStorage implements IKeyValueStorage {
-  private readonly asyncStorage: IAsyncStorage;
-
-  constructor(opts?: KeyValueStorageOptions) {
-    const options = getReactNativeOptions(opts);
-    this.asyncStorage = options.asyncStorage;
-  }
+  private readonly asyncStorage = AsyncStorage;
 
   public async getKeys(): Promise<string[]> {
-    return this.asyncStorage.getAllKeys();
+    // AsyncStorage.getAllKeys technically has `Promise<readonly string[]>` as return type.
+    // Using an explicit cast here to avoid the `readonly` causing breakage with `IKeyValueStorage`.
+    return this.asyncStorage.getAllKeys() as Promise<string[]>;
   }
 
   public async getEntries<T = any>(): Promise<[string, T][]> {
-    const entries = await this.asyncStorage.multiGet(await this.getKeys());
+    const keys = await this.getKeys();
+    const entries = await this.asyncStorage.multiGet(keys);
     return entries.map(parseEntry);
   }
 
