@@ -40,7 +40,6 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "keyvaluestorage-interface": "^1.0.0",
     "localStorage": "^1.0.4",
     "safe-json-utils": "^1.1.1"
   },
