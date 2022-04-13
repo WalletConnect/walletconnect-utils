@@ -43,9 +43,17 @@
     "localStorage": "^1.0.4",
     "safe-json-utils": "^1.1.1"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.x",
     "better-sqlite3": "7.x"
+  },
+  "peerDependenciesMeta": {
+    "@react-native-async-storage/async-storage": {
+      "optional": true
+    },
+    "better-sqlite3": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "^1.17.3",
