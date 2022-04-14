@@ -3,3 +3,4 @@
 node_modules
 dist
 test.db
+walletconnect_kvs.db

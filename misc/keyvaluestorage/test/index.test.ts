@@ -1,25 +1,26 @@
 import "mocha";
 import * as chai from "chai";
+import proxyquire from "proxyquire";
 import { delay } from "@walletconnect/time";
 
 import BrowserStorage from "../src/browser";
-import ReactNativeStorage from "../src/react-native";
 import NodeJSStorage from "../src/node-js";
 import { IKeyValueStorage } from "../src/shared";
 
 import { MockStore, MockAsyncStorage } from "./mock";
 
-const TEST_REACT_NATIVE_OPTIONS = {
-  asyncStorage: new MockAsyncStorage(),
-};
+const MEMORY_ONLY_NODEJS_DATABASE = ":memory:";
+const PERSISTED_NODEJS_DATABASE = "test/test.db";
 
-const TEST_NODE_JS_OPTIONS_MEMORY = {
-  database: ":memory:",
-};
-
-const TEST_NODE_JS_OPTIONS_PERSISTED = {
-  database: "test/test.db",
-};
+// Mock the external `async-storage` dependency imported inside ReactNativeStorage.
+const { KeyValueStorage: ReactNativeStorage } = proxyquire(
+  "../src/react-native",
+  {
+    "@react-native-async-storage/async-storage": {
+      default: new MockAsyncStorage(),
+    },
+  }
+);
 
 describe("KeyValueStorage", () => {
   const key = "yolo";
@@ -61,7 +62,7 @@ describe("KeyValueStorage", () => {
 
   describe("react-native", () => {
     before(async () => {
-      storage = new ReactNativeStorage(TEST_REACT_NATIVE_OPTIONS);
+      storage = new ReactNativeStorage();
       await storage.setItem(key, value);
     });
     it("getItem", async () => {
@@ -94,7 +95,7 @@ describe("KeyValueStorage", () => {
 
   describe("node-js", () => {
     before(async () => {
-      storage = new NodeJSStorage(TEST_NODE_JS_OPTIONS_MEMORY);
+      storage = new NodeJSStorage({ database: MEMORY_ONLY_NODEJS_DATABASE });
       await storage.setItem(key, value);
     });
     it("getItem", async () => {
@@ -127,7 +128,9 @@ describe("KeyValueStorage", () => {
 
   describe("persistence", () => {
     it("two storages can access the same item", async () => {
-      const storageA = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageA = new NodeJSStorage({
+        database: PERSISTED_NODEJS_DATABASE,
+      });
       await storageA.setItem(key, value);
       const itemA = await storageA.getItem<typeof value>(key);
       if (typeof itemA === "undefined")
@@ -135,7 +138,9 @@ describe("KeyValueStorage", () => {
       chai.expect(itemA).to.not.be.undefined;
       chai.expect(itemA.name).to.not.be.undefined;
       chai.expect(itemA.name).to.eql(value.name);
-      const storageB = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageB = new NodeJSStorage({
+        database: PERSISTED_NODEJS_DATABASE,
+      });
       const itemB = await storageB.getItem<typeof value>(key);
       if (typeof itemB === "undefined")
         throw new Error("item expected to be undefined");
@@ -144,7 +149,9 @@ describe("KeyValueStorage", () => {
       chai.expect(itemB.name).to.eql(value.name);
     });
     it("two classes can share the same storage", async () => {
-      const storage = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storage = new NodeJSStorage({
+        database: PERSISTED_NODEJS_DATABASE,
+      });
       const storeA = new MockStore(storage);
       await storeA.set(key, value);
       const itemA = await storeA.get<typeof value>(key);
@@ -162,13 +169,19 @@ describe("KeyValueStorage", () => {
       chai.expect(itemB.name).to.eql(value.name);
     });
     it("three storages can write synchronously", async () => {
-      const storageA = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageA = new NodeJSStorage({
+        database: PERSISTED_NODEJS_DATABASE,
+      });
       storageA.setItem(key, { ...value, owner: "storageA" });
 
-      const storageB = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageB = new NodeJSStorage({
+        database: PERSISTED_NODEJS_DATABASE,
+      });
       storageB.setItem(key, { ...value, owner: "storageB" });
 
-      const storageC = new NodeJSStorage(TEST_NODE_JS_OPTIONS_PERSISTED);
+      const storageC = new NodeJSStorage({
+        database: PERSISTED_NODEJS_DATABASE,
+      });
       storageC.setItem(key, { ...value, owner: "storageC" });
 
       await delay(2000);
