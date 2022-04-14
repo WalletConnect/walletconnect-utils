@@ -1,3 +1,8 @@
+export interface KeyValueStorageOptions {
+  database?: string;
+  table?: string;
+}
+
 export abstract class IKeyValueStorage {
   public abstract getKeys(): Promise<string[]>;
   public abstract getEntries<T = any>(): Promise<[string, T][]>;

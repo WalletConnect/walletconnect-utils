@@ -1,7 +1,11 @@
 import Database, { Database as IDatabase } from "better-sqlite3";
 import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
 
-import { IKeyValueStorage, parseEntry } from "../shared";
+import {
+  IKeyValueStorage,
+  KeyValueStorageOptions,
+  parseEntry,
+} from "../shared";
 import { Statements } from "./sqlite";
 
 const DB_NAME = "walletconnect_kvs.db";
@@ -11,9 +15,9 @@ export class KeyValueStorage implements IKeyValueStorage {
   private readonly database: IDatabase;
   private readonly statements: Statements;
 
-  constructor() {
-    this.database = new Database(DB_NAME);
-    this.statements = new Statements(TABLE_NAME);
+  constructor(opts?: KeyValueStorageOptions) {
+    this.database = new Database(opts?.database || DB_NAME);
+    this.statements = new Statements(opts?.table || TABLE_NAME);
     this.database.prepare(this.statements.createTable()).run();
   }
 
