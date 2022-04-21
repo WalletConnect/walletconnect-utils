@@ -29,5 +29,5 @@ zip
 .rts2_cache_*
 .nyc_output
 tsconfig.tsbuildinfo
-
 .vscode
+**/coverage

@@ -18,6 +18,7 @@
     "lint": "lerna run lint",
     "build": "lerna run build",
     "test": "lerna run test",
+    "coverage": "lerna run coverage",
     "check": "run-s lint build test",
     "reset": "run-s clean bootstrap check",
     "new-version": "lerna version --no-git-tag-version",
