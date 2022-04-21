@@ -37,8 +37,10 @@
     "build:umd": "webpack",
     "build:esm": "npx tsc -p tsconfig.esm.json",
     "build": "run-s build:pre build:cjs build:esm build:umd",
-    "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha -r ts-node/register ./test/**/*.{test,spec}.ts",
-    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
+    "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha -r ts-node/register ./test/**/*.test.ts",
+    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
+    "coverage": "nyc --reporter=html --reporter=text npm run test",
+    "coverage:show": "npm run coverage; open coverage/index.html"
   },
   "dependencies": {
     "@walletconnect/environment": "^1.0.0",
@@ -80,5 +82,12 @@
     "typescript": "^3.7.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "branches": 50,
+    "lines": 75,
+    "functions": 65,
+    "statements": 70
   }
 }

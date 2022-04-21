@@ -39,7 +39,9 @@
     "build": "run-s build:pre build:cjs build:esm build:umd",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 5000 --exit -r ts-node/register ./test/**/*.test.ts",
     "test:watch": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 3000 --exit -r ts-node/register --watch --watch-files . ./test/**/*.test.ts",
-    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
+    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
+    "coverage": "nyc --reporter=html --reporter=text npm run test",
+    "coverage:show": "npm run coverage; open coverage/index.html"
   },
   "dependencies": {
     "@walletconnect/jsonrpc-utils": "^1.0.0",
@@ -81,5 +83,12 @@
     "typescript": "^3.7.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "branches": 70,
+    "lines": 90,
+    "functions": 80,
+    "statements": 85
   }
 }
