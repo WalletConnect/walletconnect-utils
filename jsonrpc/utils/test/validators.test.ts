@@ -15,6 +15,8 @@ describe("Validators", () => {
     chai.expect(isJsonRpcPayload(TEST_JSONRPC_REQUEST)).to.be.true;
     chai.expect(isJsonRpcPayload(TEST_JSONRPC_RESULT)).to.be.true;
     chai.expect(isJsonRpcPayload(TEST_JSONRPC_ERROR)).to.be.true;
+    chai.expect(isJsonRpcPayload("")).to.be.false;
+    chai.expect(isJsonRpcPayload(1)).to.be.false;
   });
 
   it("isJsonRpcRequest", () => {
