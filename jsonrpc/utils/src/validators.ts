@@ -9,7 +9,12 @@ import {
 } from "./types";
 
 export function isJsonRpcPayload(payload: any): payload is JsonRpcPayload {
-  return "id" in payload && "jsonrpc" in payload && payload.jsonrpc === "2.0";
+  return (
+    typeof payload === "object" &&
+    "id" in payload &&
+    "jsonrpc" in payload &&
+    payload.jsonrpc === "2.0"
+  );
 }
 
 export function isJsonRpcRequest<T = any>(payload: JsonRpcPayload): payload is JsonRpcRequest<T> {
