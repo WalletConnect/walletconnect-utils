@@ -63,7 +63,7 @@ export function validateJsonRpcError(response: JsonRpcError): JsonRpcValidation 
 }
 
 export function parseConnectionError(e: Error, url: string, type: string): Error {
-  return e.message.includes("getaddrinfo ENOTFOUND") || e.message.includes("connect ECONNREFUSED")
+  return e && (e.message.includes("getaddrinfo ENOTFOUND") || e.message.includes("connect ECONNREFUSED"))
     ? new Error(`Unavailable ${type} RPC url at ${url}`)
     : e;
 }
