@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/relay-api",
   "description": "PubSub Relay JSON-RPC Provider",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
@@ -57,6 +57,6 @@
     "trailingComma": "es5"
   },
   "dependencies": {
-    "@walletconnect/jsonrpc-types": "^1.0.0"
+    "@walletconnect/jsonrpc-types": "^1.0.1"
   }
 }
