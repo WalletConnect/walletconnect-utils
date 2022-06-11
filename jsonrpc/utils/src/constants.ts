@@ -16,3 +16,5 @@ export const STANDARD_ERROR_MAP = {
   [INTERNAL_ERROR]: { code: -32603, message: "Internal error" },
   [SERVER_ERROR]: { code: -32000, message: "Server error" },
 };
+
+export const DEFAULT_ERROR = SERVER_ERROR;

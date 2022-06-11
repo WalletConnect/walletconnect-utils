@@ -1,9 +1,9 @@
 import { ErrorResponse } from "./types";
 import {
-  INTERNAL_ERROR,
   SERVER_ERROR_CODE_RANGE,
   RESERVED_ERROR_CODES,
   STANDARD_ERROR_MAP,
+  DEFAULT_ERROR,
 } from "./constants";
 import { JsonRpcError, JsonRpcValidation } from "@walletconnect/jsonrpc-types";
 
@@ -21,7 +21,7 @@ export function isValidErrorCode(code: number): boolean {
 
 export function getError(type: string): ErrorResponse {
   if (!Object.keys(STANDARD_ERROR_MAP).includes(type)) {
-    return STANDARD_ERROR_MAP[INTERNAL_ERROR];
+    return STANDARD_ERROR_MAP[DEFAULT_ERROR];
   }
   return STANDARD_ERROR_MAP[type];
 }
@@ -29,7 +29,7 @@ export function getError(type: string): ErrorResponse {
 export function getErrorByCode(code: number): ErrorResponse {
   const match = Object.values(STANDARD_ERROR_MAP).find(e => e.code === code);
   if (!match) {
-    return STANDARD_ERROR_MAP[INTERNAL_ERROR];
+    return STANDARD_ERROR_MAP[DEFAULT_ERROR];
   }
   return match;
 }
@@ -50,7 +50,7 @@ export function validateJsonRpcError(response: JsonRpcError): JsonRpcValidation 
   if (isReservedErrorCode(response.error.code)) {
     const error = getErrorByCode(response.error.code);
     if (
-      error.message !== STANDARD_ERROR_MAP[INTERNAL_ERROR].message &&
+      error.message !== STANDARD_ERROR_MAP[DEFAULT_ERROR].message &&
       response.error.message === error.message
     ) {
       return {
