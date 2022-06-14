@@ -6,7 +6,6 @@ export function getDefaultLoggerOptions(opts?: LoggerOptions): LoggerOptions {
   return {
     ...opts,
     level: opts?.level || PINO_LOGGER_DEFAULTS.level,
-    prettyPrint: opts?.prettyPrint || PINO_LOGGER_DEFAULTS.prettyPrint,
   };
 }
 
