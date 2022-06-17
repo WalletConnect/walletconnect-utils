@@ -29,15 +29,19 @@ export function formatJsonRpcResult<T = any>(id: number, result: T): JsonRpcResu
   };
 }
 
-export function formatJsonRpcError(id: number, error?: string | ErrorResponse): JsonRpcError {
+export function formatJsonRpcError(
+  id: number,
+  error?: string | ErrorResponse,
+  data?: string,
+): JsonRpcError {
   return {
     id,
     jsonrpc: "2.0",
-    error: formatErrorMessage(error),
+    error: formatErrorMessage(error, data),
   };
 }
 
-export function formatErrorMessage(error?: string | ErrorResponse): ErrorResponse {
+export function formatErrorMessage(error?: string | ErrorResponse, data?: string): ErrorResponse {
   if (typeof error === "undefined") {
     return getError(INTERNAL_ERROR);
   }
@@ -46,6 +50,9 @@ export function formatErrorMessage(error?: string | ErrorResponse): ErrorRespons
       ...getError(SERVER_ERROR),
       message: error,
     };
+  }
+  if (typeof data !== "undefined") {
+    error.data = data;
   }
   if (isReservedErrorCode(error.code)) {
     error = getErrorByCode(error.code);

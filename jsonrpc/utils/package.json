@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-utils",
   "description": "Utilities for JSON-RPC",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@walletconnect/environment": "^1.0.0",
-    "@walletconnect/jsonrpc-types": "^1.0.0"
+    "@walletconnect/jsonrpc-types": "^1.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
