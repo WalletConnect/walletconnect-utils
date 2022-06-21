@@ -1,8 +1,10 @@
 {
   "version": "independent",
   "packages": [
+    "browser/*",
     "jsonrpc/*",
     "crypto/*",
-    "misc/*"
+    "misc/*",
+    "relay/*"
   ]
 }
