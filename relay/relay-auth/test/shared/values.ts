@@ -6,6 +6,13 @@ export const TEST_NONCE =
 export const TEST_SEED =
   "58e0254c211b858ef7896b00e3f36beeb13d568d47c6031c4218b87718061295";
 
+// Expected secret key for above seed
+export const EXPECTED_SECRET_KEY =
+  "58e0254c211b858ef7896b00e3f36beeb13d568d47c6031c4218b87718061295884ab67f787b69e534bfdba8d5beb4e719700e90ac06317ed177d49e5a33be5a";
+
+export const EXPECTED_PUBLIC_KEY =
+  "884ab67f787b69e534bfdba8d5beb4e719700e90ac06317ed177d49e5a33be5a";
+
 // Expected issuer using did:key method
 export const EXPECTED_ISS =
   "did:key:z6MkodHZwneVRShtaLf8JKYkxpDGp1vGZnpGmdBpX8M2exxH";
