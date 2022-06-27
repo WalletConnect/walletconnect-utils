@@ -1,8 +1,5 @@
 export declare namespace RelayJsonRpc {
   export interface Methods {
-    info: string;
-    connect: string;
-    disconnect: string;
     publish: string;
     subscribe: string;
     subscription: string;
