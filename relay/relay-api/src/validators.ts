@@ -39,7 +39,7 @@ export function isPublishParams(
   params: any
 ): params is RelayJsonRpc.PublishParams {
   const required = ["message", "topic", "ttl"];
-  const optional = ["prompt"];
+  const optional = ["prompt", "tag"];
   return checkParams(params, required, optional);
 }
 

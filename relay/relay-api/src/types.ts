@@ -15,6 +15,7 @@ export declare namespace RelayJsonRpc {
     message: string;
     ttl: number;
     prompt?: boolean;
+    tag?: number;
   }
 
   export interface SubscriptionData {
