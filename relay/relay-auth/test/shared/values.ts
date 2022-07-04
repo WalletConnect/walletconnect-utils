@@ -1,6 +1,15 @@
-// Client will sign the Server provided nonce as subject
-export const TEST_NONCE =
+// Client will sign a unique identifier as the subject
+export const TEST_SUBJECT =
   "c479fe5dc464e771e78b193d239a65b58d278cad1c34bfb0b5716e5bb514928e";
+
+// Client will include the server endpoint as audience
+export const TEST_AUDIENCE = "wss://relay.walletconnect.com";
+
+// Client will use the JWT for 24 hours
+export const TEST_TTL = 86400;
+
+// Test issued at timestamp in seconds
+export const TEST_IAT = 1656910097;
 
 // Test seed to generate the same key pair
 export const TEST_SEED =
@@ -17,23 +26,31 @@ export const EXPECTED_PUBLIC_KEY =
 export const EXPECTED_ISS =
   "did:key:z6MkodHZwneVRShtaLf8JKYkxpDGp1vGZnpGmdBpX8M2exxH";
 
-// Expected data encode for given nonce
-export const EXPECTED_DATA =
-  "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6a2V5Ono2TWtvZEhad25lVlJTaHRhTGY4SktZa3hwREdwMXZHWm5wR21kQnBYOE0yZXh4SCIsInN1YiI6ImM0NzlmZTVkYzQ2NGU3NzFlNzhiMTkzZDIzOWE2NWI1OGQyNzhjYWQxYzM0YmZiMGI1NzE2ZTViYjUxNDkyOGUifQ";
+// Expected expiry given injected issued at
+export const EXPECTED_EXP = TEST_IAT + TEST_TTL;
 
-// Expected JWT for given nonce
+// Expected data encode for given payload
+export const EXPECTED_DATA =
+  "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6a2V5Ono2TWtvZEhad25lVlJTaHRhTGY4SktZa3hwREdwMXZHWm5wR21kQnBYOE0yZXh4SCIsInN1YiI6ImM0NzlmZTVkYzQ2NGU3NzFlNzhiMTkzZDIzOWE2NWI1OGQyNzhjYWQxYzM0YmZiMGI1NzE2ZTViYjUxNDkyOGUiLCJhdWQiOiJ3c3M6Ly9yZWxheS53YWxsZXRjb25uZWN0LmNvbSIsImlhdCI6MTY1NjkxMDA5NywiZXhwIjoxNjU2OTk2NDk3fQ";
+
+// Expected signature for given data
+export const EXPECTED_SIG =
+  "bAKl1swvwqqV_FgwvD4Bx3Yp987B9gTpZctyBviA-EkAuWc8iI8SyokOjkv9GJESgid4U8Tf2foCgrQp2qrxBA";
+
+// Expected JWT for given payload
 export const EXPECTED_JWT =
-  "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6a2V5Ono2TWtvZEhad25lVlJTaHRhTGY4SktZa3hwREdwMXZHWm5wR21kQnBYOE0yZXh4SCIsInN1YiI6ImM0NzlmZTVkYzQ2NGU3NzFlNzhiMTkzZDIzOWE2NWI1OGQyNzhjYWQxYzM0YmZiMGI1NzE2ZTViYjUxNDkyOGUifQ.0JkxOM-FV21U7Hk-xycargj_qNRaYV2H5HYtE4GzAeVQYiKWj7YySY5AdSqtCgGzX4Gt98XWXn2kSr9rE1qvCA";
+  "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6a2V5Ono2TWtvZEhad25lVlJTaHRhTGY4SktZa3hwREdwMXZHWm5wR21kQnBYOE0yZXh4SCIsInN1YiI6ImM0NzlmZTVkYzQ2NGU3NzFlNzhiMTkzZDIzOWE2NWI1OGQyNzhjYWQxYzM0YmZiMGI1NzE2ZTViYjUxNDkyOGUiLCJhdWQiOiJ3c3M6Ly9yZWxheS53YWxsZXRjb25uZWN0LmNvbSIsImlhdCI6MTY1NjkxMDA5NywiZXhwIjoxNjU2OTk2NDk3fQ.bAKl1swvwqqV_FgwvD4Bx3Yp987B9gTpZctyBviA-EkAuWc8iI8SyokOjkv9GJESgid4U8Tf2foCgrQp2qrxBA";
 
 // Expected decoded JWT using did-jwt
 export const EXPECTED_DECODED = {
   header: { alg: "EdDSA", typ: "JWT" },
   payload: {
-    iss: "did:key:z6MkodHZwneVRShtaLf8JKYkxpDGp1vGZnpGmdBpX8M2exxH",
-    sub: "c479fe5dc464e771e78b193d239a65b58d278cad1c34bfb0b5716e5bb514928e",
+    iss: EXPECTED_ISS,
+    sub: TEST_SUBJECT,
+    aud: TEST_AUDIENCE,
+    iat: TEST_IAT,
+    exp: EXPECTED_EXP,
   },
-  signature:
-    "0JkxOM-FV21U7Hk-xycargj_qNRaYV2H5HYtE4GzAeVQYiKWj7YySY5AdSqtCgGzX4Gt98XWXn2kSr9rE1qvCA",
-  data:
-    "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6a2V5Ono2TWtvZEhad25lVlJTaHRhTGY4SktZa3hwREdwMXZHWm5wR21kQnBYOE0yZXh4SCIsInN1YiI6ImM0NzlmZTVkYzQ2NGU3NzFlNzhiMTkzZDIzOWE2NWI1OGQyNzhjYWQxYzM0YmZiMGI1NzE2ZTViYjUxNDkyOGUifQ",
+  signature: EXPECTED_SIG,
+  data: EXPECTED_DATA,
 };

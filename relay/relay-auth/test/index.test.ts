@@ -8,7 +8,7 @@ import * as ed25519 from "@stablelib/ed25519";
 import { fromString } from "uint8arrays/from-string";
 
 import {
-  TEST_NONCE,
+  TEST_SUBJECT,
   TEST_SEED,
   EXPECTED_ISS,
   EXPECTED_DATA,
@@ -16,6 +16,9 @@ import {
   EXPECTED_DECODED,
   EXPECTED_PUBLIC_KEY,
   EXPECTED_SECRET_KEY,
+  TEST_AUDIENCE,
+  TEST_TTL,
+  TEST_IAT,
 } from "./shared";
 
 import {
@@ -62,8 +65,12 @@ describe("Relay Auth", () => {
   it("sign and verify JWT", async () => {
     const seed = fromString(TEST_SEED, "base16");
     const keyPair = generateKeyPair(seed);
-    const subject = TEST_NONCE;
-    const jwt = await signJWT(subject, keyPair);
+    const sub = TEST_SUBJECT;
+    const aud = TEST_AUDIENCE;
+    const ttl = TEST_TTL;
+    // injected issued at for deterministic jwt
+    const iat = TEST_IAT;
+    const jwt = await signJWT(sub, aud, ttl, keyPair, iat);
     chai.expect(jwt).to.eql(EXPECTED_JWT);
     const verified = await verifyJWT(jwt);
     chai.expect(verified).to.eql(true);

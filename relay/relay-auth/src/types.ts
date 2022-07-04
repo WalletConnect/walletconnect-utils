@@ -6,6 +6,9 @@ export interface IridiumJWTHeader {
 export interface IridiumJWTPayload {
   iss: string;
   sub: string;
+  aud: string;
+  iat: number;
+  exp: number;
 }
 
 export interface IridiumJWTData {
