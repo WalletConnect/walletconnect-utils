@@ -38,11 +38,10 @@ export async function signJWT(
 }
 
 export async function verifyJWT(jwt: string) {
-  const { header, payload, signature } = decodeJWT(jwt);
+  const { header, payload, data, signature } = decodeJWT(jwt);
   if (header.alg !== JWT_IRIDIUM_ALG || header.typ !== JWT_IRIDIUM_TYP) {
     throw new Error("JWT must use EdDSA algorithm");
   }
   const publicKey = decodeIss(payload.iss);
-  const data = encodeData({ header, payload });
   return ed25519.verify(publicKey, data, signature);
 }

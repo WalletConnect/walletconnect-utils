@@ -19,3 +19,7 @@ export interface IridiumJWTData {
 export interface IridiumJWTSigned extends IridiumJWTData {
   signature: Uint8Array;
 }
+
+export interface IridiumJWTDecoded extends IridiumJWTSigned {
+  data: Uint8Array;
+}

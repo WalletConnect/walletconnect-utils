@@ -16,7 +16,7 @@ import {
   MULTICODEC_ED25519_HEADER,
   MULTICODEC_ED25519_LENGTH,
 } from "./constants";
-import { IridiumJWTData, IridiumJWTSigned } from "./types";
+import { IridiumJWTData, IridiumJWTDecoded, IridiumJWTSigned } from "./types";
 
 // ---------- JSON ----------------------------------------------- //
 
@@ -101,10 +101,14 @@ export function encodeJWT(params: IridiumJWTSigned): string {
   ].join(JWT_DELIMITER);
 }
 
-export function decodeJWT(jwt: string): IridiumJWTSigned {
+export function decodeJWT(jwt: string): IridiumJWTDecoded {
   const params = jwt.split(JWT_DELIMITER);
   const header = decodeJSON(params[0]);
   const payload = decodeJSON(params[1]);
   const signature = decodeSig(params[2]);
-  return { header, payload, signature };
+  const data = fromString(
+    params.slice(0, 2).join(JWT_DELIMITER),
+    DATA_ENCODING
+  );
+  return { header, payload, signature, data };
 }

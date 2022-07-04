@@ -6,6 +6,7 @@ import * as didJWT from "did-jwt";
 // import { Resolver } from "did-resolver";
 import * as ed25519 from "@stablelib/ed25519";
 import { fromString } from "uint8arrays/from-string";
+import { toString } from "uint8arrays/to-string";
 
 import {
   TEST_SUBJECT,
@@ -22,6 +23,7 @@ import {
 } from "./shared";
 
 import {
+  decodeData,
   decodeIss,
   encodeData,
   encodeIss,
