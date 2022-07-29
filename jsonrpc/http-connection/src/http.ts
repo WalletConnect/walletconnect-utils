@@ -97,7 +97,7 @@ export class HttpConnection implements IJsonRpcConnection {
       const currentMaxListeners = this.events.getMaxListeners();
       if (
         this.events.listenerCount("register_error") >= currentMaxListeners ||
-        this.events.listenerCount("open") === currentMaxListeners
+        this.events.listenerCount("open") >= currentMaxListeners
       ) {
         this.events.setMaxListeners(currentMaxListeners + 1);
       }
