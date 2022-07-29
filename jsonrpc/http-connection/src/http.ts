@@ -21,6 +21,9 @@ const DEFAULT_FETCH_OPTS = {
   method: DEFAULT_HTTP_METHOD,
 };
 
+// Source: https://nodejs.org/api/events.html#emittersetmaxlistenersn
+const EVENT_EMITTER_MAX_LISTENERS_DEFAULT = 10;
+
 export class HttpConnection implements IJsonRpcConnection {
   public events = new EventEmitter();
 
@@ -91,11 +94,20 @@ export class HttpConnection implements IJsonRpcConnection {
       throw new Error(`Provided URL is not compatible with HTTP connection: ${url}`);
     }
     if (this.registering) {
+      const currentMaxListeners = this.events.getMaxListeners();
+      if (
+        this.events.listenerCount("register_error") === currentMaxListeners ||
+        this.events.listenerCount("open") === currentMaxListeners
+      ) {
+        this.events.setMaxListeners(currentMaxListeners + 1);
+      }
       return new Promise((resolve, reject) => {
         this.events.once("register_error", error => {
+          this.resetMaxListeners();
           reject(error);
         });
         this.events.once("open", () => {
+          this.resetMaxListeners();
           if (typeof this.isAvailable === "undefined") {
             return reject(new Error("HTTP connection is missing or invalid"));
           }
@@ -144,6 +156,12 @@ export class HttpConnection implements IJsonRpcConnection {
 
   private parseError(e: Error, url = this.url) {
     return parseConnectionError(e, url, "HTTP");
+  }
+
+  private resetMaxListeners() {
+    if (this.events.getMaxListeners() > EVENT_EMITTER_MAX_LISTENERS_DEFAULT) {
+      this.events.setMaxListeners(EVENT_EMITTER_MAX_LISTENERS_DEFAULT);
+    }
   }
 }
 
