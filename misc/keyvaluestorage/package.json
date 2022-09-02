@@ -11,8 +11,7 @@
     "storage",
     "localstorage",
     "asyncstorage",
-    "sequelize",
-    "sqlite"
+    "sequelize"
   ],
   "files": [
     "dist"
@@ -57,7 +56,6 @@
   },
   "devDependencies": {
     "@react-native-async-storage/async-storage": "^1.17.3",
-    "@types/better-sqlite3": "^5.4.1",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
     "@walletconnect/time": "^1.0.1",
