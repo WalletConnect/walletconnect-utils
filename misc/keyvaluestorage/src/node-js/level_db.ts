@@ -7,7 +7,7 @@ export default {
         const { MemoryLevel } = importDependency("memory-level");
         database = new MemoryLevel({ encodingType: "json" });
       } else {
-        const Level = importDependency("classic-level");
+        const { Level } = importDependency("classic-level");
         database = new Level(db, { valueEncoding: "json" });
       }
       database.open();
