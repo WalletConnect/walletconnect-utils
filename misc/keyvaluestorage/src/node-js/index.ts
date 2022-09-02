@@ -26,7 +26,7 @@ export class KeyValueStorage implements IKeyValueStorage {
 
   public async getEntries<T = any>(): Promise<[string, T][]> {
   
-    const entries = (await this.database.iterator().all()).map(([key, value]) => [key, safeJsonParse(value)] as [string, any]);
+    const entries = (await this.database.iterator().all()).map(([key, value]) => [key, safeJsonParse(value)] as [string, T]);
     return entries;
   }
 
