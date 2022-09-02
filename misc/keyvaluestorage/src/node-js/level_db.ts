@@ -21,6 +21,6 @@ function importDependency(dependency: string) {
     return require(`${dependency}`)
   } catch (e) {
     // User didn't install levelup db, show detailed error
-    throw new Error(`To use the \`@walletconnect/keyvaluestorage\` dependency server side, you need to install \`${dependency}\`. If you are seeing this error in an SSR environment like Next.js or Remix and only intend to run the client in the browser, you can install \`keyvaluestorage\` devDependency to ensure that your builds are passing.`)
+    throw new Error(`To use WalletConnect server side, you'll need to install "\`${dependency}\`" dependency . If you are seeing this error during build / in SSR environment, you can add it as a devDependency to make this error go away.`)
   }
 }
