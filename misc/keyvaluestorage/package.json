@@ -44,13 +44,17 @@
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.x",
-    "classic-level": "^1.2.0"
+    "classic-level": "^1.2.0",
+    "memory-level": "^1.0.0"
   },
   "peerDependenciesMeta": {
     "@react-native-async-storage/async-storage": {
       "optional": true
     },
     "classic-level": {
+      "optional": true
+    },
+    "memory-level": {
       "optional": true
     }
   },
@@ -60,7 +64,6 @@
     "@types/node": "^14.14.7",
     "@walletconnect/time": "^1.0.1",
     "classic-level": "^1.2.0",
-    "memory-level": "^1.0.0",
     "deepmerge": "^4.2.2",
     "husky": "^4.3.0",
     "proxyquire": "^2.1.3",
