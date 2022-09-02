@@ -20,8 +20,8 @@ export class KeyValueStorage implements IKeyValueStorage {
   }
 
   public async getKeys(): Promise<string[]> {
-    const entries = (await this.database.iterator().all()).map(([key]) => key as string);
-    return entries
+    const keys = (await this.database.iterator().all()).map(([key]) => key as string);
+    return keys;
   }
 
   public async getEntries<T = any>(): Promise<[string, T][]> {
