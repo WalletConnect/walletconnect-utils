@@ -1,62 +1,62 @@
-import Database, { Database as IDatabase } from "better-sqlite3";
+
 import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
 
 import {
   IKeyValueStorage,
   KeyValueStorageOptions,
-  parseEntry,
 } from "../shared";
-import { Statements } from "./sqlite";
+import db from "./level_db"
 
-const DB_NAME = "walletconnect_kvs.db";
-const TABLE_NAME = "keyvaluestorage";
+const DB_NAME = "walletconnect_level.db";
 
 export class KeyValueStorage implements IKeyValueStorage {
-  private readonly database: IDatabase;
-  private readonly statements: Statements;
+  private database;
 
   constructor(opts?: KeyValueStorageOptions) {
-    this.database = new Database(opts?.database || DB_NAME);
-    this.statements = new Statements(opts?.table || TABLE_NAME);
-    this.database.prepare(this.statements.createTable()).run();
+    this.database = db.create(opts?.database || opts?.table || `${DB_NAME}`)
+    if(!opts || opts.database == ':memory:') {
+      this.database.clear()
+    }
   }
 
   public async getKeys(): Promise<string[]> {
-    const keys = this.database
-      .prepare(this.statements.selectKeys())
-      .all()
-      .map<string[]>(x => Object.values(x))
-      .flat();
-    return keys;
+    const entries = (await this.database.iterator().all()).map(([key]) => key as string);
+    return entries
   }
 
   public async getEntries<T = any>(): Promise<[string, T][]> {
-    const entries = this.database
-      .prepare(this.statements.selectEntries())
-      .all()
-      .map(x => parseEntry(Object.values(x) as [string, any]));
+  
+    const entries = (await this.database.iterator().all()).map(([key, value]) => [key, safeJsonParse(value)] as [string, any]);
     return entries;
   }
 
   public async getItem<T = any>(key: string): Promise<T | undefined> {
-    const item = this.database
-      .prepare(this.statements.selectValueWhereKey())
-      .get(key);
-    if (typeof item === "undefined" || typeof item.value === "undefined") {
+    let item :any
+    try {
+     item = await this.database.get(key) 
+    } catch (err) {
+      /// if the key is not found, exception is thrown
+      /// https://github.com/Level/abstract-level#level_not_found
+      if(err.code === 'LEVEL_NOT_FOUND') {
+        item = null
+      } else {
+        throw err;
+      }
+    }
+
+    if (item === null) {
       return undefined;
     }
     // TODO: fix this annoying type casting
-    return safeJsonParse(item.value) as T;
+    return safeJsonParse(item) as T;
   }
 
   public async setItem<T = any>(key: string, value: any): Promise<void> {
-    this.database
-      .prepare(this.statements.replaceInto())
-      .run({ key, value: safeJsonStringify(value) });
+    return this.database.put(key, safeJsonStringify(value));
   }
 
   public async removeItem(key: string): Promise<void> {
-    this.database.prepare(this.statements.deleteFromWhereKey()).run(key);
+    return this.database.del(key);
   }
 }
 

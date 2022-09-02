@@ -1,3 +1,4 @@
+// @ts-nocheck
 import "mocha";
 import * as chai from "chai";
 import proxyquire from "proxyquire";
