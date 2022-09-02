@@ -3,7 +3,7 @@ let database;
 export default {
   create(db: string) {
     if (!database) {
-      if (db == ":memory:") {
+      if (db === ":memory:") {
         const { MemoryLevel } = importDependency("memory-level");
         database = new MemoryLevel({ encodingType: "json" });
       } else {
