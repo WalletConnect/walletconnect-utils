@@ -1,11 +1,7 @@
-
 import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
 
-import {
-  IKeyValueStorage,
-  KeyValueStorageOptions,
-} from "../shared";
-import db from "./level_db"
+import { IKeyValueStorage, KeyValueStorageOptions } from "../shared";
+import db from "./level_db";
 
 const DB_NAME = "walletconnect_level.db";
 
@@ -13,32 +9,35 @@ export class KeyValueStorage implements IKeyValueStorage {
   private database;
 
   constructor(opts?: KeyValueStorageOptions) {
-    this.database = db.create(opts?.database || opts?.table || `${DB_NAME}`)
-    if(!opts || opts.database == ':memory:') {
-      this.database.clear()
+    this.database = db.create(opts?.database || opts?.table || `${DB_NAME}`);
+    if (!opts || opts.database == ":memory:") {
+      this.database.clear();
     }
   }
 
   public async getKeys(): Promise<string[]> {
-    const keys = (await this.database.iterator().all()).map(([key]) => key as string);
+    const keys = (await this.database.iterator().all()).map(
+      ([key]) => key as string
+    );
     return keys;
   }
 
   public async getEntries<T = any>(): Promise<[string, T][]> {
-  
-    const entries = (await this.database.iterator().all()).map(([key, value]) => [key, safeJsonParse(value)] as [string, T]);
+    const entries = (await this.database.iterator().all()).map(
+      ([key, value]) => [key, safeJsonParse(value)] as [string, T]
+    );
     return entries;
   }
 
   public async getItem<T = any>(key: string): Promise<T | undefined> {
-    let item :any
+    let item: any;
     try {
-     item = await this.database.get(key) 
+      item = await this.database.get(key);
     } catch (err) {
       /// if the key is not found, exception is thrown
       /// https://github.com/Level/abstract-level#level_not_found
-      if(err.code === 'LEVEL_NOT_FOUND') {
-        item = null
+      if (err.code === "LEVEL_NOT_FOUND") {
+        item = null;
       } else {
         throw err;
       }
