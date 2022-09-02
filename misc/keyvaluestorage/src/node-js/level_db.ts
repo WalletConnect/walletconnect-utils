@@ -7,13 +7,8 @@ export default {
         const { MemoryLevel } = importDependency('memory-level')
         database = new MemoryLevel({encodingType: 'json'})
       } else { 
-        try { 
-          const Level = importDependency("classic-level")
-          database = new Level(db, { valueEncoding: 'json'})
-        } catch (e) {
-          // User didn't install levelup db, show detailed error
-          throw new Error('To use the `keyvaluestorage` dependency server side, you need to install `classic-level`. If you are seeing this error in an SSR environment like Next.js or Remix and only intend to run the client in the browser, you can install `keyvaluestorage` devDependency to ensure that your builds are passing.')
-        }
+        const Level = importDependency("classic-level")
+        database = new Level(db, { valueEncoding: 'json'})
       }
       database.open()
     }
@@ -26,6 +21,6 @@ function importDependency(dependency: string) {
     return require(`${dependency}`)
   } catch (e) {
     // User didn't install levelup db, show detailed error
-    throw new Error(`To use the \`keyvaluestorage\` dependency server side, you need to install \`${dependency}\`. If you are seeing this error in an SSR environment like Next.js or Remix and only intend to run the client in the browser, you can install \`keyvaluestorage\` devDependency to ensure that your builds are passing.`)
+    throw new Error(`To use the \`@walletconnect/keyvaluestorage\` dependency server side, you need to install \`${dependency}\`. If you are seeing this error in an SSR environment like Next.js or Remix and only intend to run the client in the browser, you can install \`keyvaluestorage\` devDependency to ensure that your builds are passing.`)
   }
 }
