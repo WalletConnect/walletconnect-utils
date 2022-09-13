@@ -11,7 +11,7 @@ import { IKeyValueStorage } from "../src/shared";
 import { MockStore, MockAsyncStorage } from "./mock";
 
 const MEMORY_ONLY_NODEJS_DATABASE = ":memory:";
-const PERSISTED_NODEJS_DATABASE = "test/test.db";
+const PERSISTED_NODEJS_DATABASE = "walletconnect.db";
 
 // Mock the external `async-storage` dependency imported inside ReactNativeStorage.
 const { KeyValueStorage: ReactNativeStorage } = proxyquire(
