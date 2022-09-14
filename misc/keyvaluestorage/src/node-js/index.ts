@@ -2,35 +2,38 @@ import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
 
 import { IKeyValueStorage, KeyValueStorageOptions } from "../shared";
 
-import loki from "lokijs";
-import lfsa from "lokijs/src/loki-fs-structured-adapter";
-const DB_NAME = "walletconnect.db";
+import Db from "./db";
 
 export class KeyValueStorage implements IKeyValueStorage {
   private db;
   private database;
   private initialized = false;
+  private inMemory = false;
   constructor(opts?: KeyValueStorageOptions) {
+  
+    // flag it so we don't manually save to file
     if (opts?.database == ":memory:") {
-      this.db = new loki(DB_NAME, {});
-      this.databaseInitialize();
-    } else {
-      var adapter = new lfsa();
-      this.db = new loki(opts?.database || opts?.table || DB_NAME, {
-        autoload: true,
-        adapter: adapter,
-        autosave: true,
-        autoloadCallback: this.databaseInitialize,
-      });
+      this.inMemory = true;
     }
+    const instance = Db.create({
+      ...opts,
+      callback: this.databaseInitialize
+    })
+    this.db = instance.database 
+    this.databaseInitialize(this.db)
   }
-  databaseInitialize = () => {
+  
+  databaseInitialize = (db: any) => {
+    if(db) {
+      this.db = db
+    }
     this.database = this.db.getCollection("entries");
     if (this.database === null) {
-      this.database = this.db.addCollection("entries");
+      this.database = this.db.addCollection("entries", { unique: ['id'] });
     }
     this.initialized = true;
   };
+
   public async getKeys(): Promise<string[]> {
     await this.initilization();
     const keys = (await this.database.find()).map(
@@ -50,7 +53,7 @@ export class KeyValueStorage implements IKeyValueStorage {
 
   public async getItem<T = any>(key: string): Promise<T | undefined> {
     await this.initilization();
-    const item = await this.database.findOne({ id: { $eq: key } });
+    const item = this.database.findOne({ id: { $eq: key } });
     if (item === null) {
       return undefined;
     }
@@ -59,17 +62,27 @@ export class KeyValueStorage implements IKeyValueStorage {
 
   public async setItem<T = any>(key: string, value: any): Promise<void> {
     await this.initilization();
-    await this.database.insert({ id: key, value: safeJsonStringify(value) });
+    const item = this.database.findOne({ id: { $eq: key } });
+    if (item) {
+      item.value = safeJsonStringify(value);
+      this.database.update(item);
+    } else {
+      this.database.insert({ id: key, value: safeJsonStringify(value) });
+    }
+    await this.persist();
   }
 
   public async removeItem(key: string): Promise<void> {
     await this.initilization();
-    const item = await this.database.findOne({ id: { $eq: key } });
+    const item = this.database.findOne({ id: { $eq: key } });
     await this.database.remove(item);
+    await this.persist()
   }
 
   private async initilization() {
-    if (this.initialized) return;
+    if (this.initialized) { 
+      return;
+    }
     await new Promise<void>((resolve) => {
       const interval = setInterval(() => {
         if (this.initialized) {
@@ -78,6 +91,11 @@ export class KeyValueStorage implements IKeyValueStorage {
         }
       }, 20);
     });
+  }
+
+  private async persist() {
+    if (this.inMemory) return;
+    this.db.saveDatabase();
   }
 }
 
