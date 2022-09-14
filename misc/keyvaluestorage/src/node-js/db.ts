@@ -2,7 +2,7 @@ import { KeyValueStorageOptions } from "../shared";
 
 function importLokijs() {
   try {
-    return require('lokijs');
+    return require("lokijs");
   } catch (e) {
     // User didn't install levelup db, show detailed error
     throw new Error(
@@ -12,18 +12,18 @@ function importLokijs() {
 }
 
 interface DbKeyValueStorageOptions extends KeyValueStorageOptions {
-  callback: Function
+  callback: Function;
 }
 
-let lokijs
+let lokijs;
 const DB_NAME = "walletconnect.db";
 
 export default class Db {
   private static instance: Db;
   public database: typeof lokijs;
 
-  private constructor(opts: DbKeyValueStorageOptions) { 
-    if(!lokijs) {
+  private constructor(opts: DbKeyValueStorageOptions) {
+    if (!lokijs) {
       lokijs = importLokijs();
     }
 
@@ -38,14 +38,13 @@ export default class Db {
   }
 
   public static create(opts: DbKeyValueStorageOptions): Db {
+    if (opts.database == ":memory:") {
+      return new Db(opts);
+    }
 
-      if(opts.database == ":memory:") {
-        return new Db(opts);
-      }
-
-      if (!Db.instance) {
-        Db.instance = new Db(opts);
-      }
-      return Db.instance;
+    if (!Db.instance) {
+      Db.instance = new Db(opts);
+    }
+    return Db.instance;
   }
 }

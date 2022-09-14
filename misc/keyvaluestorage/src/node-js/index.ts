@@ -10,26 +10,25 @@ export class KeyValueStorage implements IKeyValueStorage {
   private initialized = false;
   private inMemory = false;
   constructor(opts?: KeyValueStorageOptions) {
-  
     // flag it so we don't manually save to file
     if (opts?.database == ":memory:") {
       this.inMemory = true;
     }
     const instance = Db.create({
       ...opts,
-      callback: this.databaseInitialize
-    })
-    this.db = instance.database 
-    this.databaseInitialize(this.db)
+      callback: this.databaseInitialize,
+    });
+    this.db = instance.database;
+    this.databaseInitialize(this.db);
   }
-  
+
   databaseInitialize = (db: any) => {
-    if(db) {
-      this.db = db
+    if (db) {
+      this.db = db;
     }
     this.database = this.db.getCollection("entries");
     if (this.database === null) {
-      this.database = this.db.addCollection("entries", { unique: ['id'] });
+      this.database = this.db.addCollection("entries", { unique: ["id"] });
     }
     this.initialized = true;
   };
@@ -76,11 +75,11 @@ export class KeyValueStorage implements IKeyValueStorage {
     await this.initilization();
     const item = this.database.findOne({ id: { $eq: key } });
     await this.database.remove(item);
-    await this.persist()
+    await this.persist();
   }
 
   private async initilization() {
-    if (this.initialized) { 
+    if (this.initialized) {
       return;
     }
     await new Promise<void>((resolve) => {
