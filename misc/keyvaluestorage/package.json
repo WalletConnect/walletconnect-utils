@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/keyvaluestorage",
   "description": "Isomorphic Key-Value Storage",
-  "version": "1.0.0",
+  "version": "1.0.1-rc.1",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
@@ -62,6 +62,7 @@
     "chai": "^4.3.6",
     "classic-level": "^1.2.0",
     "deepmerge": "^4.2.2",
+    "eslint": "^8.23.1",
     "husky": "^4.3.0",
     "lokijs": "^1.5.12",
     "mocha": "^10.0.0",
@@ -71,6 +72,11 @@
     "typescript": "^3.7.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "run-s lint"
+    }
   },
   "prettier": {
     "printWidth": 80,
