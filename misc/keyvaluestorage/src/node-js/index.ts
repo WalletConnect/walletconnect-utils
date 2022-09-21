@@ -11,7 +11,7 @@ export class KeyValueStorage implements IKeyValueStorage {
   private inMemory = false;
   constructor(opts?: KeyValueStorageOptions) {
     // flag it so we don't manually save to file
-    if (opts?.database == ":memory:") {
+    if (opts?.database === ":memory:") {
       this.inMemory = true;
     }
     const instance = Db.create({
