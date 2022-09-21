@@ -15,22 +15,22 @@ interface DbKeyValueStorageOptions extends KeyValueStorageOptions {
   callback: Function;
 }
 
-let lokijs;
+let Lokijs;
 const DB_NAME = "walletconnect.db";
 
 export default class Db {
   private static instance: Db;
-  public database: typeof lokijs;
+  public database: typeof Lokijs;
 
   private constructor(opts: DbKeyValueStorageOptions) {
-    if (!lokijs) {
-      lokijs = importLokijs();
+    if (!Lokijs) {
+      Lokijs = importLokijs();
     }
 
-    if (opts?.database == ":memory:") {
-      this.database = new lokijs(opts?.database, {});
+    if (opts?.database === ":memory:") {
+      this.database = new Lokijs(opts?.database, {});
     } else {
-      this.database = new lokijs(opts?.database || opts?.table || DB_NAME, {
+      this.database = new Lokijs(opts?.database || opts?.table || DB_NAME, {
         autoload: true,
         autoloadCallback: opts.callback,
       });
@@ -38,7 +38,7 @@ export default class Db {
   }
 
   public static create(opts: DbKeyValueStorageOptions): Db {
-    if (opts.database == ":memory:") {
+    if (opts.database === ":memory:") {
       return new Db(opts);
     }
 
