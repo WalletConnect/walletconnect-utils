@@ -1,5 +1,3 @@
-import { KeyValueStorageOptions } from "../shared";
-
 function importLokijs() {
   try {
     return require("lokijs");
@@ -11,15 +9,15 @@ function importLokijs() {
   }
 }
 
-interface DbKeyValueStorageOptions extends KeyValueStorageOptions {
+interface DbKeyValueStorageOptions {
+  db: string;
   callback: Function;
 }
 
 let Lokijs;
-const DB_NAME = "walletconnect.db";
 
 export default class Db {
-  private static instance: Db;
+  private static instances: Record<string, Db> = {};
   public database: typeof Lokijs;
 
   private constructor(opts: DbKeyValueStorageOptions) {
@@ -27,10 +25,10 @@ export default class Db {
       Lokijs = importLokijs();
     }
 
-    if (opts?.database === ":memory:") {
-      this.database = new Lokijs(opts?.database, {});
+    if (opts?.db === ":memory:") {
+      this.database = new Lokijs(opts?.db, {});
     } else {
-      this.database = new Lokijs(opts?.database || opts?.table || DB_NAME, {
+      this.database = new Lokijs(opts?.db, {
         autoload: true,
         autoloadCallback: opts.callback,
       });
@@ -38,13 +36,14 @@ export default class Db {
   }
 
   public static create(opts: DbKeyValueStorageOptions): Db {
-    if (opts.database === ":memory:") {
+    const db = opts.db;
+    if (db === ":memory:") {
       return new Db(opts);
     }
 
-    if (!Db.instance) {
-      Db.instance = new Db(opts);
+    if (!Db.instances[db]) {
+      Db.instances[db] = new Db(opts);
     }
-    return Db.instance;
+    return Db.instances[db];
   }
 }

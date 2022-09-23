@@ -4,6 +4,8 @@ import { IKeyValueStorage, KeyValueStorageOptions } from "../shared";
 
 import Db from "./db";
 
+const DB_NAME = "walletconnect.db";
+
 export class KeyValueStorage implements IKeyValueStorage {
   private db;
   private database;
@@ -15,7 +17,7 @@ export class KeyValueStorage implements IKeyValueStorage {
       this.inMemory = true;
     }
     const instance = Db.create({
-      ...opts,
+      db: opts?.database || opts?.table || DB_NAME,
       callback: this.databaseInitialize,
     });
     this.db = instance.database;

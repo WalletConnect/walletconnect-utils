@@ -11,7 +11,8 @@ import { IKeyValueStorage } from "../src/shared";
 import { MockStore, MockAsyncStorage } from "./mock";
 
 const MEMORY_ONLY_NODEJS_DATABASE = ":memory:";
-const PERSISTED_NODEJS_DATABASE = "test/walletconnect.db";
+const dbDir = "test/dbs";
+const PERSISTED_NODEJS_DATABASE = `${dbDir}/walletconnect.db`;
 
 // Mock the external `async-storage` dependency imported inside ReactNativeStorage.
 const { KeyValueStorage: ReactNativeStorage } = proxyquire(
@@ -211,6 +212,39 @@ describe("KeyValueStorage", () => {
       chai.expect(itemC.name).to.not.be.undefined;
       chai.expect(itemC.name).to.eql(value.name);
       chai.expect((itemC as any).owner).to.eql("storageC");
+    });
+    it("can create multiple persisted DBs", async () => {
+      const dbA = `${dbDir}/a.db`;
+      const dbB = `${dbDir}/b.db`;
+
+      const storageA = new NodeJSStorage({
+        database: dbA,
+      });
+      storageA.setItem(key, { ...value, owner: "storageA" });
+
+      const storageB = new NodeJSStorage({
+        database: dbB,
+      });
+      storageB.setItem(key, { ...value, owner: "storageB" });
+
+      await delay(500);
+
+      const itemA = await storageA.getItem<typeof value>(key);
+
+      if (typeof itemA === "undefined")
+        throw new Error("item expected to be undefined");
+      chai.expect(itemA).to.not.be.undefined;
+      chai.expect(itemA.name).to.not.be.undefined;
+      chai.expect(itemA.name).to.eql(value.name);
+      chai.expect((itemA as any).owner).to.eql("storageA");
+
+      const itemB = await storageB.getItem<typeof value>(key);
+      if (typeof itemB === "undefined")
+        throw new Error("item expected to be undefined");
+      chai.expect(itemB).to.not.be.undefined;
+      chai.expect(itemB.name).to.not.be.undefined;
+      chai.expect(itemB.name).to.eql(value.name);
+      chai.expect((itemB as any).owner).to.eql("storageB");
     });
   });
 });
