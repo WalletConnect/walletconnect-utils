@@ -13,9 +13,18 @@ import {
 // Source: https://nodejs.org/api/events.html#emittersetmaxlistenersn
 const EVENT_EMITTER_MAX_LISTENERS_DEFAULT = 10;
 
-const WS =
-  // @ts-ignore
-  typeof global.WebSocket !== "undefined" ? global.WebSocket : require("ws");
+const resolveWebSocketImplementation = () => {
+  if (typeof global !== "undefined" && typeof global.WebSocket !== "undefined") {
+    return global.WebSocket;
+  }
+  if (typeof window !== "undefined" && typeof window.WebSocket !== "undefined") {
+    return window.WebSocket;
+  }
+
+  return require("ws");
+};
+
+const WS = resolveWebSocketImplementation();
 
 export class WsConnection implements IJsonRpcConnection {
   public events = new EventEmitter();
