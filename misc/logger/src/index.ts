@@ -1,4 +1,5 @@
-import * as constants from "./constants";
-import * as utils from "./utils";
-import pino from "pino";
-module.exports = { pino, ...constants, ...utils };
+export * from "./constants";
+export * from "./utils";
+export type { Logger } from "pino";
+import { default as pino } from "pino";
+export { pino };
