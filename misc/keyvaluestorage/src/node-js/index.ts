@@ -38,7 +38,7 @@ export class KeyValueStorage implements IKeyValueStorage {
   public async getKeys(): Promise<string[]> {
     await this.initilization();
     const keys = (await this.database.find()).map(
-      (item: { id: string }) => item.id as String
+      (item: { id: string }) => item.id as string,
     );
     return keys;
   }
@@ -47,7 +47,7 @@ export class KeyValueStorage implements IKeyValueStorage {
     await this.initilization();
     const entries = (await this.database.find()).map(
       (item: { id: string; value: string }) =>
-        [item.id, safeJsonParse(item.value)] as [string, T]
+        [item.id, safeJsonParse(item.value)] as [string, T],
     );
     return entries;
   }

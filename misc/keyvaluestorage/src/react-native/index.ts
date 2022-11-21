@@ -20,7 +20,7 @@ export class KeyValueStorage implements IKeyValueStorage {
 
   public async getItem<T = any>(key: string): Promise<T | undefined> {
     const item = await this.asyncStorage.getItem(key);
-    if (typeof item == "undefined" || item === null) {
+    if (typeof item === "undefined" || item === null) {
       return undefined;
     }
     // TODO: fix this annoying type casting
