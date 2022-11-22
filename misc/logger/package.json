@@ -41,7 +41,6 @@
     "@types/pino": "^6.3.3",
     "husky": "^4.3.0",
     "pino-pretty": "^7.6.0",
-    "tslib": "^1.10.0",
     "typescript": "^3.7.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
@@ -58,6 +57,7 @@
     "trailingComma": "es5"
   },
   "dependencies": {
-    "pino": "7.11.0"
+    "pino": "7.11.0",
+    "tslib": "^1.10.0"
   }
 }
