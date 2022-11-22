@@ -83,7 +83,7 @@ export class WsConnection implements IJsonRpcConnection {
     try {
       this.socket.send(safeJsonStringify(payload));
     } catch (e) {
-      this.onError(payload.id, e);
+      this.onError(payload.id, e as Error);
     }
   }
 
@@ -127,7 +127,9 @@ export class WsConnection implements IJsonRpcConnection {
       };
       socket.onerror = (event: Event) => {
         const errorEvent = event as ErrorEvent;
-        const error = this.parseError(errorEvent.error || new Error(errorEvent.message));
+        const error = this.parseError(
+          errorEvent.error || new Error(`WebSocket connection failed for URL: ${url}`),
+        );
         this.events.emit("register_error", error);
         this.onClose();
         reject(error);
@@ -140,7 +142,9 @@ export class WsConnection implements IJsonRpcConnection {
     socket.onclose = () => this.onClose();
     socket.onerror = (event: Event) => {
       const errorEvent = event as ErrorEvent;
-      const error = this.parseError(errorEvent.error || new Error(errorEvent.message));
+      const error = this.parseError(
+        errorEvent.error || new Error(`WebSocket connection failed for URL: ${this.url}`),
+      );
       this.events.emit("error", error);
     };
     this.socket = socket;
