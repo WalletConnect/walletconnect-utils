@@ -126,7 +126,8 @@ export class WsConnection implements IJsonRpcConnection {
         resolve(socket);
       };
       socket.onerror = (event: Event) => {
-        const error = this.parseError((event as ErrorEvent).error);
+        const errorEvent = event as ErrorEvent;
+        const error = this.parseError(errorEvent.error || new Error(errorEvent.message));
         this.events.emit("register_error", error);
         this.onClose();
         reject(error);
@@ -138,7 +139,8 @@ export class WsConnection implements IJsonRpcConnection {
     socket.onmessage = (event: MessageEvent) => this.onPayload(event);
     socket.onclose = () => this.onClose();
     socket.onerror = (event: Event) => {
-      const error = this.parseError((event as ErrorEvent).error);
+      const errorEvent = event as ErrorEvent;
+      const error = this.parseError(errorEvent.error || new Error(errorEvent.message));
       this.events.emit("error", error);
     };
     this.socket = socket;
