@@ -1,5 +1,5 @@
-import localStorage from "localStorage";
 import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
+import localStorage from "./lib/localStorage";
 
 import { IKeyValueStorage, parseEntry } from "../shared";
 
