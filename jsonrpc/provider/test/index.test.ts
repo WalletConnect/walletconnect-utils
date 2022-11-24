@@ -63,7 +63,7 @@ describe("@walletconnect/jsonrpc-provider", () => {
       version: 2,
       sdkVersion: version,
       relayUrl: TEST_URL.ws.good,
-      projectId: process.env.TEST_PROJECT_ID,
+      projectId: "3cbaa32f8fbf3cdcc87d27ca1fa68069",
       auth,
     });
 
