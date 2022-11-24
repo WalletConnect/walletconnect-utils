@@ -44,8 +44,10 @@
     return Object.keys(this).length;
   });
 
-  if (global.localStorage) {
-    module.exports = localStorage;
+  if (typeof global !== "undefined" && global.localStorage) {
+    module.exports = global.localStorage;
+  } else if (typeof window !== "undefined" && window.localStorage) {
+    module.exports = window.localStorage;
   } else {
     module.exports = new LocalStorage();
   }
