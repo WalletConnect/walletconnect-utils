@@ -1,0 +1,4 @@
+export const WS_HOST = "ws://staging.relay.walletconnect.com";
+export const WSS_HOST = "wss://staging.relay.walletconnect.com";
+export const FULL_RELAY_WS_URL =
+  "wss://staging.relay.walletconnect.com?auth=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkaWQ6a2V5Ono2TWttbmVQWnRTNjZ4M0ZIWGFVbmtGZ3NoZUU1SEJ6QkhDV1lmUVFUM2dLcHMxSCIsInN1YiI6Ijk2OWUxYzU5MTg3ZDU4NDYyMzkwYTE4NzExYzZmMDlmOTZiNGE5NDNhOWQ5ZjBkMmNiMTdkYWQ2MTAxY2NiOTgiLCJhdWQiOiJ3c3M6Ly9zdGFnaW5nLnJlbGF5LndhbGxldGNvbm5lY3QuY29tIiwiaWF0IjoxNjY5Mjg4Mjg1LCJleHAiOjE2NjkyOTMyODV9.zGoLD3Pw9mQcblmIdEsPrBCjZG9DAr2nBC-b53oDOJBfiJCTUihSzdov5RQCgdzJtQNK0ueaxpnpk2umyxpYDA&projectId=3cbaa32f8fbf3cdcc87d27ca1fa68069&ua=wc-2%2Fjs-2.1.3%2Flinux-16.16.0%2Fnode";
