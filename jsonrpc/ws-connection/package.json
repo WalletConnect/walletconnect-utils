@@ -78,6 +78,8 @@
     "prettier": "^1.19.1",
     "typescript": "^3.7.5",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "@walletconnect/relay-auth": "^1.0.2",
+    "@walletconnect/utils": "^2.1.3"
   }
 }

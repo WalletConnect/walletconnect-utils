@@ -39,7 +39,6 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "localStorage": "^1.0.4",
     "safe-json-utils": "^1.1.1",
     "tslib": "1.14.1"
   },
