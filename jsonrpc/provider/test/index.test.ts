@@ -38,7 +38,7 @@ function generateRandomBytes32(): string {
 const signJWT = async (aud: string) => {
   const keyPair = relayAuth.generateKeyPair(fromString(generateRandomBytes32(), BASE16));
   const sub = generateRandomBytes32();
-  const ttl = 5000; //5 seconds
+  const ttl = 30000; //30 seconds
   const jwt = await relayAuth.signJWT(sub, aud, ttl, keyPair);
 
   return jwt;
