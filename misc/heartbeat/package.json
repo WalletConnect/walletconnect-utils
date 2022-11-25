@@ -39,7 +39,7 @@
   "dependencies": {
     "@walletconnect/events": "^1.0.0",
     "@walletconnect/time": "^1.0.1",
-    "tslib": "^2.4.1"
+    "tslib": "1.14.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",

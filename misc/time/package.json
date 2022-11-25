@@ -56,6 +56,6 @@
     "trailingComma": "es5"
   },
   "dependencies": {
-    "tslib": "^2.4.1"
+    "tslib": "1.14.1"
   }
 }

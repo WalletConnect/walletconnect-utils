@@ -41,7 +41,7 @@
   "dependencies": {
     "localStorage": "^1.0.4",
     "safe-json-utils": "^1.1.1",
-    "tslib": "^2.4.1"
+    "tslib": "1.14.1"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.x",

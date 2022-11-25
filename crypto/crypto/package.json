@@ -44,7 +44,7 @@
     "@walletconnect/randombytes": "^1.0.2",
     "aes-js": "^3.1.2",
     "hash.js": "^1.1.7",
-    "tslib": "^2.4.1"
+    "tslib": "1.14.1"
   },
   "devDependencies": {
     "@peculiar/webcrypto": "^1.1.7",

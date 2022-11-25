@@ -58,6 +58,6 @@
   },
   "dependencies": {
     "pino": "7.11.0",
-    "tslib": "^2.4.1"
+    "tslib": "1.14.1"
   }
 }

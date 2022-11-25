@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "keyvaluestorage-interface": "^1.0.0",
-    "tslib": "^2.4.1"
+    "tslib": "1.14.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
