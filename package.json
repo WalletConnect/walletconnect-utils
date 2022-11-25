@@ -21,7 +21,8 @@
     "check": "run-s lint build test",
     "reset": "run-s clean bootstrap check",
     "new-version": "lerna version --no-git-tag-version",
-    "pre-publish": "run-s new-version reset"
+    "pre-publish": "run-s new-version reset",
+    "npm-publish:latest": "lerna exec -- npm publish --access public --tag latest"
   },
   "devDependencies": {
     "lerna": "^4.0.0",

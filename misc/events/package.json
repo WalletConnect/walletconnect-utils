@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/events",
   "description": "Events Utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",

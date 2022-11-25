@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/relay-auth",
   "description": "Relay Client Authentication",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
@@ -62,8 +62,8 @@
   "dependencies": {
     "@stablelib/ed25519": "^1.0.2",
     "@stablelib/random": "^1.0.1",
-    "@walletconnect/safe-json": "^1.0.0",
-    "@walletconnect/time": "^1.0.1",
+    "@walletconnect/safe-json": "^1.0.1",
+    "@walletconnect/time": "^1.0.2",
     "tslib": "1.14.1",
     "uint8arrays": "^3.0.0"
   }

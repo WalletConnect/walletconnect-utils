@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/ecies-25519",
   "description": "Isomorphic Cryptography Library for X25519 ECIES",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
@@ -46,8 +46,8 @@
   },
   "dependencies": {
     "@stablelib/x25519": "^1.0.2",
-    "@walletconnect/crypto": "^1.0.2",
-    "@walletconnect/encoding": "^1.0.1",
+    "@walletconnect/crypto": "^1.0.3",
+    "@walletconnect/encoding": "^1.0.2",
     "tslib": "1.14.1"
   },
   "devDependencies": {

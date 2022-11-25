@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/heartbeat",
   "description": "HeartBeat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
@@ -37,8 +37,8 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@walletconnect/events": "^1.0.0",
-    "@walletconnect/time": "^1.0.1",
+    "@walletconnect/events": "^1.0.1",
+    "@walletconnect/time": "^1.0.2",
     "tslib": "1.14.1"
   },
   "devDependencies": {

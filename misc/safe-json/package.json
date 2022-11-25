@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/safe-json",
   "description": "Safe Json Utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [

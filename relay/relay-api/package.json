@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/relay-api",
   "description": "Relay JSON-RPC API",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
@@ -56,7 +56,7 @@
     "trailingComma": "es5"
   },
   "dependencies": {
-    "@walletconnect/jsonrpc-types": "^1.0.1",
+    "@walletconnect/jsonrpc-types": "^1.0.2",
     "tslib": "1.14.1"
   }
 }

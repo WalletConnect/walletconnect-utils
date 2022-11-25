@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/window-metadata",
   "description": "Scrape Window Metadata",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
@@ -35,7 +35,7 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@walletconnect/window-getters": "^1.0.0",
+    "@walletconnect/window-getters": "^1.0.1",
     "tslib": "1.14.1"
   },
   "devDependencies": {
