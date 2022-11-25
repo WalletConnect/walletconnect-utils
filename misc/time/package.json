@@ -40,7 +40,6 @@
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
     "husky": "^4.3.0",
-    "tslib": "^1.10.0",
     "typescript": "^3.7.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
@@ -55,5 +54,8 @@
     "semi": true,
     "singleQuote": false,
     "trailingComma": "es5"
+  },
+  "dependencies": {
+    "tslib": "1.14.1"
   }
 }
