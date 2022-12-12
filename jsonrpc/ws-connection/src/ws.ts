@@ -130,13 +130,6 @@ export class WsConnection implements IJsonRpcConnection {
         };
       } else {
         (socket as any).on("error", (errorEvent: any) => {
-          // eslint-disable-next-line no-console
-          console.log(
-            "ws: captured socket on error",
-            errorEvent,
-            errorEvent.message,
-            /socket hang up/i.test(errorEvent.message),
-          );
           reject(this.emitError(errorEvent));
         });
       }
