@@ -24,6 +24,8 @@ const resolveWebSocketImplementation = () => {
   return require("ws");
 };
 
+const isBrowser = () => typeof window !== "undefined";
+
 const WS = resolveWebSocketImplementation();
 
 export class WsConnection implements IJsonRpcConnection {
@@ -121,18 +123,26 @@ export class WsConnection implements IJsonRpcConnection {
     return new Promise((resolve, reject) => {
       const opts = !isReactNative() ? { rejectUnauthorized: !isLocalhostUrl(url) } : undefined;
       const socket: WebSocket = new WS(url, [], opts);
+      if (isBrowser()) {
+        socket.onerror = (event: Event) => {
+          const errorEvent = event as ErrorEvent;
+          reject(this.emitError(errorEvent.error));
+        };
+      } else {
+        (socket as any).on("error", (errorEvent: any) => {
+          // eslint-disable-next-line no-console
+          console.log(
+            "ws: captured socket on error",
+            errorEvent,
+            errorEvent.message,
+            /socket hang up/i.test(errorEvent.message),
+          );
+          reject(this.emitError(errorEvent));
+        });
+      }
       socket.onopen = () => {
         this.onOpen(socket);
         resolve(socket);
-      };
-      socket.onerror = (event: Event) => {
-        const errorEvent = event as ErrorEvent;
-        const error = this.parseError(
-          errorEvent.error || new Error(`WebSocket connection failed for URL: ${url}`),
-        );
-        this.events.emit("register_error", error);
-        this.onClose();
-        reject(error);
       };
     });
   }
@@ -140,13 +150,6 @@ export class WsConnection implements IJsonRpcConnection {
   private onOpen(socket: WebSocket) {
     socket.onmessage = (event: MessageEvent) => this.onPayload(event);
     socket.onclose = () => this.onClose();
-    socket.onerror = (event: Event) => {
-      const errorEvent = event as ErrorEvent;
-      const error = this.parseError(
-        errorEvent.error || new Error(`WebSocket connection failed for URL: ${this.url}`),
-      );
-      this.events.emit("error", error);
-    };
     this.socket = socket;
     this.registering = false;
     this.events.emit("open");
@@ -179,6 +182,14 @@ export class WsConnection implements IJsonRpcConnection {
     if (this.events.getMaxListeners() > EVENT_EMITTER_MAX_LISTENERS_DEFAULT) {
       this.events.setMaxListeners(EVENT_EMITTER_MAX_LISTENERS_DEFAULT);
     }
+  }
+
+  private emitError(errorEvent: Error) {
+    const error = this.parseError(
+      new Error(errorEvent?.message || `WebSocket connection failed for URL: ${this.url}`),
+    );
+    this.events.emit("register_error", error);
+    return error;
   }
 }
 
