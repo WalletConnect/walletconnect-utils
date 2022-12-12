@@ -48,25 +48,25 @@ describe("@walletconnect/jsonrpc-ws-connection", () => {
         .to.throw("Provided URL is not compatible with WebSocket connection: invalid");
     });
     it("initialises with a `ws:` string", async () => {
-      const conn = new WsConnection(`ws://${await formatRelayUrl()}`);
+      const conn = new WsConnection(await formatRelayUrl());
       chai.expect(conn instanceof WsConnection).to.be.true;
     });
     it("initialises with a `wss:` string", async () => {
-      const conn = new WsConnection(`wss://${await formatRelayUrl()}`);
+      const conn = new WsConnection(await formatRelayUrl());
       chai.expect(conn instanceof WsConnection).to.be.true;
     });
   });
 
   describe("open", () => {
     it("can open a connection with a valid relay `wss:` URL", async () => {
-      const conn = new WsConnection(`wss://${await formatRelayUrl()}`);
+      const conn = new WsConnection(await formatRelayUrl());
 
       chai.expect(conn.connected).to.be.false;
       await conn.open();
       chai.expect(conn.connected).to.be.true;
     });
     it("surfaces an error if `wss:` URL is valid but connection cannot be made", async () => {
-      const conn = new WsConnection(`wss://${await formatRelayUrl()}`);
+      const conn = new WsConnection(await formatRelayUrl());
       try {
         await conn.open();
       } catch (error) {
