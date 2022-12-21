@@ -12,4 +12,5 @@ export abstract class IHeartBeat extends IEvents {
   }
 
   public abstract init(): Promise<void>;
+  public abstract stop(): void;
 }
