@@ -15,6 +15,7 @@ export class HeartBeat extends IHeartBeat {
   public events = new EventEmitter();
 
   public interval = HEARTBEAT_INTERVAL;
+  private intervalRef?: ReturnType<typeof setInterval>;
 
   constructor(opts?: HeartBeatOptions) {
     super(opts);
@@ -23,6 +24,10 @@ export class HeartBeat extends IHeartBeat {
 
   public async init(): Promise<void> {
     await this.initialize();
+  }
+
+  public stop(): void {
+    clearInterval(this.intervalRef)
   }
 
   public on(event: string, listener: any): void {
@@ -44,7 +49,7 @@ export class HeartBeat extends IHeartBeat {
   // ---------- Private ----------------------------------------------- //
 
   private async initialize(): Promise<any> {
-    setInterval(() => this.pulse(), toMiliseconds(this.interval));
+    this.intervalRef = setInterval(() => this.pulse(), toMiliseconds(this.interval));
   }
 
   private pulse() {
