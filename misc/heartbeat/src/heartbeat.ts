@@ -15,7 +15,7 @@ export class HeartBeat extends IHeartBeat {
   public events = new EventEmitter();
 
   public interval = HEARTBEAT_INTERVAL;
-  private intervalRef?: number;
+  private intervalRef?: ReturnType<typeof setInterval>;
 
   constructor(opts?: HeartBeatOptions) {
     super(opts);
