@@ -71,11 +71,19 @@ export class WsConnection implements IJsonRpcConnection {
   }
 
   public async close(): Promise<void> {
-    if (typeof this.socket === "undefined") {
-      throw new Error("Connection already closed");
-    }
-    this.socket.close();
-    this.onClose();
+    return new Promise<void>((resolve, reject) => {
+      if (typeof this.socket === "undefined") {
+        reject(new Error("Connection already closed"));
+        return;
+      }
+
+      this.socket.onclose = () =>  {
+        this.onClose();
+        resolve();
+      }
+
+      this.socket.close();
+    });
   }
 
   public async send(payload: JsonRpcPayload, context?: any): Promise<void> {
