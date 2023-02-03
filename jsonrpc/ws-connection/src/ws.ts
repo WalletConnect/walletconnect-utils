@@ -77,10 +77,10 @@ export class WsConnection implements IJsonRpcConnection {
         return;
       }
 
-      this.socket.onclose = () =>  {
+      this.socket.onclose = () => {
         this.onClose();
         resolve();
-      }
+      };
 
       this.socket.close();
     });
