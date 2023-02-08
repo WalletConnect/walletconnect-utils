@@ -39,7 +39,7 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "safe-json-utils": "^1.1.1",
+    "@walletconnect/safe-json": "^1.0.1",
     "tslib": "1.14.1"
   },
   "peerDependencies": {
