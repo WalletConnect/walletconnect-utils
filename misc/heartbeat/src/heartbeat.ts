@@ -27,7 +27,7 @@ export class HeartBeat extends IHeartBeat {
   }
 
   public stop(): void {
-    clearInterval(this.intervalRef)
+    clearInterval(this.intervalRef);
   }
 
   public on(event: string, listener: any): void {
