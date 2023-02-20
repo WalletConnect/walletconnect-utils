@@ -3,8 +3,8 @@ import { INTERNAL_ERROR, SERVER_ERROR } from "./constants";
 import { ErrorResponse, JsonRpcError, JsonRpcRequest, JsonRpcResult } from "./types";
 
 export function payloadId(): number {
-  const date = Date.now() * Math.pow(10, 3);
-  const extra = Math.floor(Math.random() * Math.pow(10, 3));
+  const date = Date.now() * Math.pow(10, 6);
+  const extra = Math.ceil(Math.random() * Math.pow(10, 6));
   return date + extra;
 }
 
