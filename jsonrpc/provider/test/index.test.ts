@@ -175,9 +175,7 @@ describe("@walletconnect/jsonrpc-provider", () => {
       const connection = new WsConnection(TEST_URL.ws.good);
       const provider = new JsonRpcProvider(connection);
 
-      // The socket is emitting an additional `close` event for each reconnection,
-      // i.e. 3 explicit disconnects + 2 reconnections in between -> 5 `disconnect` emits.
-      const expectedDisconnectCount = 5;
+      const expectedDisconnectCount = 3;
       let disconnectCount = 0;
 
       provider.on("disconnect", () => {
