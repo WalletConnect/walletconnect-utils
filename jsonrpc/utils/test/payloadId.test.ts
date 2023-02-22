@@ -21,6 +21,15 @@ describe("Payload Id", () => {
     chai.expect(after >= time).to.be.true;
   });
 
+  it("returns an integer with 16 digits", () => {
+    chai.expect(payloadId().toString().length).to.equal(16);
+  });
+
+  // Context: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
+  it("returns a safe integer", () => {
+    chai.expect(Number.isSafeInteger(payloadId())).to.be.true;
+  });
+
   it("returns all different values", async () => {
     const results: number[] = await Promise.all(
       Array(10)
