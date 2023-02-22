@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-http-connection",
   "description": "HTTP Connection for JSON-RPC",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -41,7 +41,7 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
   },
   "dependencies": {
-    "@walletconnect/jsonrpc-utils": "^1.0.5",
+    "@walletconnect/jsonrpc-utils": "^1.0.6",
     "@walletconnect/safe-json": "^1.0.1",
     "cross-fetch": "^3.1.4",
     "tslib": "1.14.1"
