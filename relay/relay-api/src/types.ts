@@ -36,6 +36,7 @@ export declare namespace RelayJsonRpc {
   export interface SubscriptionData {
     topic: string;
     message: string;
+    publishedAt: number;
   }
 
   export interface SubscriptionParams {
