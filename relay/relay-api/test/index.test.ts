@@ -19,7 +19,7 @@ import {
 const TEST_SUBSCRIBE_REQUEST = {
   id: 1,
   jsonrpc: "2.0",
-  method: "bridge_subscribe",
+  method: "irn_subscribe",
   params: {
     topic: "b6052f059b3bb31e9e76b1a8bc04a3f6d4e08579e518a482c566de15e0ca5c04",
   },
@@ -28,19 +28,20 @@ const TEST_SUBSCRIBE_REQUEST = {
 const TEST_PUBLISH_REQUEST = {
   id: 2,
   jsonrpc: "2.0",
-  method: "bridge_publish",
+  method: "irn_publish",
   params: {
     topic: "b6052f059b3bb31e9e76b1a8bc04a3f6d4e08579e518a482c566de15e0ca5c04",
     message:
       "9e4637e0fe8cedafb9bf4d6eaf171e5e83682ee9f26754e4b586853435b0bb1ecded76f2054f567af5083b7f65b7ee2b8e6916b86ae4d0e72b7d9a89f3c90798d1206c0c3a44fb8eb23000a96087b8119275550b3f8a4bd9e3f6ad8151cad90ea90e5128a238ba387a9a03320b3c3081efed24efae409a9e2dc31b8251e4531f582f4b4f65f714ad2e99885952c3f2015b32f08aaa0967f8c9d2ccab113a166d68fc76bb1a111a64053dffc971afc194",
     ttl: 86400,
+    tag: 1008,
   },
 };
 
 const TEST_UNSUBSCRIBE_REQUEST = {
   id: 3,
   jsonrpc: "2.0",
-  method: "bridge_unsubscribe",
+  method: "irn_unsubscribe",
   params: {
     id: "bd745387ddcc888f077157d1d4389fee2f28faf3fcb2b9b2993c114a1448bd32",
     topic: "b6052f059b3bb31e9e76b1a8bc04a3f6d4e08579e518a482c566de15e0ca5c04",
@@ -50,13 +51,15 @@ const TEST_UNSUBSCRIBE_REQUEST = {
 const TEST_SUBSCRIPTION_REQUEST = {
   id: 4,
   jsonrpc: "2.0",
-  method: "bridge_subscription",
+  method: "irn_subscription",
   params: {
     id: "bd745387ddcc888f077157d1d4389fee2f28faf3fcb2b9b2993c114a1448bd32",
     data: {
       topic: "b6052f059b3bb31e9e76b1a8bc04a3f6d4e08579e518a482c566de15e0ca5c04",
       message:
         "9e4637e0fe8cedafb9bf4d6eaf171e5e83682ee9f26754e4b586853435b0bb1ecded76f2054f567af5083b7f65b7ee2b8e6916b86ae4d0e72b7d9a89f3c90798d1206c0c3a44fb8eb23000a96087b8119275550b3f8a4bd9e3f6ad8151cad90ea90e5128a238ba387a9a03320b3c3081efed24efae409a9e2dc31b8251e4531f582f4b4f65f714ad2e99885952c3f2015b32f08aaa0967f8c9d2ccab113a166d68fc76bb1a111a64053dffc971afc194",
+      tag: 1008,
+      publishedAt: 1677145046772,
     },
   },
 };
