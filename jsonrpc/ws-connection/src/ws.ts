@@ -77,8 +77,8 @@ export class WsConnection implements IJsonRpcConnection {
         return;
       }
 
-      this.socket.onclose = () => {
-        this.onClose();
+      this.socket.onclose = event => {
+        this.onClose(event);
         resolve();
       };
 
@@ -150,16 +150,16 @@ export class WsConnection implements IJsonRpcConnection {
 
   private onOpen(socket: WebSocket) {
     socket.onmessage = (event: MessageEvent) => this.onPayload(event);
-    socket.onclose = () => this.onClose();
+    socket.onclose = event => this.onClose(event);
     this.socket = socket;
     this.registering = false;
     this.events.emit("open");
   }
 
-  private onClose() {
+  private onClose(event: CloseEvent) {
     this.socket = undefined;
     this.registering = false;
-    this.events.emit("close");
+    this.events.emit("close", event);
   }
 
   private onPayload(e: { data: any }) {
