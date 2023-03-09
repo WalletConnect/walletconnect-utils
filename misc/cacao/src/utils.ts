@@ -113,7 +113,6 @@ async function isValidEip1271Signature(
     const recoveredValue = result.slice(0, eip1271MagicValue.length);
     return recoveredValue.toLowerCase() === eip1271MagicValue.toLowerCase();
   } catch (error: any) {
-    console.error("isValidEip1271Signature: ", error);
     return false;
   }
 }
