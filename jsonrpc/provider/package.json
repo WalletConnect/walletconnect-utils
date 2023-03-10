@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-provider",
   "description": "Provider for JSON-RPC",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -62,7 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "@walletconnect/jsonrpc-http-connection": "^1.0.4",
-    "@walletconnect/jsonrpc-ws-connection": "^1.0.5",
+    "@walletconnect/jsonrpc-ws-connection": "^1.0.10",
     "@walletconnect/relay-auth": "^1.0.3",
     "@walletconnect/utils": "^2.1.3",
     "chai": "^4.2.0",
