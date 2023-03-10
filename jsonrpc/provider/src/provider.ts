@@ -103,8 +103,8 @@ export class JsonRpcProvider extends IJsonRpcProvider {
   }
 
   protected onClose(event?: CloseEvent): void {
-    // Anything other than 1000 is an abnormal closure -> also emit an error in this case.
-    if (event && event.code !== 1000) {
+    // Code 3000 indicates an abnormal closure signalled by the relay -> emit an error in this case.
+    if (event && event.code === 3000) {
       this.events.emit(
         "error",
         new Error(
