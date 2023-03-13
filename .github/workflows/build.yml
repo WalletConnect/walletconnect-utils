@@ -37,3 +37,5 @@ jobs:
 
       - name: Test
         run: npm run test
+        env:
+          TEST_PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}
