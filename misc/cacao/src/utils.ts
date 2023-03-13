@@ -44,7 +44,7 @@ export const formatMessage = (cacao: CacaoPayload, iss: string) => {
   const issuedAt = `Issued At: ${cacao.iat}`;
   const resources =
     cacao.resources && cacao.resources.length > 0
-      ? `Resources:\n${cacao.resources.map((resource) => `- ${resource}`).join("\n")}`
+      ? `Resources:\n${cacao.resources.map(resource => `- ${resource}`).join("\n")}`
       : undefined;
 
   const message = [
@@ -60,7 +60,7 @@ export const formatMessage = (cacao: CacaoPayload, iss: string) => {
     issuedAt,
     resources,
   ]
-    .filter((val) => val !== undefined && val !== null) // remove unnecessary empty lines
+    .filter(val => val !== undefined && val !== null) // remove unnecessary empty lines
     .join("\n");
 
   return message;
@@ -112,7 +112,7 @@ async function isValidEip1271Signature(
     // Remove right-padded zeros from result to get only the concrete recovered value.
     const recoveredValue = result.slice(0, eip1271MagicValue.length);
     return recoveredValue.toLowerCase() === eip1271MagicValue.toLowerCase();
-  } catch (error: any) {
+  } catch (error) {
     return false;
   }
 }
