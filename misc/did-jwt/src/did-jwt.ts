@@ -1,7 +1,6 @@
 import { base58btc } from "multiformats/bases/base58";
 import bs58 from "bs58";
 import * as ed25519 from "@noble/ed25519";
-import { isValidObject } from "@walletconnect/utils";
 import { JwtHeader, JwtPayload } from "./types";
 
 export const DAY_IN_MS = 86400 * 1000;
@@ -36,13 +35,8 @@ const concatUInt8Arrays = (array1: Uint8Array, array2: Uint8Array) => {
   return mergedArray;
 };
 
-export const composeDidPkh = (accountId: string) => {
-  return `${DID_PREFIX}${DID_DELIMITER}${DID_METHOD_PKH}${DID_DELIMITER}${accountId}`;
-};
-
-export const jwtExp = (issuedAt: number) => {
-  return issuedAt + DAY_IN_MS;
-};
+const isValidObject = (obj: any) =>
+  Object.getPrototypeOf(obj) === Object.prototype && Object.keys(obj).length;
 
 const objectToHex = (obj: unknown) => {
   if (!isValidObject(obj)) {
@@ -52,6 +46,14 @@ const objectToHex = (obj: unknown) => {
   return makeBase64UrlSafe(
     Buffer.from(new TextEncoder().encode(JSON.stringify(obj))).toString("base64"),
   );
+};
+
+export const composeDidPkh = (accountId: string) => {
+  return `${DID_PREFIX}${DID_DELIMITER}${DID_METHOD_PKH}${DID_DELIMITER}${accountId}`;
+};
+
+export const jwtExp = (issuedAt: number) => {
+  return issuedAt + DAY_IN_MS;
 };
 
 export const encodeJwt = (header: JwtHeader, payload: JwtPayload, signature: Uint8Array) => {
