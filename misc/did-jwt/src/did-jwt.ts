@@ -2,51 +2,17 @@ import { base58btc } from "multiformats/bases/base58";
 import bs58 from "bs58";
 import * as ed25519 from "@noble/ed25519";
 import { JwtHeader, JwtPayload } from "./types";
-
-export const DAY_IN_MS = 86400 * 1000;
-
-export const DID_METHOD_KEY = "key";
-export const DID_DELIMITER = ":";
-export const DID_PREFIX = "did";
-export const DID_METHOD_PKH = "pkh";
-
-export const JWT_DELIMITER = ".";
-
-export const MULTICODEC_ED25519_HEADER = "K36";
-export const MULTICODEC_X25519_HEADER = "Jxg";
-
-// Buffer.toString("base64url") isn't supported in every dev environment, eg it
-// might work when run in node, but when built in vite and other
-// inconsistencies. This just achieves what base64url already does,
-// which is base64 encode the buffer, but instead of +, use - and
-// instead of / use _ and remove any padding (=).
-const makeBase64UrlSafe = (base64EncodedString: string) => {
-  return base64EncodedString
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
-};
-
-const concatUInt8Arrays = (array1: Uint8Array, array2: Uint8Array) => {
-  const mergedArray = new Uint8Array(array1.length + array2.length);
-  mergedArray.set(array1);
-  mergedArray.set(array2, array1.length);
-
-  return mergedArray;
-};
-
-const isValidObject = (obj: any) =>
-  Object.getPrototypeOf(obj) === Object.prototype && Object.keys(obj).length;
-
-const objectToHex = (obj: unknown) => {
-  if (!isValidObject(obj)) {
-    throw new Error(`Supplied object is not valid ${JSON.stringify(obj)}`);
-  }
-
-  return makeBase64UrlSafe(
-    Buffer.from(new TextEncoder().encode(JSON.stringify(obj))).toString("base64"),
-  );
-};
+import { concatUInt8Arrays, makeBase64UrlSafe, objectToHex } from "./helpers";
+import {
+  DID_DELIMITER,
+  DID_METHOD_PKH,
+  DID_PREFIX,
+  DAY_IN_MS,
+  JWT_DELIMITER,
+  MULTICODEC_ED25519_HEADER,
+  DID_METHOD_KEY,
+  MULTICODEC_X25519_HEADER,
+} from "./constants";
 
 export const composeDidPkh = (accountId: string) => {
   return `${DID_PREFIX}${DID_DELIMITER}${DID_METHOD_PKH}${DID_DELIMITER}${accountId}`;
