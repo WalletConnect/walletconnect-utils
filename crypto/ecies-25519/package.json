@@ -44,7 +44,8 @@
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --exit -r ts-node/register -r jsdom-global/register ./test/**/*.test.ts",
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
     "npm-publish:latest": "npm publish --access public --tag latest",
-    "npm-publish:canary": "npm publish --access public --tag canary"
+    "npm-publish:canary": "npm publish --access public --tag canary",
+    "prepublishOnly": "npm run test && npm run build"
   },
   "dependencies": {
     "@stablelib/x25519": "^1.0.2",
