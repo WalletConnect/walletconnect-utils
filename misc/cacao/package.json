@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/cacao",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utilities for creating and verifying CACAOs",
   "keywords": [
     "cacao",
