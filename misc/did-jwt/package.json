@@ -11,8 +11,7 @@
     "clean": "rm -rf dist",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "build:umd": "webpack",
-    "build": "run-s clean build:cjs build:esm build:umd ",
+    "build": "run-s clean build:cjs build:esm",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 5000 --exit -r ts-node/register ./test/**/*.test.ts",
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
     "npm-publish:latest": "npm publish --access public --tag latest",
@@ -26,7 +25,6 @@
   "module": "dist/esm/index.js",
   "browser": "dist/esm/index.js",
   "types": "dist/cjs/index.d.ts",
-  "unpkg": "dist/umd/index.min.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/walletconnect/walletconnect-utils.git"
