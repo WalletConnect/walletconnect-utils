@@ -33,7 +33,8 @@
     "build": "run-s clean build:cjs build:esm build:umd ",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 5000 --exit -r ts-node/register ./test/**/*.test.ts",
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
-    "npm-publish:latest": "npm publish --access public --tag latest"
+    "npm-publish:latest": "npm publish --access public --tag latest",
+    "npm-publish:canary": "npm publish --access public --tag canary"
   },
   "dependencies": {
     "@walletconnect/window-getters": "^1.0.1",
