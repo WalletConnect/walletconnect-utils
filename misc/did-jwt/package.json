@@ -1,0 +1,46 @@
+{
+  "name": "@walletconnect/did-jwt",
+  "version": "1.0.0",
+  "description": "Utilities for creating and handling DID-JWTs",
+  "keywords": [
+    "did-jwt",
+    "web3",
+    "utils"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build": "run-s clean build:cjs build:esm",
+    "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 5000 --exit -r ts-node/register ./test/**/*.test.ts",
+    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
+    "npm-publish:latest": "npm publish --access public --tag latest",
+    "npm-publish:canary": "npm publish --access public --tag canary",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "author": "WalletConnect, Inc. <walletconnect.com>",
+  "homepage": "https://github.com/walletconnect/walletconnect-utils",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "browser": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walletconnect/walletconnect-utils.git"
+  },
+  "bugs": {
+    "url": "https://github.com/walletconnect/walletconnect-utils/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@noble/ed25519": "1.7.3",
+    "bs58": "5.0.0",
+    "multiformats": "11.0.2"
+  }
+}
