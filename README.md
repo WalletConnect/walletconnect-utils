@@ -28,7 +28,7 @@ npm run bootstrap
 > which will be generated for you when you set up a new project on [WalletConnect Cloud](https://cloud.walletconnect.com).
 
 ```bash
-TEST_PROJECT_ID=YOUR_PROJEC_ID npm run check
+TEST_PROJECT_ID=YOUR_PROJECT_ID npm run check
 ```
 
 ## License
