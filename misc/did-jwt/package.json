@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/did-jwt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utilities for creating and handling DID-JWTs",
   "keywords": [
     "did-jwt",
