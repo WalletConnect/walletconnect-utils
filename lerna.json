@@ -1,10 +1,5 @@
 {
   "version": "independent",
-  "packages": [
-    "browser/*",
-    "jsonrpc/*",
-    "crypto/*",
-    "misc/*",
-    "relay/*"
-  ]
+  "hoist": true,
+  "packages": ["browser/*", "jsonrpc/*", "crypto/*", "misc/*", "relay/*"]
 }
