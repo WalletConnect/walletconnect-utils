@@ -25,8 +25,8 @@ describe("@walletconnect/safe-json", () => {
       chai.expect(result).to.eql(invalid);
     });
     it("should handle bigint", () => {
-      const result = safeJsonParse(safeJsonStringify({ biging: BigInt(1) }));
-      chai.expect(result).to.deep.eq({ biging: BigInt(1) });
+      const result = safeJsonParse(safeJsonStringify({ bigint: BigInt(1) }));
+      chai.expect(result).to.deep.eq({ bigint: BigInt(1) });
     });
   });
   describe("safeJsonStringify", () => {
