@@ -1,4 +1,7 @@
-/** JSONStringify & JSONParse used from json-with-bigint */
+/**
+ * JSONStringify & JSONParse used from json-with-bigint
+ * source: https://github.com/Ivan-Korolenko/json-with-bigint
+ */
 /* 
   Function to serialize data to JSON string.
   Converts all BigInt values to strings with "n" character at the end.
