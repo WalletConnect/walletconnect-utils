@@ -25,7 +25,7 @@ describe("Payload Id", () => {
     chai.expect(payloadId().toString().length).to.equal(16);
   });
 
-  it("returns an bigint with 19 digits", () => {
+  it("returns a bigint with 19 digits", () => {
     chai.expect(getBigIntRpcId().toString().length).to.equal(19);
   });
 
