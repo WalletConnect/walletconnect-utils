@@ -14,8 +14,6 @@
       "schedule": ["every weekend"]
     },
     {
-      "groupName": "walletconnect",
-      "schedule": ["after 10pm every weekday", "before 5am every weekday"],
       "matchPackagePatterns": ["@walletconnect/*"]
     }
   ]
