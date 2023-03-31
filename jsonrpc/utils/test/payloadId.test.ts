@@ -2,7 +2,7 @@ import "mocha";
 import * as chai from "chai";
 import { delay } from "@walletconnect/timestamp";
 
-import { payloadId } from "../src";
+import { getBigIntRpcId, payloadId } from "../src";
 import { findDuplicates } from "./shared";
 
 describe("Payload Id", () => {
@@ -23,6 +23,10 @@ describe("Payload Id", () => {
 
   it("returns an integer with 16 digits", () => {
     chai.expect(payloadId().toString().length).to.equal(16);
+  });
+
+  it("returns an bigint with 19 digits", () => {
+    chai.expect(getBigIntRpcId().toString().length).to.equal(19);
   });
 
   // Context: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
