@@ -9,6 +9,7 @@ import {
   isJsonRpcResponse,
   formatJsonRpcRequest,
   isJsonRpcError,
+  getBigIntRpcId,
 } from "@walletconnect/jsonrpc-utils";
 
 export class JsonRpcProvider extends IJsonRpcProvider {
@@ -54,7 +55,14 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     request: RequestArguments<Params>,
     context?: any,
   ): Promise<Result> {
-    return this.requestStrict(formatJsonRpcRequest(request.method, request.params || []), context);
+    return this.requestStrict(
+      formatJsonRpcRequest(
+        request.method,
+        request.params || [],
+        getBigIntRpcId().toString() as any,
+      ), // casting to any is required in order to use BigInt as rpcId
+      context,
+    );
   }
 
   // ---------- Protected ----------------------------------------------- //

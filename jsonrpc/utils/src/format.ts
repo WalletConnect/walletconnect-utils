@@ -2,10 +2,14 @@ import { getError, getErrorByCode, isReservedErrorCode, isServerErrorCode } from
 import { INTERNAL_ERROR, SERVER_ERROR } from "./constants";
 import { ErrorResponse, JsonRpcError, JsonRpcRequest, JsonRpcResult } from "./types";
 
-export function payloadId(): number {
-  const date = Date.now() * Math.pow(10, 3);
-  const extra = Math.floor(Math.random() * Math.pow(10, 3));
+export function payloadId(entropy = 3): number {
+  const date = Date.now() * Math.pow(10, entropy);
+  const extra = Math.floor(Math.random() * Math.pow(10, entropy));
   return date + extra;
+}
+
+export function getBigIntRpcId(entropy = 6): bigint {
+  return BigInt(payloadId(entropy));
 }
 
 export function formatJsonRpcRequest<T = any>(
