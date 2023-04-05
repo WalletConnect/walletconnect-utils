@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-ws-connection",
   "description": "WS Connection for JSON-RPC",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@walletconnect/jsonrpc-utils": "^1.0.6",
-    "@walletconnect/safe-json": "^1.0.1",
+    "@walletconnect/safe-json": "^1.0.2",
     "tslib": "1.14.1",
     "ws": "^7.5.1",
     "events": "^3.3.0"
