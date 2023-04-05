@@ -4,7 +4,6 @@
     "config:base",
     ":disableDevDependencies",
     ":prConcurrentLimit10",
-    ":prHourlyLimit2",
     ":semanticCommits",
     ":semanticCommitScope(deps)"
   ],
