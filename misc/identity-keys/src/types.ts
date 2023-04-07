@@ -3,18 +3,14 @@ import { Cacao } from "@walletconnect/cacao";
 export interface RegisterIdentityParams {
   accountId: string;
   onSign: (message: string) => Promise<string>;
-  keyserverUrl?: string;
 }
 
 export interface ResolveIdentityParams {
   publicKey: string;
-  keyserverUrl?: string;
 }
 
 export interface UnregisterIdentityParams {
   account: string;
-  identityKeyPub: string;
-  keyserverUrl?: string;
 }
 
 export interface IdentityKeychain {
@@ -23,15 +19,6 @@ export interface IdentityKeychain {
   identityKeyPriv: string;
   inviteKeyPub: string;
   inviteKeyPriv: string;
-}
-
-export interface IdentityKeyClaim {
-  iat: number;
-  exp: number;
-  iss: string;
-  aud: string;
-  pkh: string;
-  act: string;
 }
 
 export interface JwtHeader {
@@ -53,6 +40,7 @@ export interface IdentityKeyClaims {
 
 export abstract class IIdentityKeys {
   public abstract registerIdentity(params: RegisterIdentityParams): Promise<string>;
-  public abstract resolveIdentity(params: RegisterIdentityParams): Promise<Cacao>;
+  public abstract resolveIdentity(params: ResolveIdentityParams): Promise<Cacao>;
   public abstract unregisterIdentity(params: UnregisterIdentityParams): Promise<void>;
+  public abstract generateIdAuth(accountId: string, payload: IdentityKeyClaims): Promise<string>;
 }

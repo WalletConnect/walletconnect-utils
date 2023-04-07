@@ -5,28 +5,21 @@ import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
 import {
   IIdentityKeys,
-  IdentityKeyClaim,
-  IdentityKeychain,
+  IdentityKeyClaims,
   RegisterIdentityParams,
+  ResolveIdentityParams,
   UnregisterIdentityParams,
 } from "./types";
 import { composeDidPkh, encodeEd25519Key, generateJWT, jwtExp } from "./utils";
 
 const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com/";
 
-interface IClient {
-  identityKeys: {
-    get: (key: string) => IdentityKeychain;
-    set: (key: string, value: IdentityKeychain) => Promise<void>;
-  };
-  core: ICore;
-  keyserverUrl?: string;
-}
+export class IdentityKeys implements IIdentityKeys {
+  private keyserverUrl: string;
 
-export class IdentityKeys<T extends IClient> implements IIdentityKeys {
-  private keyserverUrl = this.client.keyserverUrl || DEFAULT_KEYSERVER_URL;
-
-  constructor(private client: T) {}
+  constructor(private core: ICore, keyServerUrl?: string) {
+    this.keyserverUrl = keyServerUrl ?? DEFAULT_KEYSERVER_URL;
+  }
 
   private generateIdentityKey = async () => {
     const privateKey = ed25519.utils.randomPrivateKey();
@@ -34,19 +27,21 @@ export class IdentityKeys<T extends IClient> implements IIdentityKeys {
 
     const pubKeyHex = ed25519.utils.bytesToHex(publicKey).toLowerCase();
     const privKeyHex = ed25519.utils.bytesToHex(privateKey).toLowerCase();
-    this.client.core.crypto.keychain.set(pubKeyHex, privKeyHex);
+    this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
     return [pubKeyHex, privKeyHex];
   };
 
-  private generateIdAuth = (accountId: string, payload: IdentityKeyClaim) => {
-    const { identityKeyPub, identityKeyPriv } = this.client.identityKeys.get(accountId);
+  public generateIdAuth = async (accountId: string, payload: IdentityKeyClaims) => {
+    const { identityKeyPub, identityKeyPriv } = await this.core.genericStorage.getItem(
+      `${accountId}_identityKeys`,
+    );
 
     return generateJWT([identityKeyPub, identityKeyPriv], payload);
   };
 
   public async registerIdentity({ accountId, onSign }: RegisterIdentityParams): Promise<string> {
     try {
-      const storedKeyPair = this.client.identityKeys.get(accountId);
+      const storedKeyPair = await this.core.genericStorage.getItem(`${accountId}_identityKeys`);
       return storedKeyPair.identityKeyPub;
     } catch {
       const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
@@ -78,12 +73,10 @@ export class IdentityKeys<T extends IClient> implements IIdentityKeys {
 
       // Storing keys after signature creation to prevent having false statement
       // Eg, onSign failing / never resolving but having identity keys stored.
-      this.client.identityKeys.set(accountId, {
+      this.core.genericStorage.setItem(`${accountId}_identityKeys`, {
         identityKeyPriv: privKeyHex,
         identityKeyPub: pubKeyHex,
         accountId,
-        inviteKeyPriv: "",
-        inviteKeyPub: "",
       });
 
       const url = `${this.keyserverUrl}/identity`;
@@ -101,39 +94,54 @@ export class IdentityKeys<T extends IClient> implements IIdentityKeys {
       if (response.status === 200) {
         return didKey;
       }
+
+      this.core.logger.error(`Failed to register on keyserver ${response.status}`);
       throw new Error(`Failed to register on keyserver ${response.status}`);
     }
   }
 
   public async unregisterIdentity({ account }: UnregisterIdentityParams): Promise<void> {
-    const iat = Date.now();
-    const keys = this.client.identityKeys.get(account);
-    const didPublicKey = composeDidPkh(account);
-    const unregisterIdentityPayload = {
-      iat,
-      exp: jwtExp(iat),
-      iss: encodeEd25519Key(keys.identityKeyPub),
-      aud: this.keyserverUrl,
-      pkh: didPublicKey,
-      act: "unregister_identity",
-    };
+    try {
+      const iat = Date.now();
+      const keys = await this.core.genericStorage.getItem(`${account}_identityKeys`);
+      const didPublicKey = composeDidPkh(account);
+      const unregisterIdentityPayload = {
+        iat,
+        exp: jwtExp(iat),
+        iss: encodeEd25519Key(keys.identityKeyPub),
+        aud: this.keyserverUrl,
+        pkh: didPublicKey,
+        act: "unregister_identity",
+      };
 
-    const idAuth = await this.generateIdAuth(account, unregisterIdentityPayload);
+      const idAuth = await this.generateIdAuth(account, unregisterIdentityPayload);
 
-    const url = `${this.keyserverUrl}/identity`;
+      const url = `${this.keyserverUrl}/identity`;
 
-    const response = await axios.delete(url, {
-      data: {
-        idAuth,
-      },
-    });
+      const response = await axios.delete(url, {
+        data: {
+          idAuth,
+        },
+      });
 
-    if (response.status !== 200) {
-      throw new Error(`Failed to unregister on keyserver ${response.status}`);
+      if (response.status !== 200) {
+        throw new Error(`Failed to unregister on keyserver ${response.status}`);
+      }
+    } catch (error) {
+      this.core.logger.error(error);
+      throw error;
     }
   }
 
-  public async resolveIdentity(params: RegisterIdentityParams): Promise<Cacao> {
-    return {} as any;
+  public async resolveIdentity({ publicKey }: ResolveIdentityParams): Promise<Cacao> {
+    const url = `${this.keyserverUrl}/identity?publicKey=${publicKey.split(":")[2]}`;
+
+    try {
+      const { data } = await axios.get<{ value: { cacao: Cacao } }>(url);
+      return data.value.cacao;
+    } catch (e) {
+      this.core.logger.error(e);
+      throw new Error("Failed to resolve identity key");
+    }
   }
 }
