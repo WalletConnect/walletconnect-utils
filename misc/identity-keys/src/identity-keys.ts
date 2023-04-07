@@ -1,16 +1,21 @@
 import * as ed25519 from "@noble/ed25519";
 import { Cacao } from "@walletconnect/cacao";
+import {
+  JwtPayload,
+  composeDidPkh,
+  encodeEd25519Key,
+  generateJWT,
+  jwtExp,
+} from "@walletconnect/did-jwt";
 import { ICore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
 import {
   IIdentityKeys,
-  IdentityKeyClaims,
   RegisterIdentityParams,
   ResolveIdentityParams,
   UnregisterIdentityParams,
 } from "./types";
-import { composeDidPkh, encodeEd25519Key, generateJWT, jwtExp } from "./utils";
 
 const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com/";
 
@@ -31,7 +36,7 @@ export class IdentityKeys implements IIdentityKeys {
     return [pubKeyHex, privKeyHex];
   };
 
-  public generateIdAuth = async (accountId: string, payload: IdentityKeyClaims) => {
+  public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
     const { identityKeyPub, identityKeyPriv } = await this.core.genericStorage.getItem(
       `${accountId}_identityKeys`,
     );
@@ -112,6 +117,7 @@ export class IdentityKeys implements IIdentityKeys {
         aud: this.keyserverUrl,
         pkh: didPublicKey,
         act: "unregister_identity",
+        sub: "identity_keys",
       };
 
       const idAuth = await this.generateIdAuth(account, unregisterIdentityPayload);
