@@ -9,6 +9,7 @@ import {
   isJsonRpcResponse,
   formatJsonRpcRequest,
   isJsonRpcError,
+  getBigIntRpcId,
 } from "@walletconnect/jsonrpc-utils";
 
 export class JsonRpcProvider extends IJsonRpcProvider {
@@ -54,7 +55,14 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     request: RequestArguments<Params>,
     context?: any,
   ): Promise<Result> {
-    return this.requestStrict(formatJsonRpcRequest(request.method, request.params || []), context);
+    return this.requestStrict(
+      formatJsonRpcRequest(
+        request.method,
+        request.params || [],
+        getBigIntRpcId().toString() as any,
+      ), // casting to any is required in order to use BigInt as rpcId
+      context,
+    );
   }
 
   // ---------- Protected ----------------------------------------------- //
@@ -102,6 +110,21 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     }
   }
 
+  protected onClose(event?: CloseEvent): void {
+    // Code 3000 indicates an abnormal closure signalled by the relay -> emit an error in this case.
+    if (event && event.code === 3000) {
+      this.events.emit(
+        "error",
+        new Error(
+          `WebSocket connection closed abnormally with code: ${event.code} ${
+            event.reason ? `(${event.reason})` : ""
+          }`,
+        ),
+      );
+    }
+    this.events.emit("disconnect");
+  }
+
   protected async open(connection: string | IJsonRpcConnection = this.connection) {
     if (this.connection === connection && this.connection.connected) return;
     if (this.connection.connected) this.close();
@@ -124,8 +147,9 @@ export class JsonRpcProvider extends IJsonRpcProvider {
   private registerEventListeners() {
     if (this.hasRegisteredEventListeners) return;
     this.connection.on("payload", (payload: JsonRpcPayload) => this.onPayload(payload));
-    this.connection.on("close", () => this.events.emit("disconnect"));
+    this.connection.on("close", (event?: CloseEvent) => this.onClose(event));
     this.connection.on("error", (error: Error) => this.events.emit("error", error));
+    this.connection.on("register_error", (error: Error) => this.onClose());
     this.hasRegisteredEventListeners = true;
   }
 }

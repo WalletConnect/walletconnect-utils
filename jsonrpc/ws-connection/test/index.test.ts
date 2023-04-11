@@ -65,14 +65,46 @@ describe("@walletconnect/jsonrpc-ws-connection", () => {
       await conn.open();
       chai.expect(conn.connected).to.be.true;
     });
-    it("surfaces an error if `wss:` URL is valid but connection cannot be made", async () => {
-      const conn = new WsConnection(await formatRelayUrl());
+    it("rejects with an error if `wss:` URL is valid but connection cannot be made", async () => {
+      const auth = await signJWT(RELAY_URL);
+      const rpcUrlWithoutProjectId = formatRelayRpcUrl({
+        protocol: "wc",
+        version: 2,
+        sdkVersion: version,
+        relayUrl: RELAY_URL,
+        auth,
+      });
+      const conn = new WsConnection(rpcUrlWithoutProjectId);
+      let expectedError: Error | undefined;
+
       try {
         await conn.open();
       } catch (error) {
-        chai.expect(error instanceof Error).to.be.true;
-        chai.expect(error.message).to.equal("Unexpected server response: 400");
+        expectedError = error;
       }
+      chai.expect(expectedError instanceof Error).to.be.true;
+      chai.expect((expectedError as Error).message).to.equal("Unexpected server response: 400");
+    });
+
+    it("surfaces the failure code and reason onClose if `useOnCloseEvent=true` is passed", async () => {
+      const auth = await signJWT(RELAY_URL);
+      const rpcUrlWithoutProjectId = formatRelayRpcUrl({
+        protocol: "wc",
+        version: 2,
+        sdkVersion: version,
+        relayUrl: RELAY_URL,
+        auth,
+      });
+      const conn = new WsConnection(rpcUrlWithoutProjectId + "&useOnCloseEvent=true");
+
+      await new Promise<void>(async resolve => {
+        conn.once("close", (event: CloseEvent) => {
+          chai.expect(event.code).to.equal(3000);
+          chai.expect(event.reason).to.equal("Authorization error: Project ID is missing");
+          resolve();
+        });
+        await conn.open();
+      });
     });
   });
 });

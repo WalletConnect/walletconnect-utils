@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-utils",
   "description": "Utilities for JSON-RPC",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -38,7 +38,10 @@
     "build:esm": "npx tsc -p tsconfig.esm.json",
     "build": "run-s build:pre build:cjs build:esm build:umd",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha -r ts-node/register ./test/**/*.{test,spec}.ts",
-    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
+    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
+    "npm-publish:latest": "npm publish --access public --tag latest",
+    "npm-publish:canary": "npm publish --access public --tag canary",
+    "prepublishOnly": "npm run test && npm run build"
   },
   "dependencies": {
     "@walletconnect/environment": "^1.0.1",

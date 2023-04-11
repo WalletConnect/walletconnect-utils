@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-ws-connection",
   "description": "WS Connection for JSON-RPC",
-  "version": "1.0.7",
+  "version": "1.0.11",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -38,11 +38,14 @@
     "build:esm": "npx tsc -p tsconfig.esm.json",
     "build": "run-s build:pre build:cjs build:esm build:umd",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 5000 --exit -r ts-node/register ./test/**/*.test.ts",
-    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'"
+    "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
+    "npm-publish:latest": "npm publish --access public --tag latest",
+    "npm-publish:canary": "npm publish --access public --tag canary",
+    "prepublishOnly": "npm run test && npm run build"
   },
   "dependencies": {
-    "@walletconnect/jsonrpc-utils": "^1.0.4",
-    "@walletconnect/safe-json": "^1.0.1",
+    "@walletconnect/jsonrpc-utils": "^1.0.6",
+    "@walletconnect/safe-json": "^1.0.2",
     "tslib": "1.14.1",
     "ws": "^7.5.1",
     "events": "^3.3.0"
