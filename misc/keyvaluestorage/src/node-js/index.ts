@@ -1,4 +1,4 @@
-import { safeJsonParse, safeJsonStringify } from "safe-json-utils";
+import { safeJsonParse, safeJsonStringify } from "@walletconnect/safe-json";
 
 import { IKeyValueStorage, KeyValueStorageOptions } from "../shared";
 
