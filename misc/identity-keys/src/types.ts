@@ -14,6 +14,12 @@ export interface UnregisterIdentityParams {
   account: string;
 }
 
+export interface IdentityKeychain {
+  accountId: string;
+  identityKeyPub: string;
+  identityKeyPriv: string;
+}
+
 export abstract class IIdentityKeys {
   public abstract registerIdentity(params: RegisterIdentityParams): Promise<string>;
   public abstract resolveIdentity(params: ResolveIdentityParams): Promise<Cacao>;

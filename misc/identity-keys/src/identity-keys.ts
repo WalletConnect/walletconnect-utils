@@ -1,5 +1,6 @@
 import * as ed25519 from "@noble/ed25519";
 import { Cacao } from "@walletconnect/cacao";
+import { Store } from "@walletconnect/core";
 import {
   JwtPayload,
   composeDidPkh,
@@ -7,23 +8,33 @@ import {
   generateJWT,
   jwtExp,
 } from "@walletconnect/did-jwt";
-import { ICore } from "@walletconnect/types";
+import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
 import {
   IIdentityKeys,
+  IdentityKeychain,
   RegisterIdentityParams,
   ResolveIdentityParams,
   UnregisterIdentityParams,
 } from "./types";
 
 const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com/";
+const IDENTITY_KEYS_STORAGE_PREFIX = "wc@2:identityKeys";
 
 export class IdentityKeys implements IIdentityKeys {
   private keyserverUrl: string;
+  private identityKeys: IStore<IdentityKeychain["accountId"], IdentityKeychain>;
 
   constructor(private core: ICore, keyServerUrl?: string) {
     this.keyserverUrl = keyServerUrl ?? DEFAULT_KEYSERVER_URL;
+    this.identityKeys = new Store(
+      core,
+      this.core.logger,
+      "identityKeys",
+      IDENTITY_KEYS_STORAGE_PREFIX,
+      (keys: IdentityKeychain) => keys.accountId,
+    );
   }
 
   private generateIdentityKey = async () => {
@@ -37,16 +48,14 @@ export class IdentityKeys implements IIdentityKeys {
   };
 
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
-    const { identityKeyPub, identityKeyPriv } = await this.core.genericStorage.getItem(
-      `${accountId}_identityKeys`,
-    );
+    const { identityKeyPub, identityKeyPriv } = this.identityKeys.get(`${accountId}_identityKeys`);
 
     return generateJWT([identityKeyPub, identityKeyPriv], payload);
   };
 
   public async registerIdentity({ accountId, onSign }: RegisterIdentityParams): Promise<string> {
     try {
-      const storedKeyPair = await this.core.genericStorage.getItem(`${accountId}_identityKeys`);
+      const storedKeyPair = this.identityKeys.get(`${accountId}_identityKeys`);
       return storedKeyPair.identityKeyPub;
     } catch {
       const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
@@ -78,7 +87,7 @@ export class IdentityKeys implements IIdentityKeys {
 
       // Storing keys after signature creation to prevent having false statement
       // Eg, onSign failing / never resolving but having identity keys stored.
-      this.core.genericStorage.setItem(`${accountId}_identityKeys`, {
+      this.identityKeys.set(`${accountId}_identityKeys`, {
         identityKeyPriv: privKeyHex,
         identityKeyPub: pubKeyHex,
         accountId,
@@ -108,7 +117,7 @@ export class IdentityKeys implements IIdentityKeys {
   public async unregisterIdentity({ account }: UnregisterIdentityParams): Promise<void> {
     try {
       const iat = Date.now();
-      const keys = await this.core.genericStorage.getItem(`${account}_identityKeys`);
+      const keys = this.identityKeys.get(`${account}_identityKeys`);
       const didPublicKey = composeDidPkh(account);
       const unregisterIdentityPayload = {
         iat,
