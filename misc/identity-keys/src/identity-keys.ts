@@ -48,14 +48,14 @@ export class IdentityKeys implements IIdentityKeys {
   };
 
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
-    const { identityKeyPub, identityKeyPriv } = this.identityKeys.get(`${accountId}_identityKeys`);
+    const { identityKeyPub, identityKeyPriv } = this.identityKeys.get(accountId);
 
     return generateJWT([identityKeyPub, identityKeyPriv], payload);
   };
 
   public async registerIdentity({ accountId, onSign }: RegisterIdentityParams): Promise<string> {
     try {
-      const storedKeyPair = this.identityKeys.get(`${accountId}_identityKeys`);
+      const storedKeyPair = this.identityKeys.get(accountId);
       return storedKeyPair.identityKeyPub;
     } catch {
       const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
@@ -87,7 +87,7 @@ export class IdentityKeys implements IIdentityKeys {
 
       // Storing keys after signature creation to prevent having false statement
       // Eg, onSign failing / never resolving but having identity keys stored.
-      this.identityKeys.set(`${accountId}_identityKeys`, {
+      this.identityKeys.set(accountId, {
         identityKeyPriv: privKeyHex,
         identityKeyPub: pubKeyHex,
         accountId,
