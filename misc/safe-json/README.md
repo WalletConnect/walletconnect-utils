@@ -1,4 +1,4 @@
-# safe-json-utils [![npm version](https://badge.fury.io/js/safe-json-utils.svg)](https://badge.fury.io/js/safe-json-utils)
+# @walletconnect/safe-json [![npm version](https://badge.fury.io/js/@walletconnect/safe-json.svg)](https://badge.fury.io/js/@walletconnect/safe-json)
 
 Safe Json Utils
 
