@@ -83,7 +83,7 @@ export class HttpConnection implements IJsonRpcConnection {
       const data = await res.json();
       this.onPayload({ data });
     } catch (e) {
-      this.onError(payload.id, e);
+      this.onError(payload.id, e as any);
     }
   }
 
@@ -122,7 +122,7 @@ export class HttpConnection implements IJsonRpcConnection {
       await fetch(url, { ...DEFAULT_FETCH_OPTS, body });
       this.onOpen();
     } catch (e) {
-      const error = this.parseError(e);
+      const error = this.parseError(e as any);
       this.events.emit("register_error", error);
       this.onClose();
       throw error;

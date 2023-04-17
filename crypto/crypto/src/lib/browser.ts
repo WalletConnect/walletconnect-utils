@@ -94,6 +94,7 @@ export async function browserHmacSha256Sign(
   const cryptoKey = await browserImportKey(key, HMAC_BROWSER);
   const signature = await subtle.sign(
     {
+      // @ts-expect-error
       length: HMAC_LENGTH,
       name: HMAC_BROWSER,
     },
@@ -111,6 +112,7 @@ export async function browserHmacSha512Sign(
   const cryptoKey = await browserImportKey(key, HMAC_BROWSER);
   const signature = await subtle.sign(
     {
+      // @ts-expect-error
       length: LENGTH_512,
       name: HMAC_BROWSER,
     },
