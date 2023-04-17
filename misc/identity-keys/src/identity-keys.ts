@@ -37,6 +37,10 @@ export class IdentityKeys implements IIdentityKeys {
     );
   }
 
+  public init = async () => {
+    await this.identityKeys.init();
+  };
+
   private generateIdentityKey = async () => {
     const privateKey = ed25519.utils.randomPrivateKey();
     const publicKey = await ed25519.getPublicKey(privateKey);
