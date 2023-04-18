@@ -14,6 +14,10 @@ export interface UnregisterIdentityParams {
   account: string;
 }
 
+export interface GetIdentityParams {
+  account: string;
+}
+
 export interface IdentityKeychain {
   accountId: string;
   identityKeyPub: string;

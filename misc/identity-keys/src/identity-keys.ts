@@ -17,6 +17,7 @@ import {
   RegisterIdentityParams,
   ResolveIdentityParams,
   UnregisterIdentityParams,
+  GetIdentityParams,
 } from "./types";
 
 const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com";
@@ -166,5 +167,9 @@ export class IdentityKeys implements IIdentityKeys {
       this.core.logger.error(e);
       throw new Error("Failed to resolve identity key");
     }
+  }
+
+  public async getIdentity({ account }: GetIdentityParams): Promise<string> {
+    return this.identityKeys.get(account).identityKeyPub;
   }
 }
