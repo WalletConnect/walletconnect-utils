@@ -19,7 +19,7 @@ import {
   UnregisterIdentityParams,
 } from "./types";
 
-const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com/";
+const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com";
 const IDENTITY_KEYS_STORAGE_PREFIX = "wc@2:identityKeys";
 
 export class IdentityKeys implements IIdentityKeys {
