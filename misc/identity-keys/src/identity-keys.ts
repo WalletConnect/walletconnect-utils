@@ -126,7 +126,7 @@ export class IdentityKeys implements IIdentityKeys {
   public async unregisterIdentity({ account }: UnregisterIdentityParams): Promise<void> {
     try {
       const iat = Date.now();
-      const keys = this.identityKeys.get(`${account}_identityKeys`);
+      const keys = this.identityKeys.get(account);
       const didPublicKey = composeDidPkh(account);
       const unregisterIdentityPayload = {
         iat,
