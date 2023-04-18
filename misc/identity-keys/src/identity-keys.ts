@@ -58,63 +58,67 @@ export class IdentityKeys implements IIdentityKeys {
   };
 
   public async registerIdentity({ accountId, onSign }: RegisterIdentityParams): Promise<string> {
-    try {
+    if (this.identityKeys.keys.includes(accountId)) {
       const storedKeyPair = this.identityKeys.get(accountId);
       return storedKeyPair.identityKeyPub;
-    } catch {
-      const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
-      const didKey = encodeEd25519Key(pubKeyHex);
+    } else {
+      try {
+        const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
+        const didKey = encodeEd25519Key(pubKeyHex);
 
-      const cacao: Cacao = {
-        h: {
-          t: "eip4361",
-        },
-        p: {
-          aud: this.keyserverUrl,
-          statement: "Test",
-          domain: this.keyserverUrl,
-          iss: composeDidPkh(accountId),
-          nonce: generateRandomBytes32(),
-          iat: new Date().toISOString(),
-          version: "1",
-          resources: [didKey],
-        },
-        s: {
-          t: "eip191",
-          s: "",
-        },
-      };
-
-      const cacaoMessage = formatMessage(cacao.p, composeDidPkh(accountId));
-
-      const signature = await onSign(cacaoMessage);
-
-      // Storing keys after signature creation to prevent having false statement
-      // Eg, onSign failing / never resolving but having identity keys stored.
-      this.identityKeys.set(accountId, {
-        identityKeyPriv: privKeyHex,
-        identityKeyPub: pubKeyHex,
-        accountId,
-      });
-
-      const url = `${this.keyserverUrl}/identity`;
-
-      const response = await axios.post(url, {
-        cacao: {
-          ...cacao,
-          s: {
-            ...cacao.s,
-            s: signature,
+        const cacao: Cacao = {
+          h: {
+            t: "eip4361",
           },
-        },
-      });
+          p: {
+            aud: this.keyserverUrl,
+            statement: "Test",
+            domain: this.keyserverUrl,
+            iss: composeDidPkh(accountId),
+            nonce: generateRandomBytes32(),
+            iat: new Date().toISOString(),
+            version: "1",
+            resources: [didKey],
+          },
+          s: {
+            t: "eip191",
+            s: "",
+          },
+        };
 
-      if (response.status === 200) {
-        return didKey;
+        const cacaoMessage = formatMessage(cacao.p, composeDidPkh(accountId));
+
+        const signature = await onSign(cacaoMessage);
+
+        // Storing keys after signature creation to prevent having false statement
+        // Eg, onSign failing / never resolving but having identity keys stored.
+        this.identityKeys.set(accountId, {
+          identityKeyPriv: privKeyHex,
+          identityKeyPub: pubKeyHex,
+          accountId,
+        });
+
+        const url = `${this.keyserverUrl}/identity`;
+
+        const response = await axios.post(url, {
+          cacao: {
+            ...cacao,
+            s: {
+              ...cacao.s,
+              s: signature,
+            },
+          },
+        });
+
+        if (response.status === 200) {
+          return didKey;
+        }
+
+        throw new Error(`Failed to register on keyserver ${response.status}`);
+      } catch (error) {
+        this.core.logger.error(error);
+        throw error;
       }
-
-      this.core.logger.error(`Failed to register on keyserver ${response.status}`);
-      throw new Error(`Failed to register on keyserver ${response.status}`);
     }
   }
 
