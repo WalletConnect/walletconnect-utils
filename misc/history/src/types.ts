@@ -1,28 +1,27 @@
 export type Direction = "forward" | "backward";
 
-interface AuthenticationPayload {
-  clientId: string;
-}
-
-interface RegisterParams {
+export interface RegisterPayload {
   tags: string[];
   relayUrl: string;
 }
 
-interface GetMessagesParams {
+export interface GetMessagesPayload {
   topic: string;
   originId: number;
   messageCount: number;
   direction: Direction;
 }
 
+export interface Message {
+  message: string;
+  message_id: string;
+  topic: string;
+  client_id: string;
+}
+
 export interface GetMessagesResponse {
   topic: string;
   direction: Direction;
   nextId: number;
-  messages: string[];
+  messages: Message[];
 }
-
-export type RegisterPayload = RegisterParams & AuthenticationPayload;
-
-export type GetMessagesPayload = GetMessagesParams & AuthenticationPayload;
