@@ -21,7 +21,7 @@ import {
 } from "./types";
 
 const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com";
-const IDENTITY_KEYS_STORAGE_PREFIX = "wc@2:identityKeys";
+const IDENTITY_KEYS_STORAGE_PREFIX = "wc@2:identityKeys:";
 
 export class IdentityKeys implements IIdentityKeys {
   private keyserverUrl: string;
