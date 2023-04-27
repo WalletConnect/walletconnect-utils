@@ -13,4 +13,5 @@ export interface JwtPayload {
   ksu?: string;
   pkh?: string;
   pke?: string;
+  scp?: string;
 }
