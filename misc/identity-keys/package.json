@@ -50,7 +50,7 @@
     "@walletconnect/core": "2.7.1",
     "@walletconnect/did-jwt": "2.0.1",
     "@walletconnect/types": "2.7.1",
-    "@walletconnect/utils": "2.7.1",
+    "@walletconnect/utils": "2.7.3",
     "axios": "^1.3.5",
     "bs58": "^5.0.0"
   }
