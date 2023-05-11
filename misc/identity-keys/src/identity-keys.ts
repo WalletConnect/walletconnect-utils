@@ -111,11 +111,11 @@ export class IdentityKeys implements IIdentityKeys {
           },
         });
 
-        if (response.status === 200) {
-          return didKey;
+        if (response.status !== 200) {
+          throw new Error(`Failed to register on keyserver ${response.status}`);
         }
 
-        throw new Error(`Failed to register on keyserver ${response.status}`);
+        return pubKeyHex;
       } catch (error) {
         this.core.logger.error(error);
         throw error;
