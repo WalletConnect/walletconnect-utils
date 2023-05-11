@@ -41,19 +41,19 @@ export class HistoryClient {
     const params = new URLSearchParams(entries);
 
     try {
+      const url = `${historyUrl}/messages?${params.toString()}`
       const rs: GetMessagesResponse = await (
-        await fetch(`${historyUrl}?${params.toString}`, {
+        await fetch(url, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: await this.getJwt(),
           },
         })
       ).json();
 
       return new HistoricalMessages(this.core, rs);
     } catch (e) {
-      throw new Error("Failed to fetch messages");
+      throw new Error(`Failed to fetch messages` );
     }
   }
 

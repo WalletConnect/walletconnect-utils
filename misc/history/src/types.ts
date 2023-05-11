@@ -7,9 +7,9 @@ export interface RegisterPayload {
 
 export interface GetMessagesPayload {
   topic: string;
-  originId: number;
-  messageCount: number;
-  direction: Direction;
+  originId?: number;
+  messageCount?: number;
+  direction?: Direction;
 }
 
 export interface Message {
