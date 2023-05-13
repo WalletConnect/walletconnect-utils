@@ -31,6 +31,10 @@ npm run bootstrap
 TEST_PROJECT_ID=YOUR_PROJECT_ID npm run check
 ```
 
+## Troubleshooting
+If you recieve a build error when running the test that says   
+```reason: unsupported``` or ```digital envelop routines unsupported```  
+Try node version 16
 ## License
 
 MIT
