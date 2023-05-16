@@ -1,4 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
+import { sha512 } from "@noble/hashes/sha512";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
@@ -12,13 +13,16 @@ import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
 import {
+  GetIdentityParams,
   IIdentityKeys,
   IdentityKeychain,
   RegisterIdentityParams,
   ResolveIdentityParams,
   UnregisterIdentityParams,
-  GetIdentityParams,
 } from "./types";
+
+// Shim sha512Sync for react-native compatibility
+ed25519.etc.sha512Sync = (...m) => sha512(ed25519.etc.concatBytes(...m));
 
 const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com";
 const IDENTITY_KEYS_STORAGE_PREFIX = "wc@2:identityKeys:";
@@ -44,10 +48,10 @@ export class IdentityKeys implements IIdentityKeys {
 
   private generateIdentityKey = async () => {
     const privateKey = ed25519.utils.randomPrivateKey();
-    const publicKey = await ed25519.getPublicKey(privateKey);
+    const publicKey = ed25519.getPublicKey(privateKey);
 
-    const pubKeyHex = ed25519.utils.bytesToHex(publicKey).toLowerCase();
-    const privKeyHex = ed25519.utils.bytesToHex(privateKey).toLowerCase();
+    const pubKeyHex = ed25519.etc.bytesToHex(publicKey).toLowerCase();
+    const privKeyHex = ed25519.etc.bytesToHex(privateKey).toLowerCase();
     this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
     return [pubKeyHex, privKeyHex];
   };
