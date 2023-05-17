@@ -59,7 +59,7 @@ export class JsonRpcProvider extends IJsonRpcProvider {
       formatJsonRpcRequest(
         request.method,
         request.params || [],
-        getBigIntRpcId().toString() as any,
+        request.id || (getBigIntRpcId().toString() as any),
       ), // casting to any is required in order to use BigInt as rpcId
       context,
     );

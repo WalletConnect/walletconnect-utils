@@ -6,6 +6,7 @@ export interface JsonRpcProviderMessage<T = any> {
 export interface RequestArguments<T = any> {
   method: string;
   params?: T;
+  id?: number;
 }
 
 export interface JsonRpcRequest<T = any> extends Required<RequestArguments<T>> {
