@@ -31,11 +31,12 @@ export class HttpConnection implements IJsonRpcConnection {
 
   private registering = false;
 
-  constructor(public url: string) {
+  constructor(public url: string, public disableProviderPing = false) {
     if (!isHttpUrl(url)) {
       throw new Error(`Provided URL is not compatible with HTTP connection: ${url}`);
     }
     this.url = url;
+    this.disableProviderPing = disableProviderPing;
   }
 
   get connected(): boolean {
@@ -118,8 +119,10 @@ export class HttpConnection implements IJsonRpcConnection {
     this.url = url;
     this.registering = true;
     try {
-      const body = safeJsonStringify({ id: 1, jsonrpc: "2.0", method: "test", params: [] });
-      await fetch(url, { ...DEFAULT_FETCH_OPTS, body });
+      if (!this.disableProviderPing) {
+        const body = safeJsonStringify({ id: 1, jsonrpc: "2.0", method: "test", params: [] });
+        await fetch(url, { ...DEFAULT_FETCH_OPTS, body });
+      }
       this.onOpen();
     } catch (e) {
       const error = this.parseError(e as any);
