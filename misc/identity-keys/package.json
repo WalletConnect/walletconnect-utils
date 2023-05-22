@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/identity-keys",
-  "version": "0.1.5-caacbfd",
+  "version": "0.1.5-35a485c",
   "description": "Utilities to register, resolve and unregister identity keys",
   "keywords": [
     "identity",
@@ -10,7 +10,6 @@
     "web3",
     "utils"
   ],
-  "type": "commonjs",
   "scripts": {
     "clean": "rm -rf dist",
     "build:cjs": "tsc -p tsconfig.cjs.json",

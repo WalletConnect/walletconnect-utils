@@ -69,6 +69,7 @@ export class IdentityKeys implements IIdentityKeys {
     } else {
       try {
         const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
+        this.core.logger.debug("IdentityKeys > Identity generated successfully");
         const didKey = encodeEd25519Key(pubKeyHex);
 
         const cacao: Cacao = {
