@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/identity-keys",
-  "version": "0.1.5-35a485c",
+  "version": "0.1.5-520cd21",
   "description": "Utilities to register, resolve and unregister identity keys",
   "keywords": [
     "identity",
@@ -22,6 +22,7 @@
     "npm-publish:canary": "npm publish --access public --tag canary",
     "prepublishOnly": "npm run test && npm run build"
   },
+  "type": "module",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/tree/master/misc/identity-keys",
   "license": "MIT",
