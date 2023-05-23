@@ -1,4 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
+import { sha512 } from "@noble/hashes/sha512";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
@@ -21,7 +22,7 @@ import {
 } from "./types";
 
 // Shim sha512Sync for react-native compatibility
-// ed25519.etc.sha512Sync = (...m) => sha512(ed25519.etc.concatBytes(...m));
+ed25519.etc.sha512Sync = (...m) => sha512(ed25519.etc.concatBytes(...m));
 
 const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com";
 const IDENTITY_KEYS_STORAGE_PREFIX = "wc@2:identityKeys:";
