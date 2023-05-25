@@ -1,6 +1,7 @@
 // import { sha512 } from "@noble/hashes/sha512";
-import { generateKeyPair } from "@stablelib/ed25519";
+import { generateKeyPairFromSeed } from "@stablelib/ed25519";
 import { encode } from "@stablelib/hex";
+import { randomBytes } from "@stablelib/random";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
@@ -49,11 +50,14 @@ export class IdentityKeys implements IIdentityKeys {
 
   private generateIdentityKey = async () => {
     this.core.logger.debug("IdentityKeys > Generating Key Pair");
-    const { publicKey, secretKey: privateKey } = generateKeyPair();
+    const randomSeed = randomBytes(32);
+    const { publicKey, secretKey: privateKey } = generateKeyPairFromSeed(randomSeed);
     this.core.logger.debug("IdentityKeys > Identity Key Pair generated");
     const pubKeyHex = encode(publicKey, true);
     const privKeyHex = encode(privateKey, true);
-    this.core.logger.debug("IdentityKeys > Keys formatted");
+    this.core.logger.debug(
+      `IdentityKeys > Keys formatted, pubKeyHex length: ${pubKeyHex.length}, privKeyHex lenght: ${privKeyHex.length}`,
+    );
     this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
     return [pubKeyHex, privKeyHex];
   };
