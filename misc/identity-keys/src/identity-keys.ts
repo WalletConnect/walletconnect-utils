@@ -54,7 +54,7 @@ export class IdentityKeys implements IIdentityKeys {
     const { publicKey, secretKey: privateKey } = generateKeyPairFromSeed(randomSeed);
     this.core.logger.debug("IdentityKeys > Identity Key Pair generated");
     const pubKeyHex = encode(publicKey, true);
-    const privKeyHex = encode(privateKey.slice(0, 32), true);
+    const privKeyHex = encode(privateKey, true);
     this.core.logger.debug(
       `IdentityKeys > Keys formatted, pubKeyHex length: ${pubKeyHex.length}, privKeyHex length: ${privKeyHex.length}`,
     );
