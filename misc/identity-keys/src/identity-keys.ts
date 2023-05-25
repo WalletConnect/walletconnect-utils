@@ -5,19 +5,19 @@ import { randomBytes } from "@stablelib/random";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
-  JwtPayload,
   composeDidPkh,
   encodeEd25519Key,
   generateJWT,
   jwtExp,
+  JwtPayload,
 } from "@walletconnect/did-jwt";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
 import {
   GetIdentityParams,
-  IIdentityKeys,
   IdentityKeychain,
+  IIdentityKeys,
   RegisterIdentityParams,
   ResolveIdentityParams,
   UnregisterIdentityParams,
@@ -54,7 +54,7 @@ export class IdentityKeys implements IIdentityKeys {
     const { publicKey, secretKey: privateKey } = generateKeyPairFromSeed(randomSeed);
     this.core.logger.debug("IdentityKeys > Identity Key Pair generated");
     const pubKeyHex = encode(publicKey, true);
-    const privKeyHex = encode(privateKey, true);
+    const privKeyHex = encode(privateKey.slice(0, 32), true);
     this.core.logger.debug(
       `IdentityKeys > Keys formatted, pubKeyHex length: ${pubKeyHex.length}, privKeyHex length: ${privKeyHex.length}`,
     );
