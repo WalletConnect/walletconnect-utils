@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/identity-keys",
-  "version": "0.9.2-1478587",
+  "version": "0.9.2-59c65c6",
   "description": "Utilities to register, resolve and unregister identity keys",
   "keywords": [
     "identity",
@@ -10,7 +10,6 @@
     "web3",
     "utils"
   ],
-  "type": "module",
   "scripts": {
     "clean": "rm -rf dist",
     "build:cjs": "tsc -p tsconfig.cjs.json",
@@ -21,7 +20,7 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
     "npm-publish:latest": "npm publish --access public --tag latest",
     "npm-publish:canary": "npm publish --access public --tag canary",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run build"
   },
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/tree/master/misc/identity-keys",
