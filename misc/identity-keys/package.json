@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/identity-keys",
-  "version": "0.1.5-7113b60",
+  "version": "0.1.5-06de85d",
   "description": "Utilities to register, resolve and unregister identity keys",
   "keywords": [
     "identity",
