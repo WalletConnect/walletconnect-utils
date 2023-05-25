@@ -7,6 +7,7 @@
     "module": "commonjs",
     "incremental": true,
     "noUnusedLocals": false,
-    "strict": false
+    "strict": false,
+    "importHelpers": false
   }
 }
