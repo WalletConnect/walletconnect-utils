@@ -54,6 +54,7 @@ export class IdentityKeys implements IIdentityKeys {
     const pubKeyHex = encode(publicKey, true);
     const privKeyHex = encode(privateKey, true);
     this.core.logger.debug("IdentityKeys > Keys formatted");
+    this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
     return [pubKeyHex, privKeyHex];
   };
 
