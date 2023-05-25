@@ -1,5 +1,6 @@
 import * as ed25519 from "@noble/ed25519";
 import { sha512 } from "@noble/hashes/sha512";
+import { generateKeyPair } from "@stablelib/ed25519";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
@@ -47,12 +48,12 @@ export class IdentityKeys implements IIdentityKeys {
   };
 
   private generateIdentityKey = async () => {
-    const privateKey = ed25519.utils.randomPrivateKey();
-    const publicKey = ed25519.getPublicKey(privateKey);
-
+    this.core.logger.debug("IdentityKeys > Generating Key Pair");
+    const { publicKey, secretKey: privateKey } = generateKeyPair();
+    this.core.logger.debug("IdentityKeys > Identity Key Pair generated");
     const pubKeyHex = ed25519.etc.bytesToHex(publicKey).toLowerCase();
     const privKeyHex = ed25519.etc.bytesToHex(privateKey).toLowerCase();
-    this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
+    this.core.logger.debug("IdentityKeys > Keys formatted");
     return [pubKeyHex, privKeyHex];
   };
 
