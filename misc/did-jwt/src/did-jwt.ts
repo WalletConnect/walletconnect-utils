@@ -1,4 +1,4 @@
-import * as ed25519 from "@noble/ed25519";
+import { sign } from "@stablelib/ed25519";
 import { decode, encode } from "@stablelib/hex";
 import bs58 from "bs58";
 import { base58btc } from "multiformats/bases/base58";
@@ -83,7 +83,7 @@ export const generateJWT = async (identityKeyPair: [string, string], payload: Jw
   };
   const data = new TextEncoder().encode(encodeData(header, payload));
 
-  const signature = await ed25519.sign(data, privateKey);
+  const signature = sign(decode(privateKey), data);
 
   return encodeJwt(header, payload, signature);
 };
