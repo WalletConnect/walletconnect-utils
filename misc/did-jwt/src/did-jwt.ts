@@ -74,7 +74,7 @@ export const decodeX25519Key = (encoded: string) => {
   return publicKey;
 };
 
-export const generateJWT = async (identityKeyPair: [string, string], payload: JwtPayload) => {
+export const generateJWT = async (identityKeyPair: string[], payload: JwtPayload) => {
   const [, privateKey] = identityKeyPair;
 
   const header: JwtHeader = {

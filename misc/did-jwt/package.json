@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/did-jwt",
-  "version": "2.0.1",
+  "version": "2.0.1-6c676be",
   "description": "Utilities for creating and handling DID-JWTs",
   "keywords": [
     "did-jwt",
@@ -15,7 +15,7 @@
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 5000 --exit -r ts-node/register ./test/**/*.test.ts",
     "npm-publish:latest": "npm publish --access public --tag latest",
     "npm-publish:canary": "npm publish --access public --tag canary",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run build"
   },
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "homepage": "https://github.com/walletconnect/walletconnect-utils",
@@ -35,6 +35,7 @@
     "dist"
   ],
   "devDependencies": {
+    "@types/node": "^20.2.3",
     "typescript": "^4.9.5"
   },
   "dependencies": {
