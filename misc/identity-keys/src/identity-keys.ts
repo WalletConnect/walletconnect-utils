@@ -65,8 +65,10 @@ export class IdentityKeys implements IIdentityKeys {
 
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
     const { identityKeyPub, identityKeyPriv } = this.identityKeys.get(accountId);
-
-    return generateJWT([identityKeyPub, identityKeyPriv], payload);
+    this.core.logger.debug("IdentityKeys > Generating JWT");
+    const jwt = await generateJWT([identityKeyPub, identityKeyPriv], payload);
+    this.core.logger.debug("IdentityKeys > JWT generated successfully");
+    return jwt;
   };
 
   public async registerIdentity({ accountId, onSign }: RegisterIdentityParams): Promise<string> {
