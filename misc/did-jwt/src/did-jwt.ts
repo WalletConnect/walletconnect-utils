@@ -1,4 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
+import { sha512 } from "@noble/hashes/sha512";
 import { sign } from "@stablelib/ed25519";
 import { decode, encode } from "@stablelib/hex";
 import bs58 from "bs58";
@@ -15,6 +16,7 @@ import {
 } from "./constants";
 import { concatUInt8Arrays, makeBase64UrlSafe, objectToHex } from "./helpers";
 import { JwtHeader, JwtPayload } from "./types";
+ed25519.etc.sha512Sync = (...m) => sha512(ed25519.etc.concatBytes(...m));
 
 export const composeDidPkh = (accountId: string) => {
   return `${DID_PREFIX}${DID_DELIMITER}${DID_METHOD_PKH}${DID_DELIMITER}${accountId}`;
@@ -88,22 +90,16 @@ export const generateJWT = async (identityKeyPair: [string, string], payload: Jw
 
   console.log("did-jwt > generating signature");
   try {
-    const signature = await ed25519.signAsync(encode(data), privateKey);
-    console.log("Signature generated using ed25519.signAsync(encode(data), privateKey)");
+    const signature = ed25519.sign(encode(data), privateKey);
+    console.log("Signature generated using ed25519.sign(encode(data), privateKey)");
     return encodeJwt(header, payload, signature);
   } catch (error) {
     try {
-      const signature = await ed25519.signAsync(data, privateKey);
-      console.log("Signature generated using ed25519.signAsync(data, privateKey)");
+      const signature = sign(decode(privateKey), data);
+      console.log("Signature generated using sign(decode(privateKey), data)");
       return encodeJwt(header, payload, signature);
     } catch (error) {
-      try {
-        const signature = sign(decode(privateKey), data);
-        console.log("Signature generated using sign(decode(privateKey), data)");
-        return encodeJwt(header, payload, signature);
-      } catch (error) {
-        throw new Error(`did-jwt > Failed to generate signature: ${error}`);
-      }
+      throw new Error(`did-jwt > Failed to generate signature: ${error}`);
     }
   }
 };

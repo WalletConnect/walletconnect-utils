@@ -10,7 +10,7 @@ import {
   generateJWT,
   jwtExp,
   JwtPayload,
-} from "@walletconnect/did-jwt";
+} from "@walletconnect/did-jwt/dist/esm";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
@@ -54,7 +54,7 @@ export class IdentityKeys implements IIdentityKeys {
     const { publicKey, secretKey: privateKey } = generateKeyPairFromSeed(randomSeed);
     this.core.logger.debug("IdentityKeys > Identity Key Pair generated");
     const pubKeyHex = encode(publicKey, true);
-    const privKeyHex = encode(privateKey.slice(0, 32), true);
+    const privKeyHex = encode(privateKey, true);
     this.core.logger.debug(
       `IdentityKeys > Keys formatted, pubKeyHex length: ${pubKeyHex.length}, privKeyHex length: ${privKeyHex.length}`,
     );
@@ -65,10 +65,15 @@ export class IdentityKeys implements IIdentityKeys {
 
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
     const { identityKeyPub, identityKeyPriv } = this.identityKeys.get(accountId);
-    this.core.logger.debug("IdentityKeys > Generating JWT");
-    const jwt = await generateJWT([identityKeyPub, identityKeyPriv], payload);
-    this.core.logger.debug("IdentityKeys > JWT generated successfully");
-    return jwt;
+    this.core.logger.debug("IdentityKeys > Generating JWT using 2.0.1-40b5814");
+    try {
+      const jwt = await generateJWT([identityKeyPub, identityKeyPriv], payload);
+      this.core.logger.debug("IdentityKeys > JWT generated successfully");
+      return jwt;
+    } catch (error) {
+      this.core.logger.debug(`IdentityKeys > Failed to generate JWT, ${error}`);
+      throw error;
+    }
   };
 
   public async registerIdentity({ accountId, onSign }: RegisterIdentityParams): Promise<string> {
