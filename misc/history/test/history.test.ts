@@ -140,7 +140,7 @@ describe("utils/history", () => {
         tags: ["7000"],
       });
 
-      await wait(5000);
+      await wait(2000);
 
       const [topic] = await basicSendMessageFlow(
         core1,
@@ -167,6 +167,7 @@ describe("utils/history", () => {
         ],
         7000,
       );
+      await wait(3000);
 
       const historicalMessages = await historyClient.getMessages({
         topic,
