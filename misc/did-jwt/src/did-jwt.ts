@@ -1,5 +1,4 @@
 import * as ed25519 from "@noble/ed25519";
-import { sha512 } from "@noble/hashes/sha512";
 import { decode, encode } from "@stablelib/hex";
 import bs58 from "bs58";
 import { base58btc } from "multiformats/bases/base58";
@@ -16,7 +15,6 @@ import {
 import { concatUInt8Arrays, makeBase64UrlSafe, objectToHex } from "./helpers";
 import { JwtHeader, JwtPayload } from "./types";
 
-ed25519.etc.sha512Sync = (...m) => sha512(ed25519.etc.concatBytes(...m));
 export const composeDidPkh = (accountId: string) => {
   return `${DID_PREFIX}${DID_DELIMITER}${DID_METHOD_PKH}${DID_DELIMITER}${accountId}`;
 };
@@ -88,8 +86,7 @@ export const generateJWT = async (identityKeyPair: [string, string], payload: Jw
   const data = new TextEncoder().encode(encodeData(header, payload));
   console.log("Data formatted");
 
-  // const signature = sign(decode(privateKey), data);
-  const signature = ed25519.sign(encode(data), privateKey);
+  const signature = await ed25519.signAsync(encode(data), privateKey);
 
   return encodeJwt(header, payload, signature);
 };
