@@ -10,7 +10,7 @@ import {
   generateJWT,
   jwtExp,
   JwtPayload,
-} from "@walletconnect/did-jwt/dist/esm";
+} from "@walletconnect/did-jwt";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
