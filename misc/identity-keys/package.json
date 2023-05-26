@@ -52,7 +52,7 @@
     "@stablelib/random": "^1.0.2",
     "@walletconnect/cacao": "1.0.2",
     "@walletconnect/core": "^2.7.3",
-    "@walletconnect/did-jwt": "^2.0.1-2b63ca7",
+    "@walletconnect/did-jwt": "^2.0.1-62db491",
     "@walletconnect/types": "^2.7.3",
     "@walletconnect/utils": "^2.7.3",
     "axios": "^1.3.5",

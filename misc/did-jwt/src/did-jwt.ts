@@ -83,17 +83,23 @@ export const generateJWT = async (identityKeyPair: [string, string], payload: Jw
     typ: "JWT",
   };
 
+  console.log("did-jwt > encoding data");
   const data = new TextEncoder().encode(encodeData(header, payload));
+
+  console.log("did-jwt > generating signature");
   try {
     const signature = await ed25519.signAsync(encode(data), privateKey);
+    console.log("Signature generated using ed25519.signAsync(encode(data), privateKey)");
     return encodeJwt(header, payload, signature);
   } catch (error) {
     try {
       const signature = await ed25519.signAsync(data, privateKey);
+      console.log("Signature generated using ed25519.signAsync(data, privateKey)");
       return encodeJwt(header, payload, signature);
     } catch (error) {
       try {
         const signature = sign(decode(privateKey), data);
+        console.log("Signature generated using sign(decode(privateKey), data)");
         return encodeJwt(header, payload, signature);
       } catch (error) {
         throw new Error(`did-jwt > Failed to generate signature: ${error}`);
