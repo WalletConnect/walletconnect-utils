@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/identity-keys",
-  "version": "0.1.5-7ac2850",
+  "version": "0.1.5-0585df9",
   "description": "Utilities to register, resolve and unregister identity keys",
   "keywords": [
     "identity",
@@ -52,7 +52,7 @@
     "@stablelib/random": "^1.0.2",
     "@walletconnect/cacao": "1.0.2",
     "@walletconnect/core": "^2.7.3",
-    "@walletconnect/did-jwt": "^2.0.1-d39483e",
+    "@walletconnect/did-jwt": "^2.0.1-943dee2",
     "@walletconnect/types": "^2.7.3",
     "@walletconnect/utils": "^2.7.3",
     "axios": "^1.3.5",
