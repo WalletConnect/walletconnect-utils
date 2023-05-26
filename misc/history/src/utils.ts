@@ -23,14 +23,15 @@ export class HistoryClient {
 
   public async registerTags(payload: RegisterPayload, historyUrl = DEFAULT_HISTORY_URL) {
     try {
-      await fetch(historyUrl, {
+      await fetch(`${historyUrl}/register`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
-          Authorization: await this.getJwt(),
+          Authorization: `Bearer ${await this.getJwt()}`
         },
       });
+
     } catch (e) {
       throw new Error("Failed to register tags");
     }

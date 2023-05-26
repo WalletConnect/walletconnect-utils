@@ -67,6 +67,9 @@ const basicSendMessageFlow = async (
 };
 
 describe("utils/history", () => {
+  //@ts-ignore
+  this.timeout = 20000;
+
   let core1 = new Core({
     projectId: process.env.TEST_PROJECT_ID,
     relayUrl: "wss://relay.walletconnect.com",
@@ -96,9 +99,16 @@ describe("utils/history", () => {
       relayUrl: "wss://relay.walletconnect.com",
       tags: ["7000"],
     });
+    // const historyClient2 = new HistoryClient(core2);
+    // await historyClient2.registerTags({
+    //   relayUrl: "wss://relay.walletconnect.com",
+    //   tags: ["7000"],
+    // });
   });
 
   describe("Flow", () => {
+    //@ts-ignore
+    this.timeout = 20000;
     it("Sends a message", async () => {
       await basicSendMessageFlow(
         core1,
@@ -125,8 +135,12 @@ describe("utils/history", () => {
 
     it("Can retrieve tagged messages", async () => {
       const historyClient = new HistoryClient(core1);
+      await historyClient.registerTags({
+        relayUrl: "wss://relay.walletconnect.com",
+        tags: ["7000"],
+      });
 
-      await wait(1000);
+      await wait(5000);
 
       const [topic] = await basicSendMessageFlow(
         core1,
@@ -154,16 +168,12 @@ describe("utils/history", () => {
         7000,
       );
 
-      console.log({ topic });
-
-      await wait(2000);
-
       const historicalMessages = await historyClient.getMessages({
         topic,
         direction: "backward",
       });
 
-      chai.expect(historicalMessages.messageResponse.messages.length).to.eq(1);
-    }, 10000);
+      chai.expect(historicalMessages.messageResponse.messages.length).to.eq(3);
+    });
   });
 });
