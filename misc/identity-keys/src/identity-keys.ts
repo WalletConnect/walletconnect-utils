@@ -11,6 +11,7 @@ import {
   jwtExp,
   JwtPayload,
 } from "@walletconnect/did-jwt";
+import { version } from "@walletconnect/did-jwt/package.json";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
@@ -65,7 +66,7 @@ export class IdentityKeys implements IIdentityKeys {
 
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
     const { identityKeyPub, identityKeyPriv } = this.identityKeys.get(accountId);
-    this.core.logger.debug("IdentityKeys > Generating JWT using 2.0.1-40b5814");
+    this.core.logger.debug(`IdentityKeys > Generating JWT using ${version}`);
     try {
       const jwt = await generateJWT([identityKeyPub, identityKeyPriv], payload);
       this.core.logger.debug("IdentityKeys > JWT generated successfully");
