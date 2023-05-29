@@ -54,7 +54,7 @@ export class HistoryClient {
 
       return new HistoricalMessages(this.core, rs);
     } catch (e) {
-      throw new Error(`Failed to fetch messages` );
+      throw new Error(`[HistoryClient] Failed to fetch messages: ${JSON.stringify(e)}`);
     }
   }
 
