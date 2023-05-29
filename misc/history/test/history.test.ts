@@ -67,9 +67,6 @@ const basicSendMessageFlow = async (
 };
 
 describe("utils/history", () => {
-  //@ts-ignore
-  this.timeout = 20000;
-
   let core1 = new Core({
     projectId: process.env.TEST_PROJECT_ID,
     relayUrl: "wss://relay.walletconnect.com",
