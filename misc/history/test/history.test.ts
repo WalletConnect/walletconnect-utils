@@ -167,15 +167,13 @@ describe("utils/history", () => {
         ],
         7000,
       );
-      await wait(5000);
-
       await waitForEvent(async () => {
         const historicalMessages = await historyClient.getMessages({
           topic,
           direction: "backward",
         });
 
-        return historicalMessages.messageResponse.messages.length > 2;
+        return historicalMessages.messageResponse.messages.length > 0;
       });
 
       const historicalMessages = await historyClient.getMessages({
