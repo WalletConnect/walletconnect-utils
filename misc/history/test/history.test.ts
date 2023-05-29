@@ -5,10 +5,10 @@ import { ICore, RelayerTypes } from "@walletconnect/types";
 import { isJsonRpcRequest, JsonRpcRequest } from "@walletconnect/jsonrpc-utils";
 import { HistoryClient } from "../";
 
-const waitForEvent = async (checkForEvent: (...args: any[]) => boolean) => {
+const waitForEvent = async (checkForEvent: (...args: any[]) => Promise<boolean>) => {
   await new Promise(resolve => {
-    const intervalId = setInterval(() => {
-      if (checkForEvent()) {
+    const intervalId = setInterval(async () => {
+      if (await checkForEvent()) {
         clearInterval(intervalId);
         resolve({});
       }
@@ -39,7 +39,7 @@ const basicSendMessageFlow = async (
   await core2.crypto.setSymKey(symKey, topic);
 
   await core1.relayer.subscribe(topic);
-  await waitForEvent(() => core1.relayer.subscriber.subscriptions.size > 0);
+  await waitForEvent(() => Promise.resolve(core1.relayer.subscriber.subscriptions.size > 0));
 
   core1.relayer.on(RELAYER_EVENTS.message, async (event: RelayerTypes.MessageEvent) => {
     const payload = await core1.crypto.decode(topic, event.message);
@@ -58,7 +58,7 @@ const basicSendMessageFlow = async (
   }
 
   await waitForEvent(() => {
-    return core1.history.values.length === decodedPayloads.length;
+    return Promise.resolve(core1.history.values.length === decodedPayloads.length);
   });
 
   chai.expect(core1.history.values.length).to.eq(decodedPayloads.length);
@@ -167,7 +167,16 @@ describe("utils/history", () => {
         ],
         7000,
       );
-      await wait(6000);
+      await wait(5000);
+
+      await waitForEvent(async () => {
+        const historicalMessages = await historyClient.getMessages({
+          topic,
+          direction: "backward",
+        });
+
+        return historicalMessages.messageResponse.messages.length > 2;
+      });
 
       const historicalMessages = await historyClient.getMessages({
         topic,
