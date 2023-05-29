@@ -96,11 +96,6 @@ describe("utils/history", () => {
       relayUrl: "wss://relay.walletconnect.com",
       tags: ["7000"],
     });
-    // const historyClient2 = new HistoryClient(core2);
-    // await historyClient2.registerTags({
-    //   relayUrl: "wss://relay.walletconnect.com",
-    //   tags: ["7000"],
-    // });
   });
 
   describe("Flow", () => {
