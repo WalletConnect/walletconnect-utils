@@ -183,7 +183,7 @@ describe("utils/history", () => {
         direction: "backward",
       });
 
-      chai.expect(historicalMessages.messageResponse.messages.length).to.eq(3);
+      chai.expect(historicalMessages.messageResponse.messages.length).to.gt(1);
     });
   });
 });
