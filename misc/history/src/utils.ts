@@ -33,7 +33,7 @@ export class HistoryClient {
       });
 
     } catch (e) {
-      throw new Error("Failed to register tags");
+      throw new Error(`[HistoryClient] Failed to register tags: ${JSON.stringify(e)}`);
     }
   }
 
