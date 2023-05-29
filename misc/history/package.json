@@ -38,7 +38,6 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.1",
     "@walletconnect/core": "^2.7.3",
     "@walletconnect/jsonrpc-utils": "^1.0.7",
     "@walletconnect/types": "^2.7.1",
@@ -48,7 +47,6 @@
     "@ethersproject/hash": "^5.7.0",
     "@ethersproject/transactions": "^5.7.0",
     "@walletconnect/utils": "^2.7.3",
-    "isomorphic-unfetch": "^3.1.0",
-    "jsonwebtoken": "^9.0.0"
+    "isomorphic-unfetch": "^3.1.0"
   }
 }
