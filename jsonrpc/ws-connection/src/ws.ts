@@ -86,7 +86,7 @@ export class WsConnection implements IJsonRpcConnection {
     });
   }
 
-  public async send(payload: JsonRpcPayload, context?: any): Promise<void> {
+  public async send(payload: JsonRpcPayload): Promise<void> {
     if (typeof this.socket === "undefined") {
       this.socket = await this.register();
     }
