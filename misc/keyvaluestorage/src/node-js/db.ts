@@ -4,7 +4,7 @@ function importLokijs() {
   } catch (e) {
     // User didn't install levelup db, show detailed error
     throw new Error(
-      `To use WalletConnect server side, you'll need to install the "lokijs" dependency. If you are seeing this error during a build / in an SSR environment, you can add "lokijs" as a devDependency to make this error go away.`,
+      `To use WalletConnect server side, you'll need to install the "lokijs" dependency. If you are seeing this error during a build / in an SSR environment, you can add "lokijs" as a devDependency to make this error go away.`
     );
   }
 }
@@ -14,7 +14,7 @@ interface DbKeyValueStorageOptions {
   callback: Function;
 }
 
-let Lokijs;
+let Lokijs: any;
 
 export default class Db {
   private static instances: Record<string, Db> = {};

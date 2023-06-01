@@ -63,5 +63,5 @@ export abstract class IAsyncStorage<K = string, V = any> {
     cb?: AsyncStorageTypes.ArrErrBack<string>
   ): Promise<void>;
 
-  public abstract flushGetRequests();
+  public abstract flushGetRequests(): void;
 }
