@@ -63,7 +63,7 @@
     "chai": "^4.3.6",
     "classic-level": "^1.2.0",
     "deepmerge": "^4.2.2",
-    "eslint": "^8.23.1",
+    "eslint": "^5.16.0",
     "lokijs": "^1.5.12",
     "mocha": "^10.0.0",
     "proxyquire": "^2.1.3",
