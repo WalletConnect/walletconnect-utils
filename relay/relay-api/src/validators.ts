@@ -19,7 +19,7 @@ export function isSubscribeParams(
   params: any
 ): params is RelayJsonRpc.SubscribeParams {
   const required = ["topic"];
-  const optional = [];
+  const optional: string[] = [];
   return checkParams(params, required, optional);
 }
 
@@ -61,7 +61,7 @@ export function isUnsubscribeParams(
   params: any
 ): params is RelayJsonRpc.UnsubscribeParams {
   const required = ["id", "topic"];
-  const optional = [];
+  const optional: string[] = [];
   return checkParams(params, required, optional);
 }
 
@@ -83,6 +83,6 @@ export function isSubscriptionParams(
   params: any
 ): params is RelayJsonRpc.SubscriptionParams {
   const required = ["id", "data"];
-  const optional = [];
+  const optional: string[] = [];
   return checkParams(params, required, optional);
 }
