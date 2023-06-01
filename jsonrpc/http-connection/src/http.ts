@@ -74,7 +74,7 @@ export class HttpConnection implements IJsonRpcConnection {
     this.onClose();
   }
 
-  public async send(payload: JsonRpcPayload, context?: any): Promise<void> {
+  public async send(payload: JsonRpcPayload): Promise<void> {
     if (!this.isAvailable) {
       await this.register();
     }
