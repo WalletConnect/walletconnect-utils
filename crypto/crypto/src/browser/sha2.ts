@@ -10,6 +10,6 @@ export async function sha512(msg: Uint8Array): Promise<Uint8Array> {
   return result;
 }
 
-export async function ripemd160(msg: Uint8Array): Promise<Uint8Array> {
+export async function ripemd160(_msg: Uint8Array): Promise<Uint8Array> {
   throw new Error("Not supported for Browser async methods, use sync instead!");
 }

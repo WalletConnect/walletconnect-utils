@@ -31,7 +31,7 @@ export function getOps(type: string): string[] {
 
 export async function browserExportKey(
   cryptoKey: CryptoKey,
-  type: string = AES_BROWSER_ALGO
+  _type: string = AES_BROWSER_ALGO
 ): Promise<Uint8Array> {
   const subtle = env.getSubtleCrypto();
   return new Uint8Array(await subtle.exportKey("raw", cryptoKey));
