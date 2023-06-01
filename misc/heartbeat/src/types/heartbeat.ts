@@ -7,7 +7,7 @@ export interface HeartBeatOptions {
 export abstract class IHeartBeat extends IEvents {
   public abstract interval: number;
 
-  // @ts-expect-error - `opts` is not used in the abstract class
+  // @ts-ignore - `opts` is not used in the abstract class
   constructor(opts?: HeartBeatOptions) {
     super();
   }
