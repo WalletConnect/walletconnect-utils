@@ -4,6 +4,7 @@ import { IEvents } from "./misc";
 export abstract class IJsonRpcConnection extends IEvents {
   public abstract connected: boolean;
   public abstract connecting: boolean;
+  // @ts-expect-error - opts is not used in abstract class constructor
   constructor(opts?: any) {
     super();
   }
@@ -37,6 +38,7 @@ export abstract class IBaseJsonRpcProvider extends IEvents {
 export abstract class IJsonRpcProvider extends IBaseJsonRpcProvider {
   public abstract connection: IJsonRpcConnection;
 
+  // @ts-expect-error - connection is not used in abstract class constructor
   constructor(connection: string | IJsonRpcConnection) {
     super();
   }
