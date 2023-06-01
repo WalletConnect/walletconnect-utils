@@ -61,7 +61,7 @@ export class KeyValueStorage implements IKeyValueStorage {
     return safeJsonParse(item.value) as T;
   }
 
-  public async setItem(key: string, value: any): Promise<void> {
+  public async setItem<_T = any>(key: string, value: any): Promise<void> {
     await this.initilization();
     const item = this.database.findOne({ id: { $eq: key } });
     if (item) {
