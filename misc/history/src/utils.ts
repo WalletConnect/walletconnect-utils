@@ -28,7 +28,7 @@ export class HistoryClient {
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${await this.getJwt()}`
+          Authorization: `Bearer ${await this.getJwt()}`,
         },
       });
 
@@ -42,7 +42,7 @@ export class HistoryClient {
     const params = new URLSearchParams(entries);
 
     try {
-      const url = `${historyUrl}/messages?${params.toString()}`
+      const url = `${historyUrl}/messages?${params.toString()}`;
       const rs: GetMessagesResponse = await (
         await fetch(url, {
           method: "GET",
