@@ -6,7 +6,7 @@
   Function to serialize data to JSON string.
   Converts all BigInt values to strings with "n" character at the end.
 */
-const JSONStringify = data =>
+const JSONStringify = (data: any) =>
   JSON.stringify(data, (_, value) =>
     typeof value === "bigint" ? value.toString() + "n" : value
   );
@@ -18,14 +18,14 @@ const JSONStringify = data =>
   then parse them to BigInt values.
   Other values (not big numbers and not our custom format BigInt values) are not affected and parsed as native JSON.parse() would parse them.
 */
-const JSONParse = json => {
+const JSONParse = (json: string) => {
   /*
     Big numbers are found and marked using Regex with this condition:
     Number's length is bigger than 16 || Number's length is 16 and any numerical digit of the number is greater than that of the Number.MAX_SAFE_INTEGER
   */
   // eslint-disable-next-line no-useless-escape
   const numbersBiggerThanMaxInt = /([\[:])?(\d{17,}|(?:[9](?:[1-9]07199254740991|0[1-9]7199254740991|00[8-9]199254740991|007[2-9]99254740991|007199[3-9]54740991|0071992[6-9]4740991|00719925[5-9]740991|007199254[8-9]40991|0071992547[5-9]0991|00719925474[1-9]991|00719925474099[2-9])))([,\}\]])/g;
-  const serializedData = json.replace(numbersBiggerThanMaxInt, "$1\"$2n\"$3");
+  const serializedData = json.replace(numbersBiggerThanMaxInt, `$1"$2n"$3`);
 
   return JSON.parse(serializedData, (_, value) => {
     const isCustomFormatBigInt =
