@@ -1,5 +1,3 @@
-import { JsonRpcPayload } from "./jsonrpc";
-
 export interface JsonRpcValidationResult {
   valid: boolean;
   error?: string;
