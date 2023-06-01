@@ -60,7 +60,5 @@
     "singleQuote": false,
     "trailingComma": "es5"
   },
-  "dependencies": {
-    "tslib": "1.14.1"
-  }
+  "dependencies": {}
 }

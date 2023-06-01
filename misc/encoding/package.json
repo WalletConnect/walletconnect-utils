@@ -64,7 +64,6 @@
   },
   "dependencies": {
     "is-typedarray": "1.0.0",
-    "tslib": "1.14.1",
     "typedarray-to-buffer": "4.0.0"
   }
 }

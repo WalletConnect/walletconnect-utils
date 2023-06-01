@@ -44,8 +44,7 @@
     "prepublishOnly": "npm run test && npm run build"
   },
   "dependencies": {
-    "keyvaluestorage-interface": "^1.0.0",
-    "tslib": "1.14.1"
+    "keyvaluestorage-interface": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
