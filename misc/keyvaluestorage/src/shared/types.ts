@@ -1,6 +1,7 @@
 export interface KeyValueStorageOptions {
   database?: string;
   table?: string;
+  useIndexedDb?: boolean;
 }
 
 export abstract class IKeyValueStorage {
