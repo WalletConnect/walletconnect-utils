@@ -1,7 +1,4 @@
-import {
-  getDocumentOrThrow,
-  getLocationOrThrow,
-} from "@walletconnect/window-getters";
+import { getDocumentOrThrow, getLocationOrThrow } from "@walletconnect/window-getters";
 
 export interface IWebsiteMetadata {
   description: string;
@@ -22,9 +19,7 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
   }
 
   function getIcons(): string[] {
-    const links: HTMLCollectionOf<HTMLLinkElement> = doc.getElementsByTagName(
-      "link"
-    );
+    const links: HTMLCollectionOf<HTMLLinkElement> = doc.getElementsByTagName("link");
     const icons: string[] = [];
 
     for (let i = 0; i < links.length; i++) {
@@ -69,9 +64,7 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
   }
 
   function getWindowMetadataOfAny(...args: string[]): string {
-    const metaTags: HTMLCollectionOf<HTMLMetaElement> = doc.getElementsByTagName(
-      "meta"
-    );
+    const metaTags: HTMLCollectionOf<HTMLMetaElement> = doc.getElementsByTagName("meta");
 
     for (let i = 0; i < metaTags.length; i++) {
       const tag: HTMLMetaElement = metaTags[i];
@@ -96,12 +89,7 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
   }
 
   function getName(): string {
-    let name: string = getWindowMetadataOfAny(
-      "name",
-      "og:site_name",
-      "og:title",
-      "twitter:title"
-    );
+    let name: string = getWindowMetadataOfAny("name", "og:site_name", "og:title", "twitter:title");
 
     if (!name) {
       name = doc.title;
@@ -115,7 +103,7 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
       "description",
       "og:description",
       "twitter:description",
-      "keywords"
+      "keywords",
     );
 
     return description;

@@ -56,9 +56,7 @@ export function arrayToNumber(arr: Uint8Array): number {
 }
 
 export function arrayToBinary(arr: Uint8Array): string {
-  return Array.from(arr)
-    .map(numberToBinary)
-    .join("");
+  return Array.from(arr).map(numberToBinary).join("");
 }
 
 // -- Hex ------------------------------------------------ //
@@ -137,7 +135,7 @@ export function binaryToBuffer(bin: string): Buffer {
 }
 
 export function binaryToArray(bin: string): Uint8Array {
-  return new Uint8Array(splitBytes(bin).map(x => parseInt(x, 2)));
+  return new Uint8Array(splitBytes(bin).map((x) => parseInt(x, 2)));
 }
 
 export function binaryToHex(bin: string | string, prefixed?: boolean): string {
@@ -183,11 +181,7 @@ export function isTypedArray(val: any): boolean {
 }
 
 export function isArrayBuffer(val: any): boolean {
-  return (
-    !isTypedArray(val) &&
-    !isBuffer(val) &&
-    typeof val.byteLength !== "undefined"
-  );
+  return !isTypedArray(val) && !isBuffer(val) && typeof val.byteLength !== "undefined";
 }
 
 export function getType(val: any) {
@@ -223,7 +217,7 @@ export function concatBuffers(...args: Buffer[]): Buffer {
 
 export function concatArrays(...args: Uint8Array[]): Uint8Array {
   let result: number[] = [];
-  args.forEach(arg => (result = result.concat(Array.from(arg))));
+  args.forEach((arg) => (result = result.concat(Array.from(arg))));
   return new Uint8Array([...result]);
 }
 
@@ -241,9 +235,7 @@ export function trimRight(data: Buffer, length: number): Buffer {
 
 export function calcByteLength(length: number, byteSize = 8): number {
   const remainder = length % byteSize;
-  return remainder
-    ? ((length - remainder) / byteSize) * byteSize + byteSize
-    : length;
+  return remainder ? ((length - remainder) / byteSize) * byteSize + byteSize : length;
 }
 
 export function splitBytes(str: string, byteSize = 8): string[] {
@@ -252,36 +244,22 @@ export function splitBytes(str: string, byteSize = 8): string[] {
 }
 
 export function swapBytes(str: string): string {
-  return splitBytes(str)
-    .map(reverseString)
-    .join("");
+  return splitBytes(str).map(reverseString).join("");
 }
 
 export function swapHex(str: string): string {
   return binaryToHex(swapBytes(hexToBinary(str)));
 }
 
-export function sanitizeBytes(
-  str: string,
-  byteSize = 8,
-  padding = STRING_ZERO
-): string {
+export function sanitizeBytes(str: string, byteSize = 8, padding = STRING_ZERO): string {
   return padLeft(str, calcByteLength(str.length, byteSize), padding);
 }
 
-export function padLeft(
-  str: string,
-  length: number,
-  padding = STRING_ZERO
-): string {
+export function padLeft(str: string, length: number, padding = STRING_ZERO): string {
   return padString(str, length, true, padding);
 }
 
-export function padRight(
-  str: string,
-  length: number,
-  padding = STRING_ZERO
-): string {
+export function padRight(str: string, length: number, padding = STRING_ZERO): string {
   return padString(str, length, false, padding);
 }
 
@@ -326,18 +304,10 @@ function assert(assertion: boolean, errorMessage: string) {
 }
 
 function reverseString(str: string) {
-  return str
-    .split("")
-    .reverse()
-    .join("");
+  return str.split("").reverse().join("");
 }
 
-function padString(
-  str: string,
-  length: number,
-  left: boolean,
-  padding = STRING_ZERO
-): string {
+function padString(str: string, length: number, left: boolean, padding = STRING_ZERO): string {
   const diff = length - str.length;
   let result = str;
   if (diff > 0) {

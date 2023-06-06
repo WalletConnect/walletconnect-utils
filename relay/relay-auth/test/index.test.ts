@@ -19,14 +19,7 @@ import {
   TEST_IAT,
 } from "./shared";
 
-import {
-  decodeIss,
-  encodeData,
-  encodeIss,
-  generateKeyPair,
-  signJWT,
-  verifyJWT,
-} from "../src";
+import { decodeIss, encodeData, encodeIss, generateKeyPair, signJWT, verifyJWT } from "../src";
 
 describe("Relay Auth", () => {
   let keyPair: ed25519.KeyPair;
@@ -41,13 +34,9 @@ describe("Relay Auth", () => {
     chai.expect(randomKeyPair.secretKey.length).to.eql(64);
   });
   it("should generate same ed25519 key pair", async () => {
-    chai
-      .expect(keyPair.publicKey)
-      .to.eql(fromString(EXPECTED_PUBLIC_KEY, "base16"));
+    chai.expect(keyPair.publicKey).to.eql(fromString(EXPECTED_PUBLIC_KEY, "base16"));
 
-    chai
-      .expect(keyPair.secretKey)
-      .to.eql(fromString(EXPECTED_SECRET_KEY, "base16"));
+    chai.expect(keyPair.secretKey).to.eql(fromString(EXPECTED_SECRET_KEY, "base16"));
   });
   it("encode and decode issuer", async () => {
     const iss = encodeIss(keyPair.publicKey);

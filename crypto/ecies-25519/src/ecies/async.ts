@@ -30,7 +30,7 @@ export async function encryptWithSharedKey(
   msg: Uint8Array,
   sharedKey: Uint8Array,
   publicKey: Uint8Array,
-  iv: Uint8Array = randomBytes(IV_LENGTH)
+  iv: Uint8Array = randomBytes(IV_LENGTH),
 ) {
   const { encryptionKey, macKey } = await getEciesKeys(sharedKey);
   const ciphertext = await aesCbcEncrypt(iv, encryptionKey, msg);
@@ -42,17 +42,14 @@ export async function encryptWithSharedKey(
 export async function encrypt(
   msg: Uint8Array,
   receiverPublicKey: Uint8Array,
-  opts?: EncryptOpts
+  opts?: EncryptOpts,
 ): Promise<Uint8Array> {
   const { publicKey, privateKey } = getSenderKeyPair(opts);
   const sharedKey = getSharedKey(privateKey, receiverPublicKey);
   return encryptWithSharedKey(msg, sharedKey, publicKey, opts?.iv);
 }
 
-export async function decryptWithSharedKey(
-  encrypted: Uint8Array,
-  sharedKey: Uint8Array
-) {
+export async function decryptWithSharedKey(encrypted: Uint8Array, sharedKey: Uint8Array) {
   const { iv, publicKey, mac, ciphertext } = deserialize(encrypted);
   const { encryptionKey, macKey } = await getEciesKeys(sharedKey);
   const dataToMac = concatArrays(iv, publicKey, ciphertext);
@@ -62,10 +59,7 @@ export async function decryptWithSharedKey(
   return msg;
 }
 
-export async function decrypt(
-  encrypted: Uint8Array,
-  privateKey: Uint8Array
-): Promise<Uint8Array> {
+export async function decrypt(encrypted: Uint8Array, privateKey: Uint8Array): Promise<Uint8Array> {
   const { publicKey } = deserialize(encrypted);
   const sharedKey = getSharedKey(privateKey, publicKey);
   return decryptWithSharedKey(encrypted, sharedKey);

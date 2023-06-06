@@ -9,40 +9,17 @@ import {
   RIPEMD160_NODE_ALGO,
 } from "../constants";
 
-export function nodeAesEncrypt(
-  iv: Uint8Array,
-  key: Uint8Array,
-  data: Uint8Array
-): Uint8Array {
-  const cipher = crypto.createCipheriv(
-    AES_NODE_ALGO,
-    Buffer.from(key),
-    Buffer.from(iv)
-  );
-  return bufferToArray(
-    concatBuffers(cipher.update(Buffer.from(data)), cipher.final())
-  );
+export function nodeAesEncrypt(iv: Uint8Array, key: Uint8Array, data: Uint8Array): Uint8Array {
+  const cipher = crypto.createCipheriv(AES_NODE_ALGO, Buffer.from(key), Buffer.from(iv));
+  return bufferToArray(concatBuffers(cipher.update(Buffer.from(data)), cipher.final()));
 }
 
-export function nodeAesDecrypt(
-  iv: Uint8Array,
-  key: Uint8Array,
-  data: Uint8Array
-): Uint8Array {
-  const decipher = crypto.createDecipheriv(
-    AES_NODE_ALGO,
-    Buffer.from(key),
-    Buffer.from(iv)
-  );
-  return bufferToArray(
-    concatBuffers(decipher.update(Buffer.from(data)), decipher.final())
-  );
+export function nodeAesDecrypt(iv: Uint8Array, key: Uint8Array, data: Uint8Array): Uint8Array {
+  const decipher = crypto.createDecipheriv(AES_NODE_ALGO, Buffer.from(key), Buffer.from(iv));
+  return bufferToArray(concatBuffers(decipher.update(Buffer.from(data)), decipher.final()));
 }
 
-export function nodeHmacSha256Sign(
-  key: Uint8Array,
-  data: Uint8Array
-): Uint8Array {
+export function nodeHmacSha256Sign(key: Uint8Array, data: Uint8Array): Uint8Array {
   const buf = crypto
     .createHmac(HMAC_NODE_ALGO, Buffer.from(key))
     .update(Buffer.from(data))
@@ -50,10 +27,7 @@ export function nodeHmacSha256Sign(
   return bufferToArray(buf);
 }
 
-export function nodeHmacSha512Sign(
-  key: Uint8Array,
-  data: Uint8Array
-): Uint8Array {
+export function nodeHmacSha512Sign(key: Uint8Array, data: Uint8Array): Uint8Array {
   const buf = crypto
     .createHmac(SHA512_NODE_ALGO, Buffer.from(key))
     .update(Buffer.from(data))
@@ -62,25 +36,16 @@ export function nodeHmacSha512Sign(
 }
 
 export function nodeSha256(data: Uint8Array): Uint8Array {
-  const buf = crypto
-    .createHash(SHA256_NODE_ALGO)
-    .update(Buffer.from(data))
-    .digest();
+  const buf = crypto.createHash(SHA256_NODE_ALGO).update(Buffer.from(data)).digest();
   return bufferToArray(buf);
 }
 
 export function nodeSha512(data: Uint8Array): Uint8Array {
-  const buf = crypto
-    .createHash(SHA512_NODE_ALGO)
-    .update(Buffer.from(data))
-    .digest();
+  const buf = crypto.createHash(SHA512_NODE_ALGO).update(Buffer.from(data)).digest();
   return bufferToArray(buf);
 }
 
 export function nodeRipemd160(data: Uint8Array): Uint8Array {
-  const buf = crypto
-    .createHash(RIPEMD160_NODE_ALGO)
-    .update(Buffer.from(data))
-    .digest();
+  const buf = crypto.createHash(RIPEMD160_NODE_ALGO).update(Buffer.from(data)).digest();
   return bufferToArray(buf);
 }

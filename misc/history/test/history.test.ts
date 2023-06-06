@@ -6,7 +6,7 @@ import { isJsonRpcRequest, JsonRpcRequest } from "@walletconnect/jsonrpc-utils";
 import { HistoryClient } from "../";
 
 const waitForEvent = async (checkForEvent: (...args: any[]) => Promise<boolean>) => {
-  await new Promise(resolve => {
+  await new Promise((resolve) => {
     const intervalId = setInterval(async () => {
       if (await checkForEvent()) {
         clearInterval(intervalId);
@@ -17,7 +17,7 @@ const waitForEvent = async (checkForEvent: (...args: any[]) => Promise<boolean>)
 };
 
 const wait = async (time: number) => {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     setTimeout(() => {
       resolve();
     }, time);

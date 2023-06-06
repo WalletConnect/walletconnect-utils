@@ -3,11 +3,7 @@ import * as chai from "chai";
 
 import pino, { Logger } from "pino";
 
-import {
-  formatChildLoggerContext,
-  getDefaultLoggerOptions,
-  generateChildLogger,
-} from "../src";
+import { formatChildLoggerContext, getDefaultLoggerOptions, generateChildLogger } from "../src";
 
 describe("Logger", () => {
   let logger: Logger;

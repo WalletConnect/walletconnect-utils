@@ -36,12 +36,8 @@ describe("ECIES", () => {
     const privateKey = encoding.hexToArray(TEST_KEY_PAIR.a.privateKey);
     const keyPair = ecies25519.generateKeyPair(privateKey);
     chai.expect(keyPair).to.not.be.undefined;
-    chai
-      .expect(keyPair.privateKey)
-      .to.eql(encoding.hexToArray(TEST_KEY_PAIR.a.privateKey));
-    chai
-      .expect(keyPair.publicKey)
-      .to.eql(encoding.hexToArray(TEST_KEY_PAIR.a.publicKey));
+    chai.expect(keyPair.privateKey).to.eql(encoding.hexToArray(TEST_KEY_PAIR.a.privateKey));
+    chai.expect(keyPair.publicKey).to.eql(encoding.hexToArray(TEST_KEY_PAIR.a.publicKey));
   });
 
   it("should derive shared keys succesfully", async () => {
@@ -85,9 +81,7 @@ describe("ECIES", () => {
   it("should always return the exact parameters", async () => {
     const { sharedKey1 } = await testSharedKeys(keyPairA, keyPairB);
     const { encryptionKey, macKey } = await ecies25519.getEciesKeys(sharedKey1);
-    chai
-      .expect(encoding.arrayToHex(encryptionKey))
-      .to.eql(TEST_ECIES_KEYS.encryptionKey);
+    chai.expect(encoding.arrayToHex(encryptionKey)).to.eql(TEST_ECIES_KEYS.encryptionKey);
     chai.expect(encoding.arrayToHex(macKey)).to.eql(TEST_ECIES_KEYS.macKey);
 
     const { encrypted } = await testEncrypt(keyPairA.publicKey, {
@@ -97,17 +91,9 @@ describe("ECIES", () => {
     chai.expect(encoding.arrayToHex(encrypted)).to.eql(TEST_SERIALIZED);
 
     const deserialized = ecies25519.deserialize(encrypted);
-    chai
-      .expect(encoding.arrayToHex(deserialized.iv))
-      .to.eql(TEST_DESERIALIZED.iv);
-    chai
-      .expect(encoding.arrayToHex(deserialized.publicKey))
-      .to.eql(TEST_DESERIALIZED.publicKey);
-    chai
-      .expect(encoding.arrayToHex(deserialized.mac))
-      .to.eql(TEST_DESERIALIZED.mac);
-    chai
-      .expect(encoding.arrayToHex(deserialized.ciphertext))
-      .to.eql(TEST_DESERIALIZED.ciphertext);
+    chai.expect(encoding.arrayToHex(deserialized.iv)).to.eql(TEST_DESERIALIZED.iv);
+    chai.expect(encoding.arrayToHex(deserialized.publicKey)).to.eql(TEST_DESERIALIZED.publicKey);
+    chai.expect(encoding.arrayToHex(deserialized.mac)).to.eql(TEST_DESERIALIZED.mac);
+    chai.expect(encoding.arrayToHex(deserialized.ciphertext)).to.eql(TEST_DESERIALIZED.ciphertext);
   });
 });

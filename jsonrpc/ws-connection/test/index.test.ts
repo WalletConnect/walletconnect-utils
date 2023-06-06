@@ -97,7 +97,7 @@ describe("@walletconnect/jsonrpc-ws-connection", () => {
       });
       const conn = new WsConnection(rpcUrlWithoutProjectId + "&useOnCloseEvent=true");
 
-      await new Promise<void>(async resolve => {
+      await new Promise<void>(async (resolve) => {
         conn.once("close", (event: CloseEvent) => {
           chai.expect(event.code).to.equal(3000);
           chai.expect(event.reason).to.equal("Authorization error: Project ID is missing");

@@ -1,6 +1,5 @@
 // Client will sign a unique identifier as the subject
-export const TEST_SUBJECT =
-  "c479fe5dc464e771e78b193d239a65b58d278cad1c34bfb0b5716e5bb514928e";
+export const TEST_SUBJECT = "c479fe5dc464e771e78b193d239a65b58d278cad1c34bfb0b5716e5bb514928e";
 
 // Client will include the server endpoint as audience
 export const TEST_AUDIENCE = "wss://relay.walletconnect.com";
@@ -12,8 +11,7 @@ export const TEST_TTL = 86400;
 export const TEST_IAT = 1656910097;
 
 // Test seed to generate the same key pair
-export const TEST_SEED =
-  "58e0254c211b858ef7896b00e3f36beeb13d568d47c6031c4218b87718061295";
+export const TEST_SEED = "58e0254c211b858ef7896b00e3f36beeb13d568d47c6031c4218b87718061295";
 
 // Expected secret key for above seed
 export const EXPECTED_SECRET_KEY =
@@ -23,8 +21,7 @@ export const EXPECTED_PUBLIC_KEY =
   "884ab67f787b69e534bfdba8d5beb4e719700e90ac06317ed177d49e5a33be5a";
 
 // Expected issuer using did:key method
-export const EXPECTED_ISS =
-  "did:key:z6MkodHZwneVRShtaLf8JKYkxpDGp1vGZnpGmdBpX8M2exxH";
+export const EXPECTED_ISS = "did:key:z6MkodHZwneVRShtaLf8JKYkxpDGp1vGZnpGmdBpX8M2exxH";
 
 // Expected expiry given injected issued at
 export const EXPECTED_EXP = TEST_IAT + TEST_TTL;

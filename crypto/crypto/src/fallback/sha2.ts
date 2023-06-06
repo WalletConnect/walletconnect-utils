@@ -1,8 +1,4 @@
-import {
-  fallbackSha256,
-  fallbackSha512,
-  fallbackRipemd160,
-} from "../lib/fallback";
+import { fallbackSha256, fallbackSha512, fallbackRipemd160 } from "../lib/fallback";
 
 export async function sha256(msg: Uint8Array): Promise<Uint8Array> {
   const result = fallbackSha256(msg);

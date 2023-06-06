@@ -31,7 +31,6 @@ export class HistoryClient {
           Authorization: `Bearer ${await this.getJwt()}`,
         },
       });
-
     } catch (e) {
       throw new Error(`[HistoryClient] Failed to register tags: ${JSON.stringify(e)}`);
     }

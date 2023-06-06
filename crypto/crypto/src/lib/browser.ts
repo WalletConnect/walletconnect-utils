@@ -24,14 +24,12 @@ export function getAlgo(type: string): AesKeyAlgorithm | HmacImportParams {
 }
 
 export function getOps(type: string): string[] {
-  return type === AES_BROWSER_ALGO
-    ? [ENCRYPT_OP, DECRYPT_OP]
-    : [SIGN_OP, VERIFY_OP];
+  return type === AES_BROWSER_ALGO ? [ENCRYPT_OP, DECRYPT_OP] : [SIGN_OP, VERIFY_OP];
 }
 
 export async function browserExportKey(
   cryptoKey: CryptoKey,
-  _type: string = AES_BROWSER_ALGO
+  _type: string = AES_BROWSER_ALGO,
 ): Promise<Uint8Array> {
   const subtle = env.getSubtleCrypto();
   return new Uint8Array(await subtle.exportKey("raw", cryptoKey));
@@ -39,21 +37,15 @@ export async function browserExportKey(
 
 export async function browserImportKey(
   buffer: Uint8Array,
-  type: string = AES_BROWSER_ALGO
+  type: string = AES_BROWSER_ALGO,
 ): Promise<CryptoKey> {
-  return (env.getSubtleCrypto() as any).importKey(
-    "raw",
-    buffer,
-    getAlgo(type),
-    true,
-    getOps(type)
-  );
+  return (env.getSubtleCrypto() as any).importKey("raw", buffer, getAlgo(type), true, getOps(type));
 }
 
 export async function browserAesEncrypt(
   iv: Uint8Array,
   key: Uint8Array,
-  data: Uint8Array
+  data: Uint8Array,
 ): Promise<Uint8Array> {
   const subtle = env.getSubtleCrypto();
   const cryptoKey = await browserImportKey(key, AES_BROWSER_ALGO);
@@ -63,7 +55,7 @@ export async function browserAesEncrypt(
       name: AES_BROWSER_ALGO,
     },
     cryptoKey,
-    data
+    data,
   );
   return new Uint8Array(result);
 }
@@ -71,7 +63,7 @@ export async function browserAesEncrypt(
 export async function browserAesDecrypt(
   iv: Uint8Array,
   key: Uint8Array,
-  data: Uint8Array
+  data: Uint8Array,
 ): Promise<Uint8Array> {
   const subtle = env.getSubtleCrypto();
   const cryptoKey = await browserImportKey(key, AES_BROWSER_ALGO);
@@ -81,14 +73,14 @@ export async function browserAesDecrypt(
       name: AES_BROWSER_ALGO,
     },
     cryptoKey,
-    data
+    data,
   );
   return new Uint8Array(result);
 }
 
 export async function browserHmacSha256Sign(
   key: Uint8Array,
-  data: Uint8Array
+  data: Uint8Array,
 ): Promise<Uint8Array> {
   const subtle = env.getSubtleCrypto();
   const cryptoKey = await browserImportKey(key, HMAC_BROWSER);
@@ -99,14 +91,14 @@ export async function browserHmacSha256Sign(
       name: HMAC_BROWSER,
     },
     cryptoKey,
-    data
+    data,
   );
   return new Uint8Array(signature);
 }
 
 export async function browserHmacSha512Sign(
   key: Uint8Array,
-  data: Uint8Array
+  data: Uint8Array,
 ): Promise<Uint8Array> {
   const subtle = env.getSubtleCrypto();
   const cryptoKey = await browserImportKey(key, HMAC_BROWSER);
@@ -117,7 +109,7 @@ export async function browserHmacSha512Sign(
       name: HMAC_BROWSER,
     },
     cryptoKey,
-    data
+    data,
   );
   return new Uint8Array(signature);
 }
@@ -128,7 +120,7 @@ export async function browserSha256(data: Uint8Array): Promise<Uint8Array> {
     {
       name: SHA256_BROWSER_ALGO,
     },
-    data
+    data,
   );
   return new Uint8Array(result);
 }
@@ -139,7 +131,7 @@ export async function browserSha512(data: Uint8Array): Promise<Uint8Array> {
     {
       name: SHA512_BROWSER_ALGO,
     },
-    data
+    data,
   );
   return new Uint8Array(result);
 }

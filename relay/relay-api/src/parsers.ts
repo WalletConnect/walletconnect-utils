@@ -13,9 +13,7 @@ import {
   isUnsubscribeParams,
 } from "./validators";
 
-export function parseSubscribeRequest(
-  request: JsonRpcRequest
-): RelayJsonRpc.SubscribeParams {
+export function parseSubscribeRequest(request: JsonRpcRequest): RelayJsonRpc.SubscribeParams {
   if (!isSubscribeMethod(request.method)) {
     throw new Error("JSON-RPC Request has invalid subscribe method");
   }
@@ -29,9 +27,7 @@ export function parseSubscribeRequest(
   return params;
 }
 
-export function parsePublishRequest(
-  request: JsonRpcRequest
-): RelayJsonRpc.PublishParams {
+export function parsePublishRequest(request: JsonRpcRequest): RelayJsonRpc.PublishParams {
   if (!isPublishMethod(request.method)) {
     throw new Error("JSON-RPC Request has invalid publish method");
   }
@@ -47,9 +43,7 @@ export function parsePublishRequest(
   return params;
 }
 
-export function parseUnsubscribeRequest(
-  request: JsonRpcRequest
-): RelayJsonRpc.UnsubscribeParams {
+export function parseUnsubscribeRequest(request: JsonRpcRequest): RelayJsonRpc.UnsubscribeParams {
   if (!isUnsubscribeMethod(request.method)) {
     throw new Error("JSON-RPC Request has invalid unsubscribe method");
   }
@@ -63,9 +57,7 @@ export function parseUnsubscribeRequest(
   return params;
 }
 
-export function parseSubscriptionRequest(
-  request: JsonRpcRequest
-): RelayJsonRpc.SubscriptionParams {
+export function parseSubscriptionRequest(request: JsonRpcRequest): RelayJsonRpc.SubscriptionParams {
   if (!isSubscriptionMethod(request.method)) {
     throw new Error("JSON-RPC Request has invalid subscription method");
   }

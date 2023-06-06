@@ -50,9 +50,6 @@ export const pkcs7 = {
    * @see http://tools.ietf.org/html/rfc5652
    */
   unpad(padded: Uint8Array): Uint8Array {
-    return padded.subarray(
-      0,
-      padded.byteLength - padded[padded.byteLength - 1]
-    );
+    return padded.subarray(0, padded.byteLength - padded[padded.byteLength - 1]);
   },
 };
