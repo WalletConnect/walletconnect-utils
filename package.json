@@ -19,7 +19,7 @@
     "prettier": "lerna run prettier",
     "build": "lerna run build",
     "test": "lerna run test",
-    "check": "run-s lint build test",
+    "check": "run-s lint prettier build test",
     "reset": "run-s clean bootstrap check",
     "new-version": "lerna version --no-git-tag-version",
     "pre-publish": "run-s new-version reset",
