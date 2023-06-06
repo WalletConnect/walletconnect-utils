@@ -210,6 +210,8 @@ describe("utils/history", () => {
         relayUrl: "wss://relay.walletconnect.com",
       });
 
+      await wait(2000);
+
       core2.history.delete(topic);
       await core2.relayer.messages.del(topic);
 
