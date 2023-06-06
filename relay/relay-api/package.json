@@ -37,7 +37,8 @@
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
     "npm-publish:latest": "npm publish --access public --tag latest",
     "npm-publish:canary": "npm publish --access public --tag canary",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run test && npm run build",
+    "prettier": "prettier --config ../../.prettierrc --check {src,test}/**/*.ts"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
