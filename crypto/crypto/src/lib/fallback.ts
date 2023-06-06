@@ -39,25 +39,16 @@ export function fallbackHmacSha512Sign(key: Uint8Array, data: Uint8Array): Uint8
 }
 
 export function fallbackSha256(msg: Uint8Array): Uint8Array {
-  const result = hash
-    .sha256()
-    .update(msg)
-    .digest(HEX_ENC);
+  const result = hash.sha256().update(msg).digest(HEX_ENC);
   return hexToArray(result);
 }
 
 export function fallbackSha512(msg: Uint8Array): Uint8Array {
-  const result = hash
-    .sha512()
-    .update(msg)
-    .digest(HEX_ENC);
+  const result = hash.sha512().update(msg).digest(HEX_ENC);
   return hexToArray(result);
 }
 
 export function fallbackRipemd160(msg: Uint8Array): Uint8Array {
-  const result = hash
-    .ripemd160()
-    .update(msg)
-    .digest(HEX_ENC);
+  const result = hash.ripemd160().update(msg).digest(HEX_ENC);
   return hexToArray(result);
 }
