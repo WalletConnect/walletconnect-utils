@@ -9,9 +9,15 @@ export const DAY_IN_MS = 86400 * 1000;
 export class HistoricalMessages {
   public constructor(private core: ICore, public messageResponse: GetMessagesResponse) {}
 
-  public injectIntoRelayer() {
-    for (const message in this.messageResponse.messages) {
-      this.core.relayer.provider.events.emit("payload", message);
+  public async injectIntoRelayer() {
+    const { messages, topic } = this.messageResponse;
+    for (const message of messages) {
+
+      this.core.relayer.events.emit("relayer_message", {
+        topic,
+        publishedAt: Date.now(),
+        message: message.message,
+      });
     }
   }
 }

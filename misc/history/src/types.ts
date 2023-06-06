@@ -14,8 +14,9 @@ export interface GetMessagesPayload {
 
 export interface Message {
   message: string;
-  message_id: string;
+  method: string;
   topic: string;
+  message_id: string;
   client_id: string;
 }
 

@@ -88,6 +88,7 @@ describe("utils/history", () => {
     await core1.crypto.init();
     await core1.history.init();
     await core1.relayer.init();
+    await core2.history.init();
     await core2.crypto.init();
     await core2.relayer.init();
 
@@ -174,6 +175,59 @@ describe("utils/history", () => {
       });
 
       chai.expect(historicalMessages.messageResponse.messages.length).to.gt(1);
+    });
+
+    it("Can inject messages", async () => {
+      const [topic] = await basicSendMessageFlow(
+        core1,
+        core2,
+        [
+          {
+            jsonrpc: "2.0",
+            id: Date.now(),
+            method: "test_message",
+            params: { thing: 1 },
+          },
+          {
+            jsonrpc: "2.0",
+            id: Date.now() + 1000,
+            method: "test_message",
+            params: { thing: 2 },
+          },
+          {
+            jsonrpc: "2.0",
+            id: Date.now() + 2000,
+            method: "test_message",
+            params: { thing: 3 },
+          },
+        ],
+        7000,
+      );
+
+      const history = new HistoryClient(core2);
+      await history.registerTags({
+        tags: ["7000"],
+        relayUrl: "wss://relay.walletconnect.com",
+      });
+
+      core2.history.delete(topic);
+      await core2.relayer.messages.del(topic);
+
+      let sum = 0;
+      core2.relayer.on(RELAYER_EVENTS.message, async message => {
+        const decoded = await core2.crypto.decode(topic, message.message);
+        if (isJsonRpcRequest(decoded)) {
+          sum += decoded.params.thing;
+        }
+      });
+
+      const messages = await history.getMessages({ topic });
+
+      await messages.injectIntoRelayer();
+
+      await wait(10000);
+
+      chai.expect(sum).to.eq(6);
     });
   });
 });
