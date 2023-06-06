@@ -50,12 +50,6 @@
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
   },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": false,
-    "trailingComma": "es5"
-  },
   "dependencies": {
     "pino": "7.11.0"
   }
