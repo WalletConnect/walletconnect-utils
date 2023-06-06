@@ -4,7 +4,7 @@ name: CI Checks
 
 jobs:
   lint:
-    name: Lint
+    name: Lint & Check Formatting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,6 +27,8 @@ jobs:
         run: npm run bootstrap
       - name: Lint
         run: npm run lint
+      - name: Format
+        run: npm run prettier
 
   build:
     name: Build
