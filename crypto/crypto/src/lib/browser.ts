@@ -14,6 +14,7 @@ import {
   LENGTH_512,
 } from "../constants";
 
+// eslint-disable-next-line no-undef
 export function getAlgo(type: string): AesKeyAlgorithm | HmacImportParams {
   return type === AES_BROWSER_ALGO
     ? { length: AES_LENGTH, name: AES_BROWSER_ALGO }

@@ -56,7 +56,9 @@ export function arrayToNumber(arr: Uint8Array): number {
 }
 
 export function arrayToBinary(arr: Uint8Array): string {
-  return Array.from(arr).map(numberToBinary).join("");
+  return Array.from(arr)
+    .map(numberToBinary)
+    .join("");
 }
 
 // -- Hex ------------------------------------------------ //
@@ -135,7 +137,7 @@ export function binaryToBuffer(bin: string): Buffer {
 }
 
 export function binaryToArray(bin: string): Uint8Array {
-  return new Uint8Array(splitBytes(bin).map((x) => parseInt(x, 2)));
+  return new Uint8Array(splitBytes(bin).map(x => parseInt(x, 2)));
 }
 
 export function binaryToHex(bin: string | string, prefixed?: boolean): string {
@@ -153,6 +155,7 @@ export function binaryToNumber(bin: string): number {
 // -- Validators ----------------------------------------- //
 
 export function isBinaryString(str: any): boolean {
+  // eslint-disable-next-line prefer-regex-literals
   if (typeof str !== "string" || !new RegExp(/^[01]+$/).test(str)) {
     return false;
   }
@@ -217,7 +220,7 @@ export function concatBuffers(...args: Buffer[]): Buffer {
 
 export function concatArrays(...args: Uint8Array[]): Uint8Array {
   let result: number[] = [];
-  args.forEach((arg) => (result = result.concat(Array.from(arg))));
+  args.forEach(arg => (result = result.concat(Array.from(arg))));
   return new Uint8Array([...result]);
 }
 
@@ -244,7 +247,9 @@ export function splitBytes(str: string, byteSize = 8): string[] {
 }
 
 export function swapBytes(str: string): string {
-  return splitBytes(str).map(reverseString).join("");
+  return splitBytes(str)
+    .map(reverseString)
+    .join("");
 }
 
 export function swapHex(str: string): string {
@@ -304,7 +309,10 @@ function assert(assertion: boolean, errorMessage: string) {
 }
 
 function reverseString(str: string) {
-  return str.split("").reverse().join("");
+  return str
+    .split("")
+    .reverse()
+    .join("");
 }
 
 function padString(str: string, length: number, left: boolean, padding = STRING_ZERO): string {

@@ -7,6 +7,7 @@ export const DEFAULT_HISTORY_URL = "https://history.walletconnect.com";
 export const DAY_IN_MS = 86400 * 1000;
 
 export class HistoricalMessages {
+  // eslint-disable-next-line no-useless-constructor
   public constructor(private core: ICore, public messageResponse: GetMessagesResponse) {}
 
   public injectIntoRelayer() {
@@ -19,6 +20,7 @@ export class HistoricalMessages {
 export class HistoryClient {
   private jwt = "";
 
+  // eslint-disable-next-line no-useless-constructor
   public constructor(private core: ICore, private readonly historyUrl = DEFAULT_HISTORY_URL) {}
 
   public async registerTags(payload: RegisterPayload, historyUrl = DEFAULT_HISTORY_URL) {

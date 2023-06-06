@@ -19,6 +19,7 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
   }
 
   function getIcons(): string[] {
+    // eslint-disable-next-line no-undef
     const links: HTMLCollectionOf<HTMLLinkElement> = doc.getElementsByTagName("link");
     const icons: string[] = [];
 
@@ -64,6 +65,7 @@ export function getWindowMetadata(): IWebsiteMetadata | null {
   }
 
   function getWindowMetadataOfAny(...args: string[]): string {
+    // eslint-disable-next-line no-undef
     const metaTags: HTMLCollectionOf<HTMLMetaElement> = doc.getElementsByTagName("meta");
 
     for (let i = 0; i < metaTags.length; i++) {

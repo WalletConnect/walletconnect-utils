@@ -15,6 +15,7 @@ export abstract class IJsonRpcConnection extends IEvents {
 }
 
 export abstract class IBaseJsonRpcProvider extends IEvents {
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
   }
