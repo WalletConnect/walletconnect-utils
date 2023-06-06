@@ -17,6 +17,7 @@
     "bootstrap": "lerna bootstrap",
     "lint": "lerna run lint",
     "prettier": "lerna run prettier",
+    "format": "lerna run format",
     "build": "lerna run build",
     "test": "lerna run test",
     "check": "run-s lint prettier build test",
