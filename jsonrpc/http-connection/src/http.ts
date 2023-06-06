@@ -103,7 +103,7 @@ export class HttpConnection implements IJsonRpcConnection {
         this.events.setMaxListeners(currentMaxListeners + 1);
       }
       return new Promise((resolve, reject) => {
-        this.events.once("register_error", (error) => {
+        this.events.once("register_error", error => {
           this.resetMaxListeners();
           reject(error);
         });

@@ -8,6 +8,7 @@ export abstract class IJsonRpcConnection extends IEvents {
   constructor(opts?: any) {
     super();
   }
+
   public abstract open(opts?: any): Promise<void>;
   public abstract close(): Promise<void>;
   public abstract send(payload: JsonRpcPayload, context?: any): Promise<void>;

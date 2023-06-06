@@ -1,5 +1,5 @@
 export function getFromWindow<T>(name: string): T | undefined {
-  let res: T | undefined = undefined;
+  let res: T | undefined;
   if (typeof window !== "undefined" && typeof window[name] !== "undefined") {
     res = window[name];
   }

@@ -79,7 +79,7 @@ export class JsonRpcProvider extends IJsonRpcProvider {
           reject(e);
         }
       }
-      this.events.on(`${request.id}`, (response) => {
+      this.events.on(`${request.id}`, response => {
         if (isJsonRpcError(response)) {
           reject(response.error);
         } else {

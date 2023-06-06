@@ -22,7 +22,7 @@ export function isValidWildcardRoute(route: string): boolean {
   if (route.split("*").length !== 2) {
     return false;
   }
-  if (route.split("*").filter((x) => x.trim() === "").length !== 1) {
+  if (route.split("*").filter(x => x.trim() === "").length !== 1) {
     return false;
   }
   return true;

@@ -27,7 +27,7 @@ export function getError(type: string): ErrorResponse {
 }
 
 export function getErrorByCode(code: number): ErrorResponse {
-  const match = Object.values(STANDARD_ERROR_MAP).find((e) => e.code === code);
+  const match = Object.values(STANDARD_ERROR_MAP).find(e => e.code === code);
   if (!match) {
     return STANDARD_ERROR_MAP[DEFAULT_ERROR];
   }
