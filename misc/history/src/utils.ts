@@ -13,6 +13,10 @@ export class HistoricalMessages {
     const { messages, topic } = this.messageResponse;
     for (const message of messages) {
 
+      if(this.core.relayer.messages.has(topic, message.message)){
+        continue;
+      }
+
       this.core.relayer.events.emit("relayer_message", {
         topic,
         publishedAt: Date.now(),
