@@ -20,7 +20,7 @@
     "format": "lerna run format",
     "build": "lerna run build",
     "test": "lerna run test",
-    "check": "run-s lint prettier build test",
+    "check": "run-s prettier lint build test",
     "reset": "run-s clean bootstrap check",
     "new-version": "lerna version --no-git-tag-version",
     "pre-publish": "run-s new-version reset",
