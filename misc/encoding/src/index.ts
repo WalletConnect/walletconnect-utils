@@ -153,7 +153,6 @@ export function binaryToNumber(bin: string): number {
 // -- Validators ----------------------------------------- //
 
 export function isBinaryString(str: any): boolean {
-  // eslint-disable-next-line prefer-regex-literals
   if (typeof str !== "string" || !new RegExp(/^[01]+$/).test(str)) {
     return false;
   }
