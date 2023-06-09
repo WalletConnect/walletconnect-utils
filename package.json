@@ -34,6 +34,5 @@
   },
   "optionalDependencies": {
     "@nrwl/nx-linux-x64-gnu": "^15.9.2"
-  },
-  "version": "2.0.1-2d32a96"
+  }
 }
