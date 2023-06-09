@@ -1,24 +1,26 @@
 import * as ed25519 from "@noble/ed25519";
+import { sha512 } from "@noble/hashes/sha512";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
-  JwtPayload,
   composeDidPkh,
   encodeEd25519Key,
   generateJWT,
   jwtExp,
+  JwtPayload,
 } from "@walletconnect/did-jwt";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
 import {
-  IIdentityKeys,
+  GetIdentityParams,
   IdentityKeychain,
+  IIdentityKeys,
   RegisterIdentityParams,
   ResolveIdentityParams,
   UnregisterIdentityParams,
-  GetIdentityParams,
 } from "./types";
+ed25519.utils.sha512Sync = (...m) => sha512(ed25519.utils.concatBytes(...m));
 
 const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com";
 const IDENTITY_KEYS_STORAGE_PREFIX = "wc@2:identityKeys:";
