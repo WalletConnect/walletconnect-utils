@@ -149,7 +149,10 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     this.connection.on("payload", (payload: JsonRpcPayload) => this.onPayload(payload));
     this.connection.on("close", (event?: CloseEvent) => this.onClose(event));
     this.connection.on("error", (error: Error) => this.events.emit("error", error));
-    this.connection.on("register_error", (error: Error) => this.onClose());
+    this.connection.on("register_error", (error: Error) => {
+      this.events.emit("register_error", error);
+      this.onClose();
+    });
     this.hasRegisteredEventListeners = true;
   }
 }
