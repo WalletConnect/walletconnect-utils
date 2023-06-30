@@ -9,22 +9,10 @@ import {
   isLocalhostUrl,
   parseConnectionError,
 } from "@walletconnect/jsonrpc-utils";
+import { truncateQuery, resolveWebSocketImplementation, isBrowser } from "./utils";
 
 // Source: https://nodejs.org/api/events.html#emittersetmaxlistenersn
 const EVENT_EMITTER_MAX_LISTENERS_DEFAULT = 10;
-
-const resolveWebSocketImplementation = () => {
-  if (typeof global !== "undefined" && typeof global.WebSocket !== "undefined") {
-    return global.WebSocket;
-  }
-  if (typeof window !== "undefined" && typeof window.WebSocket !== "undefined") {
-    return window.WebSocket;
-  }
-
-  return require("ws");
-};
-
-const isBrowser = () => typeof window !== "undefined";
 
 const WS = resolveWebSocketImplementation();
 
@@ -176,7 +164,7 @@ export class WsConnection implements IJsonRpcConnection {
   }
 
   private parseError(e: Error, url = this.url) {
-    return parseConnectionError(e, url, "WS");
+    return parseConnectionError(e, truncateQuery(url), "WS");
   }
 
   private resetMaxListeners() {
@@ -187,7 +175,9 @@ export class WsConnection implements IJsonRpcConnection {
 
   private emitError(errorEvent: Error) {
     const error = this.parseError(
-      new Error(errorEvent?.message || `WebSocket connection failed for URL: ${this.url}`),
+      new Error(
+        errorEvent?.message || `WebSocket connection failed for host: ${truncateQuery(this.url)}`,
+      ),
     );
     this.events.emit("register_error", error);
     return error;
