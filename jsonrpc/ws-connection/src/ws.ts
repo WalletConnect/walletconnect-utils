@@ -9,7 +9,7 @@ import {
   isLocalhostUrl,
   parseConnectionError,
 } from "@walletconnect/jsonrpc-utils";
-import { truncateQuery, resolveWebSocketImplementation, isBrowser } from "./utils";
+import { truncateQuery, resolveWebSocketImplementation, hasBuiltInWebSocket } from "./utils";
 
 // Source: https://nodejs.org/api/events.html#emittersetmaxlistenersn
 const EVENT_EMITTER_MAX_LISTENERS_DEFAULT = 10;
@@ -119,7 +119,7 @@ export class WsConnection implements IJsonRpcConnection {
     return new Promise((resolve, reject) => {
       const opts = !isReactNative() ? { rejectUnauthorized: !isLocalhostUrl(url) } : undefined;
       const socket: WebSocket = new WS(url, [], opts);
-      if (isBrowser()) {
+      if (hasBuiltInWebSocket()) {
         socket.onerror = (event: Event) => {
           const errorEvent = event as ErrorEvent;
           reject(this.emitError(errorEvent.error));
