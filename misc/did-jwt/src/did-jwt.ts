@@ -1,18 +1,18 @@
-import { base58btc } from "multiformats/bases/base58";
-import bs58 from "bs58";
 import * as ed25519 from "@noble/ed25519";
-import { JwtHeader, JwtPayload } from "./types";
-import { concatUInt8Arrays, makeBase64UrlSafe, objectToHex } from "./helpers";
+import bs58 from "bs58";
+import { base58btc } from "multiformats/bases/base58";
 import {
+  DAY_IN_MS,
   DID_DELIMITER,
+  DID_METHOD_KEY,
   DID_METHOD_PKH,
   DID_PREFIX,
-  DAY_IN_MS,
   JWT_DELIMITER,
   MULTICODEC_ED25519_HEADER,
-  DID_METHOD_KEY,
   MULTICODEC_X25519_HEADER,
 } from "./constants";
+import { concatUInt8Arrays, makeBase64UrlSafe, objectToHex } from "./helpers";
+import { JwtHeader, JwtPayload } from "./types";
 
 export const composeDidPkh = (accountId: string) => {
   return `${DID_PREFIX}${DID_DELIMITER}${DID_METHOD_PKH}${DID_DELIMITER}${accountId}`;
