@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@walletconnect/safe-json": "^1.0.1",
-    "tslib": "1.14.1"
+    "tslib": "2.6.1"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "1.x",

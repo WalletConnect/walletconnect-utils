@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@walletconnect/window-getters": "^1.0.1",
-    "tslib": "1.14.1"
+    "tslib": "2.6.1"
   },
   "devDependencies": {
     "@types/bn.js": "4.11.6",
