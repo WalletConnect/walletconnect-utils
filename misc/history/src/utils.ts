@@ -10,9 +10,20 @@ export class HistoricalMessages {
   // eslint-disable-next-line no-useless-constructor
   public constructor(private core: ICore, public messageResponse: GetMessagesResponse) {}
 
-  public injectIntoRelayer() {
-    for (const message in this.messageResponse.messages) {
-      this.core.relayer.provider.events.emit("payload", message);
+  public async injectIntoRelayer() {
+    const { messages, topic } = this.messageResponse;
+    for (const { message } of messages) {
+      if (this.core.relayer.messages.has(topic, message)) {
+        continue;
+      }
+
+      await this.core.relayer.messages.set(topic, message);
+
+      this.core.relayer.events.emit("relayer_message", {
+        topic,
+        publishedAt: Date.now(),
+        message,
+      });
     }
   }
 }
