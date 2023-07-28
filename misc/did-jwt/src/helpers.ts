@@ -4,10 +4,7 @@
 // which is base64 encode the buffer, but instead of +, use - and
 // instead of / use _ and remove any padding (=).
 export const makeBase64UrlSafe = (base64EncodedString: string) => {
-  return base64EncodedString
-    .replace(/=/g, "")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_");
+  return base64EncodedString.replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
 };
 
 export const concatUInt8Arrays = (array1: Uint8Array, array2: Uint8Array) => {

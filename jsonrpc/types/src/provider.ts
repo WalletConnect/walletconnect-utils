@@ -4,15 +4,18 @@ import { IEvents } from "./misc";
 export abstract class IJsonRpcConnection extends IEvents {
   public abstract connected: boolean;
   public abstract connecting: boolean;
+  // @ts-ignore - opts is not used in abstract class constructor
   constructor(opts?: any) {
     super();
   }
+
   public abstract open(opts?: any): Promise<void>;
   public abstract close(): Promise<void>;
   public abstract send(payload: JsonRpcPayload, context?: any): Promise<void>;
 }
 
 export abstract class IBaseJsonRpcProvider extends IEvents {
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
   }
@@ -37,6 +40,7 @@ export abstract class IBaseJsonRpcProvider extends IEvents {
 export abstract class IJsonRpcProvider extends IBaseJsonRpcProvider {
   public abstract connection: IJsonRpcConnection;
 
+  // @ts-ignore - connection is not used in abstract class constructor
   constructor(connection: string | IJsonRpcConnection) {
     super();
   }

@@ -11,10 +11,7 @@ import {
   EncryptOpts,
 } from "@walletconnect/crypto";
 
-export function derive(
-  privateKey: Uint8Array,
-  publicKey: Uint8Array
-): Uint8Array {
+export function derive(privateKey: Uint8Array, publicKey: Uint8Array): Uint8Array {
   return x25519.sharedKey(privateKey, publicKey);
 }
 
@@ -26,10 +23,7 @@ export function generatePnrgFromEntropy(entropy: Uint8Array): PNRG {
 }
 
 export function generateKeyPair(entropy?: Uint8Array): KeyPair {
-  const prng =
-    typeof entropy !== "undefined"
-      ? generatePnrgFromEntropy(entropy)
-      : undefined;
+  const prng = typeof entropy !== "undefined" ? generatePnrgFromEntropy(entropy) : undefined;
   const keyPair = x25519.generateKeyPair(prng);
   return {
     publicKey: keyPair.publicKey,

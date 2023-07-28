@@ -8,7 +8,7 @@ const DB_NAME = "walletconnect.db";
 
 export class KeyValueStorage implements IKeyValueStorage {
   private db;
-  private database;
+  private database: any;
   private initialized = false;
   private inMemory = false;
   constructor(opts?: KeyValueStorageOptions) {
@@ -37,17 +37,14 @@ export class KeyValueStorage implements IKeyValueStorage {
 
   public async getKeys(): Promise<string[]> {
     await this.initilization();
-    const keys = (await this.database.find()).map(
-      (item: { id: string }) => item.id as string,
-    );
+    const keys = (await this.database.find()).map((item: { id: string }) => item.id as string);
     return keys;
   }
 
   public async getEntries<T = any>(): Promise<[string, T][]> {
     await this.initilization();
     const entries = (await this.database.find()).map(
-      (item: { id: string; value: string }) =>
-        [item.id, safeJsonParse(item.value)] as [string, T],
+      (item: { id: string; value: string }) => [item.id, safeJsonParse(item.value)] as [string, T],
     );
     return entries;
   }
@@ -61,7 +58,7 @@ export class KeyValueStorage implements IKeyValueStorage {
     return safeJsonParse(item.value) as T;
   }
 
-  public async setItem<T = any>(key: string, value: any): Promise<void> {
+  public async setItem<_T = any>(key: string, value: any): Promise<void> {
     await this.initilization();
     const item = this.database.findOne({ id: { $eq: key } });
     if (item) {

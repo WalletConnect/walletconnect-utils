@@ -44,7 +44,7 @@ export const formatMessage = (cacao: CacaoPayload, iss: string) => {
   const issuedAt = `Issued At: ${cacao.iat}`;
   const resources =
     cacao.resources && cacao.resources.length > 0
-      ? `Resources:\n${cacao.resources.map(resource => `- ${resource}`).join("\n")}`
+      ? `Resources:\n${cacao.resources.map((resource) => `- ${resource}`).join("\n")}`
       : undefined;
 
   const message = [
@@ -60,7 +60,7 @@ export const formatMessage = (cacao: CacaoPayload, iss: string) => {
     issuedAt,
     resources,
   ]
-    .filter(val => val !== undefined && val !== null) // remove unnecessary empty lines
+    .filter((val) => val !== undefined && val !== null) // remove unnecessary empty lines
     .join("\n");
 
   return message;

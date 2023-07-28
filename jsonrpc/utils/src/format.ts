@@ -1,4 +1,4 @@
-import { getError, getErrorByCode, isReservedErrorCode, isServerErrorCode } from "./error";
+import { getError, getErrorByCode, isReservedErrorCode } from "./error";
 import { INTERNAL_ERROR, SERVER_ERROR } from "./constants";
 import { ErrorResponse, JsonRpcError, JsonRpcRequest, JsonRpcResult } from "./types";
 

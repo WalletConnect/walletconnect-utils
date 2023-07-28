@@ -6,7 +6,7 @@ export function assertType(obj: any, key: string, type = "string") {
 
 export function hasRequiredParams(params: any, required: string[]) {
   let matches = true;
-  required.forEach(key => {
+  required.forEach((key) => {
     const exists = key in params;
     if (!exists) {
       matches = false;
@@ -16,25 +16,16 @@ export function hasRequiredParams(params: any, required: string[]) {
 }
 
 export function hasExactParamsLength(params: any, length: number): boolean {
-  return Array.isArray(params)
-    ? params.length === length
-    : Object.keys(params).length === length;
+  return Array.isArray(params) ? params.length === length : Object.keys(params).length === length;
 }
 
-export function hasRequiredParamsLength(
-  params: any,
-  minLength: number
-): boolean {
+export function hasRequiredParamsLength(params: any, minLength: number): boolean {
   return Array.isArray(params)
     ? params.length >= minLength
     : Object.keys(params).length >= minLength;
 }
 
-export function checkParams(
-  params: any,
-  required: string[],
-  optional: string[]
-) {
+export function checkParams(params: any, required: string[], optional: string[]) {
   const exact = !optional.length;
   const matchesLength = exact
     ? hasExactParamsLength(params, required.length)
@@ -43,14 +34,7 @@ export function checkParams(
   return hasRequiredParams(params, required);
 }
 
-export function methodEndsWith(
-  method: string,
-  expected: string,
-  separator = "_"
-) {
+export function methodEndsWith(method: string, expected: string, separator = "_") {
   const split = method.split(separator);
-  return (
-    split[split.length - 1].trim().toLowerCase() ===
-    expected.trim().toLowerCase()
-  );
+  return split[split.length - 1].trim().toLowerCase() === expected.trim().toLowerCase();
 }

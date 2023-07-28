@@ -15,14 +15,11 @@ const dbDir = "test/dbs";
 const PERSISTED_NODEJS_DATABASE = `${dbDir}/walletconnect.db`;
 
 // Mock the external `async-storage` dependency imported inside ReactNativeStorage.
-const { KeyValueStorage: ReactNativeStorage } = proxyquire(
-  "../src/react-native",
-  {
-    "@react-native-async-storage/async-storage": {
-      default: new MockAsyncStorage(),
-    },
-  }
-);
+const { KeyValueStorage: ReactNativeStorage } = proxyquire("../src/react-native", {
+  "@react-native-async-storage/async-storage": {
+    default: new MockAsyncStorage(),
+  },
+});
 
 describe("KeyValueStorage", () => {
   const key = "yolo";
@@ -56,8 +53,7 @@ describe("KeyValueStorage", () => {
     it("removeItem", async () => {
       await storage.removeItem(key);
       const item = await storage.getItem(key);
-      if (typeof item !== "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof item !== "undefined") throw new Error("item expected to be undefined");
       chai.expect(!item).to.be.true;
     });
   });
@@ -89,8 +85,7 @@ describe("KeyValueStorage", () => {
     it("removeItem", async () => {
       await storage.removeItem(key);
       const item = await storage.getItem(key);
-      if (typeof item !== "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof item !== "undefined") throw new Error("item expected to be undefined");
       chai.expect(!item).to.be.true;
     });
   });
@@ -122,8 +117,7 @@ describe("KeyValueStorage", () => {
     it("removeItem", async () => {
       await storage.removeItem(key);
       const item = await storage.getItem(key);
-      if (typeof item !== "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof item !== "undefined") throw new Error("item expected to be undefined");
       chai.expect(!item).to.be.true;
     });
   });
@@ -135,8 +129,7 @@ describe("KeyValueStorage", () => {
       });
       await storageA.setItem(key, value);
       const itemA = await storageA.getItem<typeof value>(key);
-      if (typeof itemA === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemA === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemA).to.not.be.undefined;
       chai.expect(itemA.name).to.not.be.undefined;
       chai.expect(itemA.name).to.eql(value.name);
@@ -144,8 +137,7 @@ describe("KeyValueStorage", () => {
         database: PERSISTED_NODEJS_DATABASE,
       });
       const itemB = await storageB.getItem<typeof value>(key);
-      if (typeof itemB === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemB === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemB).to.not.be.undefined;
       chai.expect(itemB.name).to.not.be.undefined;
       chai.expect(itemB.name).to.eql(value.name);
@@ -157,15 +149,13 @@ describe("KeyValueStorage", () => {
       const storeA = new MockStore(storage);
       await storeA.set(key, value);
       const itemA = await storeA.get<typeof value>(key);
-      if (typeof itemA === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemA === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemA).to.not.be.undefined;
       chai.expect(itemA.name).to.not.be.undefined;
       chai.expect(itemA.name).to.eql(value.name);
       const storeB = new MockStore(storage);
       const itemB = await storeB.get<typeof value>(key);
-      if (typeof itemB === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemB === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemB).to.not.be.undefined;
       chai.expect(itemB.name).to.not.be.undefined;
       chai.expect(itemB.name).to.eql(value.name);
@@ -190,24 +180,21 @@ describe("KeyValueStorage", () => {
 
       const itemA = await storageA.getItem<typeof value>(key);
 
-      if (typeof itemA === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemA === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemA).to.not.be.undefined;
       chai.expect(itemA.name).to.not.be.undefined;
       chai.expect(itemA.name).to.eql(value.name);
       chai.expect((itemA as any).owner).to.eql("storageC");
 
       const itemB = await storageB.getItem<typeof value>(key);
-      if (typeof itemB === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemB === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemB).to.not.be.undefined;
       chai.expect(itemB.name).to.not.be.undefined;
       chai.expect(itemB.name).to.eql(value.name);
       chai.expect((itemB as any).owner).to.eql("storageC");
 
       const itemC = await storageB.getItem<typeof value>(key);
-      if (typeof itemC === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemC === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemC).to.not.be.undefined;
       chai.expect(itemC.name).to.not.be.undefined;
       chai.expect(itemC.name).to.eql(value.name);
@@ -231,16 +218,14 @@ describe("KeyValueStorage", () => {
 
       const itemA = await storageA.getItem<typeof value>(key);
 
-      if (typeof itemA === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemA === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemA).to.not.be.undefined;
       chai.expect(itemA.name).to.not.be.undefined;
       chai.expect(itemA.name).to.eql(value.name);
       chai.expect((itemA as any).owner).to.eql("storageA");
 
       const itemB = await storageB.getItem<typeof value>(key);
-      if (typeof itemB === "undefined")
-        throw new Error("item expected to be undefined");
+      if (typeof itemB === "undefined") throw new Error("item expected to be undefined");
       chai.expect(itemB).to.not.be.undefined;
       chai.expect(itemB.name).to.not.be.undefined;
       chai.expect(itemB.name).to.eql(value.name);

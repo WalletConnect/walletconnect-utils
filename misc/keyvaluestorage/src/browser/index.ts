@@ -1,4 +1,5 @@
 import { safeJsonParse, safeJsonStringify } from "@walletconnect/safe-json";
+// @ts-expect-error
 import localStorage from "./lib/localStorage";
 
 import { IKeyValueStorage, parseEntry } from "../shared";

@@ -59,9 +59,7 @@ class AsyncDict<K, V> {
     if (cb) cb(null);
   }
 
-  async getAllKeys(
-    cb?: AsyncStorageTypes.ErrBack<Array<K>>
-  ): Promise<Array<K>> {
+  async getAllKeys(cb?: AsyncStorageTypes.ErrBack<Array<K>>): Promise<Array<K>> {
     const keys: Array<K> = Array.from(this.store.keys());
     if (cb) cb(null, keys);
     return keys;
@@ -69,9 +67,9 @@ class AsyncDict<K, V> {
 
   async multiGet(
     keys: Array<K>,
-    cb?: AsyncStorageTypes.ErrBack<AsyncStorageTypes.Entries<K, V>>
+    cb?: AsyncStorageTypes.ErrBack<AsyncStorageTypes.Entries<K, V>>,
   ): Promise<AsyncStorageTypes.Entries<K, V>> {
-    const requested: AsyncStorageTypes.Entries<K, V> = keys.map(k => [
+    const requested: AsyncStorageTypes.Entries<K, V> = keys.map((k) => [
       k,
       this.store.get(k) || null,
     ]);
@@ -81,7 +79,7 @@ class AsyncDict<K, V> {
 
   async multiSet(
     entries: AsyncStorageTypes.Entries<K, V>,
-    cb?: AsyncStorageTypes.ErrBack<V>
+    cb?: AsyncStorageTypes.ErrBack<V>,
   ): Promise<void> {
     for (const [key, value] of entries) {
       this.store.set(key, value);
@@ -89,10 +87,7 @@ class AsyncDict<K, V> {
     if (cb) cb(null);
   }
 
-  async multiRemove(
-    keys: Array<K>,
-    cb?: AsyncStorageTypes.ErrBack<V>
-  ): Promise<void> {
+  async multiRemove(keys: Array<K>, cb?: AsyncStorageTypes.ErrBack<V>): Promise<void> {
     for (const key of keys) {
       this.store.delete(key);
     }
@@ -100,19 +95,17 @@ class AsyncDict<K, V> {
   }
 }
 
-export class MockAsyncStorage extends AsyncDict<string, string>
-  implements IAsyncStorage {
+export class MockAsyncStorage extends AsyncDict<string, string> implements IAsyncStorage {
   async mergeItem(
     key: string,
     value: string,
-    cb?: AsyncStorageTypes.ErrBack<string>
+    cb?: AsyncStorageTypes.ErrBack<string>,
   ): Promise<void> {
     const item: string | null = await this.getItem(key);
 
     if (!item) throw new Error(`No item with ${key} key`);
     if (!isStringified(item)) throw new Error(`Invalid item with ${key} key`);
-    if (!isStringified(value))
-      throw new Error(`Invalid value to merge with ${key}`);
+    if (!isStringified(value)) throw new Error(`Invalid value to merge with ${key}`);
 
     const itemObj: Record<string, any> = JSON.parse(item);
     const valueObj: Record<string, any> = JSON.parse(value);
@@ -125,7 +118,7 @@ export class MockAsyncStorage extends AsyncDict<string, string>
 
   async multiMerge(
     entries: AsyncStorageTypes.Entries<string, string>,
-    cb?: AsyncStorageTypes.ArrErrBack<string>
+    cb?: AsyncStorageTypes.ArrErrBack<string>,
   ): Promise<void> {
     const errors: Array<Error> = [];
     /* eslint no-restricted-syntax: "off" */

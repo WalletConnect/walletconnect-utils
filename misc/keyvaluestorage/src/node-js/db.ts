@@ -14,7 +14,7 @@ interface DbKeyValueStorageOptions {
   callback: Function;
 }
 
-let Lokijs;
+let Lokijs: any;
 
 export default class Db {
   private static instances: Record<string, Db> = {};

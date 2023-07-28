@@ -79,7 +79,7 @@ export class JsonRpcProvider extends IJsonRpcProvider {
           reject(e);
         }
       }
-      this.events.on(`${request.id}`, response => {
+      this.events.on(`${request.id}`, (response) => {
         if (isJsonRpcError(response)) {
           reject(response.error);
         } else {
@@ -149,7 +149,7 @@ export class JsonRpcProvider extends IJsonRpcProvider {
     this.connection.on("payload", (payload: JsonRpcPayload) => this.onPayload(payload));
     this.connection.on("close", (event?: CloseEvent) => this.onClose(event));
     this.connection.on("error", (error: Error) => this.events.emit("error", error));
-    this.connection.on("register_error", (error: Error) => this.onClose());
+    this.connection.on("register_error", (_error: Error) => this.onClose());
     this.hasRegisteredEventListeners = true;
   }
 }

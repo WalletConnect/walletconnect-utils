@@ -6,7 +6,7 @@ import { isJsonRpcRequest, JsonRpcRequest } from "@walletconnect/jsonrpc-utils";
 import { HistoryClient } from "../";
 
 const waitForEvent = async (checkForEvent: (...args: any[]) => Promise<boolean>) => {
-  await new Promise(resolve => {
+  await new Promise((resolve) => {
     const intervalId = setInterval(async () => {
       if (await checkForEvent()) {
         clearInterval(intervalId);
@@ -17,7 +17,7 @@ const waitForEvent = async (checkForEvent: (...args: any[]) => Promise<boolean>)
 };
 
 const wait = async (time: number) => {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve) => {
     setTimeout(() => {
       resolve();
     }, time);
@@ -53,7 +53,7 @@ const basicSendMessageFlow = async (
 
     await core2.relayer.publish(topic, payload, {
       ttl: 3000,
-      tag: tag,
+      tag,
     });
   }
 
@@ -216,8 +216,8 @@ describe("utils/history", () => {
       await core2.relayer.messages.del(topic);
 
       let sum = 0;
-      core2.relayer.on(RELAYER_EVENTS.message, async message => {
-        const decoded = await core2.crypto.decode(topic, message.message);
+      core2.relayer.on(RELAYER_EVENTS.message, async (relayerMessageEvent: any) => {
+        const decoded = await core2.crypto.decode(topic, relayerMessageEvent.message);
         if (isJsonRpcRequest(decoded)) {
           sum += decoded.params.thing;
         }

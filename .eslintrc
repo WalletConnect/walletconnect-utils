@@ -1,6 +1,7 @@
 {
   "rules": {
     "@typescript-eslint/ban-ts-ignore": ["off"],
+    "@typescript-eslint/ban-ts-comment": ["off"],
     "@typescript-eslint/camelcase": ["off"],
     "@typescript-eslint/explicit-function-return-type": ["off"],
     "@typescript-eslint/interface-name-prefix": ["off"],
@@ -13,6 +14,8 @@
     "comma-dangle": ["error", "always-multiline"],
     "no-async-promise-executor": ["off"],
     "no-empty-pattern": ["off"],
+    "no-use-before-define": ["off"],
+    "prefer-regex-literals": ["off"],
     "no-undef": ["error"],
     "no-var": ["error"],
     "object-curly-spacing": ["error", "always"],
@@ -33,7 +36,8 @@
     "standard",
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

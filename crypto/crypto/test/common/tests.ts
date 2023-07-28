@@ -9,10 +9,7 @@ export async function testSha2(msg: Uint8Array, algo: string) {
   const shaMethod = isoCrypto[algo];
   const hash: Uint8Array = shaMethod
     ? await shaMethod(msg)
-    : crypto
-        .createHash(algo)
-        .update(msg)
-        .digest();
+    : crypto.createHash(algo).update(msg).digest();
 
   return hash;
 }
@@ -21,19 +18,11 @@ export function testRandomBytes(length: number) {
   return isoCrypto.randomBytes(length);
 }
 
-export function testAesEncrypt(
-  iv: Uint8Array,
-  key: Uint8Array,
-  data: Uint8Array
-) {
+export function testAesEncrypt(iv: Uint8Array, key: Uint8Array, data: Uint8Array) {
   return isoCrypto.aesCbcEncrypt(iv, key, data);
 }
 
-export function testAesDecrypt(
-  iv: Uint8Array,
-  key: Uint8Array,
-  data: Uint8Array
-) {
+export function testAesDecrypt(iv: Uint8Array, key: Uint8Array, data: Uint8Array) {
   return isoCrypto.aesCbcDecrypt(iv, key, data);
 }
 
@@ -41,11 +30,7 @@ export async function testHmacSign(key: Uint8Array, data: Uint8Array) {
   return isoCrypto.hmacSha256Sign(key, data);
 }
 
-export function testHmacVerify(
-  key: Uint8Array,
-  data: Uint8Array,
-  sig: Uint8Array
-) {
+export function testHmacVerify(key: Uint8Array, data: Uint8Array, sig: Uint8Array) {
   return isoCrypto.hmacSha256Verify(key, data, sig);
 }
 

@@ -12,19 +12,10 @@ export function testGenerateKeyPair() {
   return keyPair;
 }
 
-export async function testSharedKeys(
-  keyPairA: eccies25519.KeyPair,
-  keyPairB: eccies25519.KeyPair
-) {
-  const sharedKey1 = eccies25519.derive(
-    keyPairA.privateKey,
-    keyPairB.publicKey
-  );
+export async function testSharedKeys(keyPairA: eccies25519.KeyPair, keyPairB: eccies25519.KeyPair) {
+  const sharedKey1 = eccies25519.derive(keyPairA.privateKey, keyPairB.publicKey);
 
-  const sharedKey2 = eccies25519.derive(
-    keyPairB.privateKey,
-    keyPairA.publicKey
-  );
+  const sharedKey2 = eccies25519.derive(keyPairB.privateKey, keyPairA.publicKey);
   return { sharedKey1, sharedKey2 };
 }
 
@@ -32,10 +23,7 @@ export function getTestMessageToEncrypt(str = TEST_MESSAGE_STR) {
   return { str, msg: encoding.utf8ToArray(str) };
 }
 
-export async function testEncrypt(
-  publicKey: Uint8Array,
-  opts?: Partial<eccies25519.EncryptOpts>
-) {
+export async function testEncrypt(publicKey: Uint8Array, opts?: Partial<eccies25519.EncryptOpts>) {
   const { str, msg } = getTestMessageToEncrypt(undefined);
   const encrypted = await eccies25519.encrypt(msg, publicKey, opts);
   return { str, msg, encrypted };

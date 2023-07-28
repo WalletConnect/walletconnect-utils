@@ -74,7 +74,7 @@ export class HttpConnection implements IJsonRpcConnection {
     this.onClose();
   }
 
-  public async send(payload: JsonRpcPayload, context?: any): Promise<void> {
+  public async send(payload: JsonRpcPayload): Promise<void> {
     if (!this.isAvailable) {
       await this.register();
     }
@@ -103,7 +103,7 @@ export class HttpConnection implements IJsonRpcConnection {
         this.events.setMaxListeners(currentMaxListeners + 1);
       }
       return new Promise((resolve, reject) => {
-        this.events.once("register_error", error => {
+        this.events.once("register_error", (error) => {
           this.resetMaxListeners();
           reject(error);
         });

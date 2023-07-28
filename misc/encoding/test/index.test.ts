@@ -19,8 +19,7 @@ const TEST_STRING_UTF8 = "encoding";
 const TEST_STRING_HEX = "656e636f64696e67";
 const TEST_STRING_BUF = Buffer.from(TEST_STRING_HEX, "hex");
 const TEST_STRING_ARR = new Uint8Array(TEST_STRING_BUF);
-const TEST_STRING_BIN =
-  "0110010101101110011000110110111101100100011010010110111001100111";
+const TEST_STRING_BIN = "0110010101101110011000110110111101100100011010010110111001100111";
 
 const TEST_NUMBER_NUM = 16;
 const TEST_NUMBER_HEX = "10";
@@ -284,8 +283,7 @@ describe("EncUtils", () => {
   it("isHexString", async () => {
     chai.expect(encoding.isHexString(TEST_STRING_BIN)).to.be.false;
     chai.expect(encoding.isHexString(TEST_STRING_UTF8)).to.be.false;
-    chai.expect(encoding.isHexString(encoding.addHexPrefix(TEST_STRING_HEX))).to
-      .be.true;
+    chai.expect(encoding.isHexString(encoding.addHexPrefix(TEST_STRING_HEX))).to.be.true;
   });
 
   it("isBuffer", async () => {
@@ -310,16 +308,12 @@ describe("EncUtils", () => {
     chai.expect(encoding.getType(TEST_NUMBER_UTF8)).to.eql("string");
     chai.expect(encoding.getType(TEST_NUMBER_BUF)).to.eql("buffer");
     chai.expect(encoding.getType(TEST_NUMBER_ARR)).to.eql("typed-array");
-    chai
-      .expect(encoding.getType(TEST_NUMBER_ARR.buffer))
-      .to.eql("array-buffer");
+    chai.expect(encoding.getType(TEST_NUMBER_ARR.buffer)).to.eql("array-buffer");
   });
 
   it("getEncoding", async () => {
     chai.expect(encoding.getEncoding(TEST_NUMBER_BIN)).to.eql("binary");
-    chai
-      .expect(encoding.getEncoding(encoding.addHexPrefix(TEST_NUMBER_HEX)))
-      .to.eql("hex");
+    chai.expect(encoding.getEncoding(encoding.addHexPrefix(TEST_NUMBER_HEX))).to.eql("hex");
     chai.expect(encoding.getEncoding(TEST_NUMBER_UTF8)).to.eql("utf8");
   });
 
@@ -335,7 +329,7 @@ describe("EncUtils", () => {
   it("concatArrays", async () => {
     const input = [TEST_STRING_ARR, TEST_STRING_ARR];
     const expected = new Uint8Array(
-      Array.from(TEST_STRING_ARR).concat(Array.from(TEST_STRING_ARR))
+      Array.from(TEST_STRING_ARR).concat(Array.from(TEST_STRING_ARR)),
     );
     const result = encoding.concatArrays(...input);
     chai.expect(compare(result, expected)).to.be.true;
@@ -368,9 +362,7 @@ describe("EncUtils", () => {
   });
 
   it("splitBytes", async () => {
-    chai
-      .expect(encoding.splitBytes(TEST_INVALID_BIN))
-      .to.eql([TEST_SIMPLE_BIN]);
+    chai.expect(encoding.splitBytes(TEST_INVALID_BIN)).to.eql([TEST_SIMPLE_BIN]);
     chai.expect(encoding.splitBytes(TEST_SIMPLE_BIN)).to.eql([TEST_SIMPLE_BIN]);
     chai
       .expect(encoding.splitBytes(TEST_SIMPLE_BIN + TEST_SIMPLE_BIN))
@@ -396,9 +388,7 @@ describe("EncUtils", () => {
     const result = encoding.padLeft(input, expected.length);
     chai.expect(compare(result, expected)).to.be.true;
     chai.expect(result.length).to.eql(expected.length);
-    chai
-      .expect(result.replace(input, ""))
-      .to.eql("0".repeat(expected.length - input.length));
+    chai.expect(result.replace(input, "")).to.eql("0".repeat(expected.length - input.length));
   });
 
   it("padRight", async () => {
@@ -407,47 +397,27 @@ describe("EncUtils", () => {
     const result = encoding.padRight(input, expected.length);
     chai.expect(compare(result, expected)).to.be.true;
     chai.expect(result.length).to.eql(expected.length);
-    chai
-      .expect(result.replace(input, ""))
-      .to.eql("0".repeat(expected.length - input.length));
+    chai.expect(result.replace(input, "")).to.eql("0".repeat(expected.length - input.length));
   });
 
   it("removeHexPrefix", async () => {
-    chai
-      .expect(encoding.removeHexPrefix(TEST_STRING_HEX))
-      .to.eql(TEST_STRING_HEX);
-    chai
-      .expect(encoding.removeHexPrefix("0x" + TEST_STRING_HEX))
-      .to.eql(TEST_STRING_HEX);
+    chai.expect(encoding.removeHexPrefix(TEST_STRING_HEX)).to.eql(TEST_STRING_HEX);
+    chai.expect(encoding.removeHexPrefix("0x" + TEST_STRING_HEX)).to.eql(TEST_STRING_HEX);
   });
 
   it("addHexPrefix", async () => {
-    chai
-      .expect(encoding.addHexPrefix(TEST_STRING_HEX))
-      .to.eql("0x" + TEST_STRING_HEX);
-    chai
-      .expect(encoding.addHexPrefix("0x" + TEST_STRING_HEX))
-      .to.eql("0x" + TEST_STRING_HEX);
+    chai.expect(encoding.addHexPrefix(TEST_STRING_HEX)).to.eql("0x" + TEST_STRING_HEX);
+    chai.expect(encoding.addHexPrefix("0x" + TEST_STRING_HEX)).to.eql("0x" + TEST_STRING_HEX);
   });
 
   it("sanitizeHex", async () => {
-    chai
-      .expect(encoding.sanitizeHex("0x" + TEST_STRING_HEX))
-      .to.eql("0x" + TEST_STRING_HEX);
-    chai
-      .expect(encoding.sanitizeHex(TEST_STRING_HEX))
-      .to.eql("0x" + TEST_STRING_HEX);
-    chai
-      .expect(encoding.sanitizeHex("0x0" + TEST_STRING_HEX))
-      .to.eql("0x00" + TEST_STRING_HEX);
+    chai.expect(encoding.sanitizeHex("0x" + TEST_STRING_HEX)).to.eql("0x" + TEST_STRING_HEX);
+    chai.expect(encoding.sanitizeHex(TEST_STRING_HEX)).to.eql("0x" + TEST_STRING_HEX);
+    chai.expect(encoding.sanitizeHex("0x0" + TEST_STRING_HEX)).to.eql("0x00" + TEST_STRING_HEX);
   });
 
   it("removeHexLeadingZeros", async () => {
-    chai
-      .expect(encoding.removeHexLeadingZeros(TEST_STRING_HEX))
-      .to.eql(TEST_STRING_HEX);
-    chai
-      .expect(encoding.removeHexLeadingZeros("0" + TEST_STRING_HEX))
-      .to.eql(TEST_STRING_HEX);
+    chai.expect(encoding.removeHexLeadingZeros(TEST_STRING_HEX)).to.eql(TEST_STRING_HEX);
+    chai.expect(encoding.removeHexLeadingZeros("0" + TEST_STRING_HEX)).to.eql(TEST_STRING_HEX);
   });
 });

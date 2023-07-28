@@ -28,8 +28,7 @@ Expiration Time: 2022-10-11T23:03:35.700Z`;
     it("passes for a valid signature", async () => {
       const cacaoSignature: CacaoSignature = {
         t: "eip1271",
-        s:
-          "0xc1505719b2504095116db01baaf276361efd3a73c28cf8cc28dabefa945b8d536011289ac0a3b048600c1e692ff173ca944246cf7ceb319ac2262d27b395c82b1c",
+        s: "0xc1505719b2504095116db01baaf276361efd3a73c28cf8cc28dabefa945b8d536011289ac0a3b048600c1e692ff173ca944246cf7ceb319ac2262d27b395c82b1c",
       };
 
       const isValid = await verifySignature(
@@ -44,8 +43,7 @@ Expiration Time: 2022-10-11T23:03:35.700Z`;
     it("fails for a bad signature", async () => {
       const cacaoSignature: CacaoSignature = {
         t: "eip1271",
-        s:
-          "0xdead5719b2504095116db01baaf276361efd3a73c28cf8cc28dabefa945b8d536011289ac0a3b048600c1e692ff173ca944246cf7ceb319ac2262d27b395c82b1c",
+        s: "0xdead5719b2504095116db01baaf276361efd3a73c28cf8cc28dabefa945b8d536011289ac0a3b048600c1e692ff173ca944246cf7ceb319ac2262d27b395c82b1c",
       };
 
       const isValid = await verifySignature(

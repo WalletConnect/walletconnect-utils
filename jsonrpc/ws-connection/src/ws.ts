@@ -65,7 +65,7 @@ export class WsConnection implements IJsonRpcConnection {
         return;
       }
 
-      this.socket.onclose = event => {
+      this.socket.onclose = (event) => {
         this.onClose(event);
         resolve();
       };
@@ -74,7 +74,7 @@ export class WsConnection implements IJsonRpcConnection {
     });
   }
 
-  public async send(payload: JsonRpcPayload, context?: any): Promise<void> {
+  public async send(payload: JsonRpcPayload): Promise<void> {
     if (typeof this.socket === "undefined") {
       this.socket = await this.register();
     }
@@ -100,7 +100,7 @@ export class WsConnection implements IJsonRpcConnection {
         this.events.setMaxListeners(currentMaxListeners + 1);
       }
       return new Promise((resolve, reject) => {
-        this.events.once("register_error", error => {
+        this.events.once("register_error", (error) => {
           this.resetMaxListeners();
           reject(error);
         });
@@ -138,7 +138,7 @@ export class WsConnection implements IJsonRpcConnection {
 
   private onOpen(socket: WebSocket) {
     socket.onmessage = (event: MessageEvent) => this.onPayload(event);
-    socket.onclose = event => this.onClose(event);
+    socket.onclose = (event) => this.onClose(event);
     this.socket = socket;
     this.registering = false;
     this.events.emit("open");

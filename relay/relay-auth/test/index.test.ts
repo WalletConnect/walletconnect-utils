@@ -1,12 +1,9 @@
-import "mocha";
+// import * from "mocha";
 import * as chai from "chai";
 
 import * as didJWT from "did-jwt";
-// import KeyDIDResolver from "key-did-resolver";
-// import { Resolver } from "did-resolver";
 import * as ed25519 from "@stablelib/ed25519";
 import { fromString } from "uint8arrays/from-string";
-import { toString } from "uint8arrays/to-string";
 
 import {
   TEST_SUBJECT,
@@ -22,15 +19,7 @@ import {
   TEST_IAT,
 } from "./shared";
 
-import {
-  decodeData,
-  decodeIss,
-  encodeData,
-  encodeIss,
-  generateKeyPair,
-  signJWT,
-  verifyJWT,
-} from "../src";
+import { decodeIss, encodeData, encodeIss, generateKeyPair, signJWT, verifyJWT } from "../src";
 
 describe("Relay Auth", () => {
   let keyPair: ed25519.KeyPair;
@@ -45,13 +34,9 @@ describe("Relay Auth", () => {
     chai.expect(randomKeyPair.secretKey.length).to.eql(64);
   });
   it("should generate same ed25519 key pair", async () => {
-    chai
-      .expect(keyPair.publicKey)
-      .to.eql(fromString(EXPECTED_PUBLIC_KEY, "base16"));
+    chai.expect(keyPair.publicKey).to.eql(fromString(EXPECTED_PUBLIC_KEY, "base16"));
 
-    chai
-      .expect(keyPair.secretKey)
-      .to.eql(fromString(EXPECTED_SECRET_KEY, "base16"));
+    chai.expect(keyPair.secretKey).to.eql(fromString(EXPECTED_SECRET_KEY, "base16"));
   });
   it("encode and decode issuer", async () => {
     const iss = encodeIss(keyPair.publicKey);

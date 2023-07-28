@@ -1,0 +1,71 @@
+on: push
+
+name: CI Checks
+
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test-prefix:
+          - misc/logger
+          - misc/encoding
+          - misc/keyvaluestorage
+          - misc/time
+          - misc/heartbeat
+          - misc/history
+          - misc/environment
+          - misc/cacao
+          - misc/identity-keys
+          - misc/events
+          - misc/did-jwt
+          - misc/safe-json
+          - crypto/ecies-25519
+          - crypto/crypto
+          - crypto/randombytes
+          - jsonrpc/types
+          - jsonrpc/provider
+          - jsonrpc/utils
+          - jsonrpc/http-connection
+          - jsonrpc/ws-connection
+          - browser/window-getters
+          - browser/window-metadata
+          - relay/relay-api
+          - relay/relay-auth
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Check node_modules cache
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nodemodules-
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Bootstrap packages
+        run: npm run bootstrap
+
+      - name: Prettier
+        run: npm run prettier --prefix=${{ matrix.test-prefix }} --if-present
+
+      - name: Lint
+        run: npm run lint --prefix=${{ matrix.test-prefix }} --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test --prefix=${{ matrix.test-prefix }} --if-present
+        env:
+          TEST_PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}

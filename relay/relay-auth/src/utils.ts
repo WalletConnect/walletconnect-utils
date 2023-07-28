@@ -25,22 +25,15 @@ export function decodeJSON(str: string): any {
 }
 
 export function encodeJSON(val: any): string {
-  return toString(
-    fromString(safeJsonStringify(val), JSON_ENCODING),
-    JWT_ENCODING
-  );
+  return toString(fromString(safeJsonStringify(val), JSON_ENCODING), JWT_ENCODING);
 }
 
 // ---------- Issuer ----------------------------------------------- //
 
 export function encodeIss(publicKey: Uint8Array): string {
-  const header = fromString(
-    MULTICODEC_ED25519_HEADER,
-    MULTICODEC_ED25519_ENCODING
-  );
+  const header = fromString(MULTICODEC_ED25519_HEADER, MULTICODEC_ED25519_ENCODING);
   const multicodec =
-    MULTICODEC_ED25519_BASE +
-    toString(concat([header, publicKey]), MULTICODEC_ED25519_ENCODING);
+    MULTICODEC_ED25519_BASE + toString(concat([header, publicKey]), MULTICODEC_ED25519_ENCODING);
   return [DID_PREFIX, DID_METHOD, multicodec].join(DID_DELIMITER);
 }
 
@@ -80,7 +73,7 @@ export function decodeSig(encoded: string): Uint8Array {
 export function encodeData(params: IridiumJWTData): Uint8Array {
   return fromString(
     [encodeJSON(params.header), encodeJSON(params.payload)].join(JWT_DELIMITER),
-    DATA_ENCODING
+    DATA_ENCODING,
   );
 }
 
@@ -94,11 +87,9 @@ export function decodeData(data: Uint8Array): IridiumJWTData {
 // ---------- JWT ----------------------------------------------- //
 
 export function encodeJWT(params: IridiumJWTSigned): string {
-  return [
-    encodeJSON(params.header),
-    encodeJSON(params.payload),
-    encodeSig(params.signature),
-  ].join(JWT_DELIMITER);
+  return [encodeJSON(params.header), encodeJSON(params.payload), encodeSig(params.signature)].join(
+    JWT_DELIMITER,
+  );
 }
 
 export function decodeJWT(jwt: string): IridiumJWTDecoded {
@@ -106,9 +97,6 @@ export function decodeJWT(jwt: string): IridiumJWTDecoded {
   const header = decodeJSON(params[0]);
   const payload = decodeJSON(params[1]);
   const signature = decodeSig(params[2]);
-  const data = fromString(
-    params.slice(0, 2).join(JWT_DELIMITER),
-    DATA_ENCODING
-  );
+  const data = fromString(params.slice(0, 2).join(JWT_DELIMITER), DATA_ENCODING);
   return { header, payload, signature, data };
 }

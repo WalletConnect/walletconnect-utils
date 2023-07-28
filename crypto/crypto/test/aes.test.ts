@@ -1,12 +1,7 @@
 import "mocha";
 import * as chai from "chai";
 
-import {
-  getTestMessageToEncrypt,
-  testRandomBytes,
-  testAesEncrypt,
-  testAesDecrypt,
-} from "./common";
+import { getTestMessageToEncrypt, testRandomBytes, testAesEncrypt, testAesDecrypt } from "./common";
 
 describe("AES", () => {
   let keyLength: number;
