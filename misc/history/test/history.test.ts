@@ -216,8 +216,8 @@ describe("utils/history", () => {
       await core2.relayer.messages.del(topic);
 
       let sum = 0;
-      core2.relayer.on(RELAYER_EVENTS.message, async (message) => {
-        const decoded = await core2.crypto.decode(topic, message.message);
+      core2.relayer.on(RELAYER_EVENTS.message, async (relayerMessageEvent: any) => {
+        const decoded = await core2.crypto.decode(topic, relayerMessageEvent.message);
         if (isJsonRpcRequest(decoded)) {
           sum += decoded.params.thing;
         }
