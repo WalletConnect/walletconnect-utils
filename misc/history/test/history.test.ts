@@ -53,7 +53,7 @@ const basicSendMessageFlow = async (
 
     await core2.relayer.publish(topic, payload, {
       ttl: 3000,
-      tag: tag,
+      tag,
     });
   }
 
@@ -216,7 +216,7 @@ describe("utils/history", () => {
       await core2.relayer.messages.del(topic);
 
       let sum = 0;
-      core2.relayer.on(RELAYER_EVENTS.message, async message => {
+      core2.relayer.on(RELAYER_EVENTS.message, async (message) => {
         const decoded = await core2.crypto.decode(topic, message.message);
         if (isJsonRpcRequest(decoded)) {
           sum += decoded.params.thing;
