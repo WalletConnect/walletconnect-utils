@@ -25,6 +25,7 @@ export interface IdentityKeychain {
 }
 
 export abstract class IIdentityKeys {
+  public abstract init(): Promise<void>;
   public abstract registerIdentity(params: RegisterIdentityParams): Promise<string>;
   public abstract resolveIdentity(params: ResolveIdentityParams): Promise<Cacao>;
   public abstract unregisterIdentity(params: UnregisterIdentityParams): Promise<void>;
