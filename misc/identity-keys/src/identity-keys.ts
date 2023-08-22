@@ -74,7 +74,7 @@ export class IdentityKeys implements IIdentityKeys {
           p: {
             aud: this.keyserverUrl,
             statement: "Test",
-            domain: this.keyserverUrl,
+            domain: new URL(this.keyserverUrl).host,
             iss: composeDidPkh(accountId),
             nonce: generateRandomBytes32(),
             iat: new Date().toISOString(),
