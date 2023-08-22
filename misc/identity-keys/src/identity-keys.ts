@@ -66,6 +66,7 @@ export class IdentityKeys implements IIdentityKeys {
       try {
         const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
         const didKey = encodeEd25519Key(pubKeyHex);
+        const domain = new URL(this.keyserverUrl).host;
 
         const cacao: Cacao = {
           h: {
@@ -73,8 +74,8 @@ export class IdentityKeys implements IIdentityKeys {
           },
           p: {
             aud: this.keyserverUrl,
-            statement: "Test",
-            domain: this.keyserverUrl,
+            statement: "",
+            domain,
             iss: composeDidPkh(accountId),
             nonce: generateRandomBytes32(),
             iat: new Date().toISOString(),
