@@ -74,7 +74,7 @@ export class IdentityKeys implements IIdentityKeys {
           },
           p: {
             aud: this.keyserverUrl,
-            statement: `${domain} wants you to sign in with your account: ${accountId}`,
+            statement: "",
             domain,
             iss: composeDidPkh(accountId),
             nonce: generateRandomBytes32(),
