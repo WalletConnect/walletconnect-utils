@@ -18,7 +18,7 @@ const plugins = [
   }),
 ];
 
-export default createConfig(name, Object.keys(dependencies));
+export default createConfig(name, Object.keys(dependencies || {}));
 
 function createConfig(packageName, packageDependencies, umd = {}, cjs = {}, es = {}) {
   return [
