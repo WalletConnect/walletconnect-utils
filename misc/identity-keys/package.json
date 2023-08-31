@@ -43,7 +43,6 @@
     "dist"
   ],
   "devDependencies": {
-    "typescript": "^4.9.5",
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {

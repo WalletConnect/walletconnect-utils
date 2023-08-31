@@ -39,9 +39,6 @@
   "files": [
     "dist"
   ],
-  "devDependencies": {
-    "typescript": "^4.9.5"
-  },
   "dependencies": {
     "@ethersproject/hash": "^5.7.0",
     "@ethersproject/transactions": "^5.7.0",
