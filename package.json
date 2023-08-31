@@ -12,14 +12,21 @@
   "bugs": {
     "url": "https://github.com/WalletConnect/walletconnect-utils/issues"
   },
+  "workspaces": [
+    "browser/*",
+    "jsonrpc/*",
+    "crypto/*",
+    "misc/*",
+    "relay/*"
+  ],
   "scripts": {
     "clean": "lerna clean --yes",
     "bootstrap": "lerna bootstrap",
-    "lint": "lerna run lint",
-    "prettier": "lerna run prettier",
-    "format": "lerna run format",
-    "build": "lerna run build",
-    "test": "lerna run test",
+    "lint": "turbo lint",
+    "prettier": "turbo prettier",
+    "format": "turbo format",
+    "build": "turbo build",
+    "test": "turbo test",
     "check": "run-s prettier lint build test",
     "reset": "run-s clean bootstrap check",
     "new-version": "lerna version --no-git-tag-version",
@@ -46,7 +53,8 @@
     "prettier": "^2.8.8",
     "rollup": "2.78.0",
     "rollup-plugin-esbuild": "4.9.3",
-    "tsc": "^2.0.3"
+    "tsc": "^2.0.3",
+    "turbo": "^1.10.13"
   },
   "optionalDependencies": {
     "@nrwl/nx-linux-x64-gnu": "^15.9.2"
