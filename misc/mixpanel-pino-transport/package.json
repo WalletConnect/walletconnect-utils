@@ -43,11 +43,12 @@
     "pino": "^8.15.0",
     "pino-abstract-transport": "^1.0.0"
   },
-	"peerDependencies": {
+  "peerDependencies": {
     "mixpanel-browser": "^2.47.0"
-	},
+  },
   "devDependencies": {
     "@types/mixpanel-browser": "^2.47.1",
-    "mixpanel-browser": "^2.47.0"
+    "mixpanel-browser": "^2.47.0",
+    "typescript": "4.9"
   }
 }
