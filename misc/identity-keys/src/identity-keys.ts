@@ -11,7 +11,6 @@ import {
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
-import { LIMITED_STATEMENT, UNLIMITED_STATEMENT } from "./constants";
 import {
   IIdentityKeys,
   IdentityKeychain,
