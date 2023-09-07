@@ -63,7 +63,7 @@ export class IdentityKeys implements IIdentityKeys {
     accountId,
     onSign,
     domain,
-    isLimited,
+    statement,
   }: RegisterIdentityParams): Promise<string> {
     if (this.identityKeys.keys.includes(accountId)) {
       const storedKeyPair = this.identityKeys.get(accountId);
@@ -79,7 +79,7 @@ export class IdentityKeys implements IIdentityKeys {
           },
           p: {
             aud: didKey,
-            statement: isLimited ? LIMITED_STATEMENT : UNLIMITED_STATEMENT,
+            statement,
             domain,
             iss: composeDidPkh(accountId),
             nonce: generateRandomBytes32(),
