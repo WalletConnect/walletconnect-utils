@@ -85,7 +85,7 @@ export class IdentityKeys implements IIdentityKeys {
             nonce: generateRandomBytes32(),
             iat: new Date().toISOString(),
             version: "1",
-            resources: [],
+            resources: [this.keyserverUrl],
           },
           s: {
             t: "eip191",
