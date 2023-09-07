@@ -5,7 +5,7 @@ export interface RegisterIdentityParams {
   accountId: string;
   onSign: (message: string) => Promise<string>;
   domain: string;
-  statement: string;
+  isLimited: string;
 }
 
 export interface ResolveIdentityParams {

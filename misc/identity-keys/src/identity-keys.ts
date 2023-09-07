@@ -11,6 +11,7 @@ import {
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
+import { LIMITED_STATEMENT, UNLIMITED_STATEMENT } from "./constants";
 import {
   IIdentityKeys,
   IdentityKeychain,
@@ -62,7 +63,7 @@ export class IdentityKeys implements IIdentityKeys {
     accountId,
     onSign,
     domain,
-    statement,
+    isLimited,
   }: RegisterIdentityParams): Promise<string> {
     if (this.identityKeys.keys.includes(accountId)) {
       const storedKeyPair = this.identityKeys.get(accountId);
@@ -78,7 +79,7 @@ export class IdentityKeys implements IIdentityKeys {
           },
           p: {
             aud: didKey,
-            statement,
+            statement: isLimited ? LIMITED_STATEMENT : UNLIMITED_STATEMENT,
             domain,
             iss: composeDidPkh(accountId),
             nonce: generateRandomBytes32(),
