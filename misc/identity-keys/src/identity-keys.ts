@@ -58,7 +58,12 @@ export class IdentityKeys implements IIdentityKeys {
     return generateJWT([identityKeyPub, identityKeyPriv], payload);
   };
 
-  public async registerIdentity({ accountId, onSign }: RegisterIdentityParams): Promise<string> {
+  public async registerIdentity({
+    accountId,
+    onSign,
+    domain,
+    statement,
+  }: RegisterIdentityParams): Promise<string> {
     if (this.identityKeys.keys.includes(accountId)) {
       const storedKeyPair = this.identityKeys.get(accountId);
       return storedKeyPair.identityKeyPub;
@@ -66,21 +71,20 @@ export class IdentityKeys implements IIdentityKeys {
       try {
         const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
         const didKey = encodeEd25519Key(pubKeyHex);
-        const domain = new URL(this.keyserverUrl).host;
 
         const cacao: Cacao = {
           h: {
             t: "eip4361",
           },
           p: {
-            aud: this.keyserverUrl,
-            statement: "",
+            aud: didKey,
+            statement,
             domain,
             iss: composeDidPkh(accountId),
             nonce: generateRandomBytes32(),
             iat: new Date().toISOString(),
             version: "1",
-            resources: [didKey],
+            resources: [this.keyserverUrl],
           },
           s: {
             t: "eip191",
