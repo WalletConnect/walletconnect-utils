@@ -179,6 +179,6 @@ export class IdentityKeys implements IIdentityKeys {
   }
 
   public listRegisteredAccounts(): string[] {
-    return this.identityKeys.getAll().map((kc) => kc.accountId);
+    return this.identityKeys.getAll().map((identityKeyChain) => identityKeyChain.accountId);
   }
 }
