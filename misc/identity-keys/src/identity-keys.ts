@@ -174,7 +174,7 @@ export class IdentityKeys implements IIdentityKeys {
     }
   }
 
-  public getIdentity({ account }: GetIdentityParams): string {
+  public async getIdentity({ account }: GetIdentityParams): Promise<string> {
     return this.identityKeys.get(account).identityKeyPub;
   }
 
