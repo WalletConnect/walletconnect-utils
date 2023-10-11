@@ -4,7 +4,7 @@
 
 /* eslint-disable */
 
-(function() {
+(function () {
   "use strict";
 
   let db;
@@ -12,35 +12,35 @@
   function LocalStorage() {}
   db = LocalStorage;
 
-  db.prototype.getItem = function(key) {
+  db.prototype.getItem = function (key) {
     if (this.hasOwnProperty(key)) {
       return String(this[key]);
     }
     return null;
   };
 
-  db.prototype.setItem = function(key, val) {
+  db.prototype.setItem = function (key, val) {
     this[key] = String(val);
   };
 
-  db.prototype.removeItem = function(key) {
+  db.prototype.removeItem = function (key) {
     delete this[key];
   };
 
-  db.prototype.clear = function() {
+  db.prototype.clear = function () {
     const self = this;
-    Object.keys(self).forEach(function(key) {
+    Object.keys(self).forEach(function (key) {
       self[key] = undefined;
       delete self[key];
     });
   };
 
-  db.prototype.key = function(i) {
+  db.prototype.key = function (i) {
     i = i || 0;
     return Object.keys(this)[i];
   };
 
-  db.prototype.__defineGetter__("length", function() {
+  db.prototype.__defineGetter__("length", function () {
     return Object.keys(this).length;
   });
 
