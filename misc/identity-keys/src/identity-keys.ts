@@ -157,7 +157,7 @@ export class IdentityKeys implements IIdentityKeys {
         throw new Error(`Failed to unregister on keyserver ${response.status}`);
       }
 
-      await this.identityKeys.delete(account, { code: -1, message: "Account unregistered" })
+      await this.identityKeys.delete(account, { code: -1, message: "Account unregistered" });
     } catch (error) {
       this.core.logger.error(error);
       throw error;
