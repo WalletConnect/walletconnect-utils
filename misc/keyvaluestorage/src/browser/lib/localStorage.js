@@ -44,11 +44,16 @@
     return Object.keys(this).length;
   });
 
-  if (typeof global !== "undefined" && global.localStorage) {
-    module.exports = global.localStorage;
-  } else if (typeof window !== "undefined" && window.localStorage) {
-    module.exports = window.localStorage;
-  } else {
+  try {
+    if (typeof global !== "undefined" && global.localStorage) {
+      module.exports = global.localStorage;
+    } else if (typeof window !== "undefined" && window.localStorage) {
+      module.exports = window.localStorage;
+    } else {
+      module.exports = new LocalStorage();
+    }
+  } catch {
+    // In Incognito mode, accessing window.localStorage may thorw an error
     module.exports = new LocalStorage();
   }
 })();
