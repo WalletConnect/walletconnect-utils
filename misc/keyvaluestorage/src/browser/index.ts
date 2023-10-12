@@ -3,9 +3,8 @@
 import { IKeyValueStorage } from "../shared";
 import { IndexedDb } from "./lib/indexedDb";
 import { LocalStore } from "./lib/localStore";
-import { migrate } from "./lib/migration";
+import { migrate } from "./lib/browserMigration";
 
-const DB_VERSION = 1;
 export class KeyValueStorage implements IKeyValueStorage {
   private storage: IKeyValueStorage;
   private initialized = false;
@@ -15,7 +14,7 @@ export class KeyValueStorage implements IKeyValueStorage {
     this.storage = local;
     try {
       const indexed = new IndexedDb();
-      migrate(local, indexed, DB_VERSION, this.isInitialized);
+      migrate(local, indexed, this.isInitialized);
       // indexedDb isn't available in node env so this will throw
     } catch (e) {
       this.initialized = true;

@@ -2,17 +2,17 @@
 import { IKeyValueStorage } from "../../shared";
 
 const VERSION_KEY = "wc_storage_version";
+const DB_VERSION = 1;
 
 export const migrate = async (
   fromStore: IKeyValueStorage,
   toStore: IKeyValueStorage,
-  version: number,
   callback: (store: IKeyValueStorage) => void,
 ) => {
   console.log("🚢 migrate: start");
   const versionKey = VERSION_KEY;
   const currentVersion = await toStore.getItem<number>(versionKey);
-  if (currentVersion && currentVersion >= version) {
+  if (currentVersion && currentVersion >= DB_VERSION) {
     console.log("🚢 migrate: already migrated");
     callback(toStore);
     return;
@@ -43,7 +43,7 @@ export const migrate = async (
     }
   }
 
-  await toStore.setItem(versionKey, version);
+  await toStore.setItem(versionKey, DB_VERSION);
   console.log("🚢 migrate: complete");
   console.log("cleanup: keys", keysToCleanup.length);
   callback(toStore);
