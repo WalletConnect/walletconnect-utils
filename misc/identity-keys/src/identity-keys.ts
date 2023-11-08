@@ -156,6 +156,11 @@ export class IdentityKeys implements IIdentityKeys {
       if (response.status !== 200) {
         throw new Error(`Failed to unregister on keyserver ${response.status}`);
       }
+
+      await this.identityKeys.delete(account, {
+        code: -1,
+        message: `Account ${account} unregistered`,
+      });
     } catch (error) {
       this.core.logger.error(error);
       throw error;
@@ -176,5 +181,9 @@ export class IdentityKeys implements IIdentityKeys {
 
   public async getIdentity({ account }: GetIdentityParams): Promise<string> {
     return this.identityKeys.get(account).identityKeyPub;
+  }
+
+  public async hasIdentity({ account }: GetIdentityParams): Promise<boolean> {
+    return this.identityKeys.keys.includes(account);
   }
 }
