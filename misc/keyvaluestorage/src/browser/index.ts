@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { IKeyValueStorage } from "../shared";
 import { IndexedDb } from "./lib/indexedDb";
 import { LocalStore } from "./lib/localStore";
@@ -24,7 +22,6 @@ export class KeyValueStorage implements IKeyValueStorage {
   private isInitialized = (store: IKeyValueStorage) => {
     this.storage = store;
     this.initialized = true;
-    console.log("store-migration: complete", this.initialized, this.storage);
   };
 
   public async getKeys(): Promise<string[]> {

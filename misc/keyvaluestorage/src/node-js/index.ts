@@ -18,7 +18,6 @@ export class KeyValueStorage implements IKeyValueStorage {
 
   private isInitialized = () => {
     this.initialized = true;
-    console.log("isInitialized dd", this.initialized);
   };
 
   public async getKeys(): Promise<string[]> {
