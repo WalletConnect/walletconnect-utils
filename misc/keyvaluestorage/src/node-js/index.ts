@@ -13,39 +13,39 @@ export class KeyValueStorage implements IKeyValueStorage {
     this.database = Db.create({
       dbName,
     });
-    migrate(dbName, this.database, this.isInitialized);
+    migrate(dbName, this.database, this.setInitialized);
   }
 
-  private isInitialized = () => {
+  private setInitialized = () => {
     this.initialized = true;
   };
 
   public async getKeys(): Promise<string[]> {
-    await this.initilization();
+    await this.initialize();
     return this.database.getKeys();
   }
 
   public async getEntries<T = any>(): Promise<[string, T][]> {
-    await this.initilization();
+    await this.initialize();
     return this.database.getEntries();
   }
 
   public async getItem<T = any>(key: string): Promise<T | undefined> {
-    await this.initilization();
+    await this.initialize();
     return this.database.getItem(key);
   }
 
   public async setItem<_T = any>(key: string, value: any): Promise<void> {
-    await this.initilization();
+    await this.initialize();
     await this.database.setItem(key, value);
   }
 
   public async removeItem(key: string): Promise<void> {
-    await this.initilization();
+    await this.initialize();
     await this.database.removeItem(key);
   }
 
-  private async initilization() {
+  private async initialize() {
     if (this.initialized) {
       return;
     }

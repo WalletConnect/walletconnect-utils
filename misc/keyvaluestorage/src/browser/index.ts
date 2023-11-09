@@ -12,44 +12,44 @@ export class KeyValueStorage implements IKeyValueStorage {
     this.storage = local;
     try {
       const indexed = new IndexedDb();
-      migrate(local, indexed, this.isInitialized);
+      migrate(local, indexed, this.setInitialized);
       // indexedDb isn't available in node env so this will throw
     } catch (e) {
       this.initialized = true;
     }
   }
 
-  private isInitialized = (store: IKeyValueStorage) => {
+  private setInitialized = (store: IKeyValueStorage) => {
     this.storage = store;
     this.initialized = true;
   };
 
   public async getKeys(): Promise<string[]> {
-    await this.initilization();
+    await this.initialize();
     return this.storage.getKeys();
   }
 
   public async getEntries<T = any>(): Promise<[string, T][]> {
-    await this.initilization();
+    await this.initialize();
     return this.storage.getEntries();
   }
 
   public async getItem<T = any>(key: string): Promise<T | undefined> {
-    await this.initilization();
+    await this.initialize();
     return this.storage.getItem(key);
   }
 
   public async setItem<T = any>(key: string, value: T): Promise<void> {
-    await this.initilization();
+    await this.initialize();
     return this.storage.setItem(key, value);
   }
 
   public async removeItem(key: string): Promise<void> {
-    await this.initilization();
+    await this.initialize();
     return this.storage.removeItem(key);
   }
 
-  private async initilization() {
+  private async initialize() {
     if (this.initialized) {
       return;
     }
