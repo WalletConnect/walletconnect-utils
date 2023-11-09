@@ -10,8 +10,7 @@ import NodeJSStorage from "../src/node-js";
 import { IKeyValueStorage } from "../src/shared";
 
 import { MockStore, MockAsyncStorage } from "./mock";
-
-const MEMORY_ONLY_NODEJS_DATABASE = ":memory:";
+import { MEMORY_DB } from "../src/node-js/lib/db";
 const dbDir = "test/dbs";
 const PERSISTED_NODEJS_DATABASE = `${dbDir}/walletconnect.db`;
 
@@ -93,7 +92,7 @@ describe("KeyValueStorage", () => {
 
   describe("node-js", () => {
     before(async () => {
-      storage = new NodeJSStorage({ database: MEMORY_ONLY_NODEJS_DATABASE });
+      storage = new NodeJSStorage({ database: MEMORY_DB });
       await storage.setItem(key, value);
     });
     it("getItem", async () => {

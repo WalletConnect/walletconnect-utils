@@ -1,10 +1,10 @@
 import { safeJsonParse } from "@walletconnect/safe-json";
 import { IKeyValueStorage } from "../../shared";
+import { MEMORY_DB } from "./db";
 import fs from "fs";
 const VERSION_KEY = "wc_storage_version";
 const TO_MIGRATE_SUFFIX = ".to_migrate";
 const MIGRATED_SUFFIX = ".migrated";
-const MEMORY_DB = ":memory:";
 const DB_VERSION = 1;
 
 export const migrate = async (

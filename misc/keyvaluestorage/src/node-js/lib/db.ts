@@ -31,6 +31,8 @@ type UpdateType = {
     callback: (value: void | PromiseLike<void>) => void;
   }[];
 };
+export const MEMORY_DB = ":memory:";
+
 export default class Db {
   private static instances: Record<string, Db> = {};
   public database;
@@ -44,7 +46,7 @@ export default class Db {
       StorageLib = importLib();
     }
 
-    if (opts?.dbName === ":memory:") {
+    if (opts?.dbName === MEMORY_DB) {
       this.database = StorageLib.db.createStorage();
     } else {
       this.database = StorageLib.db.createStorage({
@@ -57,7 +59,7 @@ export default class Db {
 
   public static create(opts: DbKeyValueStorageOptions): Db {
     const dbName = opts.dbName;
-    if (dbName === ":memory:") {
+    if (dbName === MEMORY_DB) {
       return new Db(opts);
     }
 
