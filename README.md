@@ -31,6 +31,32 @@ npm run bootstrap
 TEST_PROJECT_ID=YOUR_PROJECT_ID npm run check
 ```
 
+## Publishing a package
+
+1. Navigate to the package you want to publish, e.g.
+
+```bash
+cd <package-dir>/<package-name>
+```
+
+2. Bump the package version:
+
+```bash
+npm version <major|minor|patch>
+```
+
+3. Commit the version bump:
+
+```bash
+git commit -am "chore(release): <package-name> <version>"
+```
+
+4. Publish the package:
+
+```bash
+npm publish # this will run test + build first via the `prepublishOnly` hook
+```
+
 ## License
 
 MIT
