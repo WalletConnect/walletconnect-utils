@@ -11,6 +11,9 @@
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "test/**/*.ts"]
+    },
+    "pre-publish": {
+      "dependsOn": ["build", "test"]
     }
   }
 }

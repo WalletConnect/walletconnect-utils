@@ -30,9 +30,9 @@
     "check": "turbo run prettier lint build test",
     "check:force": "turbo run prettier lint build test --force=true",
     "reset": "run-s clean bootstrap check",
-    "new-version": "lerna version --no-git-tag-version",
-    "pre-publish": "run-s new-version reset",
-    "npm-publish:latest": "lerna exec -- npm publish --access public --tag latest",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "npm-publish": "turbo pre-publish && changeset publish",
     "audit:prod": "lerna exec --no-bail -- npm audit --omit dev",
     "audit:all": "lerna exec --no-bail -- npm audit",
     "audit:fix": "lerna exec --no-bail -- npm audit fix"
