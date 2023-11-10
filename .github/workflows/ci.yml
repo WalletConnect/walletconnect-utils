@@ -60,10 +60,6 @@ jobs:
       - name: Lint
         run: npm run lint -- --filter=./${{ matrix.test-prefix }}
 
-      - name: Prepare transitive deps
-        if: matrix.test-prefix == 'misc/history' || matrix.test-prefix == 'misc/identity-keys' || matrix.test-prefix == 'jsonrpc/ws-connection' || matrix.test-prefix == 'jsonrpc/provider'
-        run: npm run build
-
       - name: Build
         run: npm run build -- --filter=./${{ matrix.test-prefix }}
 
