@@ -66,7 +66,8 @@ const basicSendMessageFlow = async (
   return [topic];
 };
 
-describe("utils/history", () => {
+// Disable history tests as the pkg is considered currently deprecated.
+describe.skip("utils/history", () => {
   let core1 = new Core({
     projectId: process.env.TEST_PROJECT_ID,
     relayUrl: "wss://relay.walletconnect.com",
