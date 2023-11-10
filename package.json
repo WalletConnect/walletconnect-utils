@@ -20,8 +20,6 @@
     "relay/*"
   ],
   "scripts": {
-    "clean": "lerna clean --yes",
-    "bootstrap": "lerna bootstrap",
     "lint": "turbo lint",
     "prettier": "turbo prettier",
     "format": "turbo format",
@@ -32,10 +30,7 @@
     "reset": "run-s clean bootstrap check",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "npm-publish": "turbo pre-publish && changeset publish",
-    "audit:prod": "lerna exec --no-bail -- npm audit --omit dev",
-    "audit:all": "lerna exec --no-bail -- npm audit",
-    "audit:fix": "lerna exec --no-bail -- npm audit fix"
+    "npm-publish": "turbo pre-publish && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
@@ -50,7 +45,6 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-standard": "^5.0.0",
-    "lerna": "^6.5.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "rollup": "2.78.0",

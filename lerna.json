@@ -1,5 +1,0 @@
-{
-  "version": "independent",
-  "hoist": true,
-  "packages": ["browser/*", "jsonrpc/*", "crypto/*", "misc/*", "relay/*"]
-}
