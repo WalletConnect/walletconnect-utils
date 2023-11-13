@@ -27,7 +27,6 @@
     "test": "turbo test",
     "check": "turbo run prettier lint build test",
     "check:force": "turbo run prettier lint build test --force=true",
-    "reset": "run-s clean bootstrap check",
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "npm-publish": "turbo pre-publish && changeset publish"
