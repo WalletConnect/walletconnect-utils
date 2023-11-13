@@ -33,7 +33,7 @@
     "build:pre": "npm run clean",
     "build:types": "tsc",
     "build:source": "rollup --config rollup.config.js",
-    "build": "npm run build:pre; npm run build:source; npm run build:types",
+    "build": "npm run build:pre && npm run build:source && npm run build:types",
     "test": "env TS_NODE_PROJECT=\"tsconfig.cjs.json\" mocha --timeout 5000 --exit -r ts-node/register ./test/**/*.test.ts",
     "lint": "eslint -c '../../.eslintrc' --fix './src/**/*.ts'",
     "npm-publish:latest": "npm publish --access public --tag latest",
@@ -48,7 +48,6 @@
     "did-jwt": "^6.1.2",
     "did-resolver": "^3.2.2",
     "key-did-resolver": "^2.0.4",
-    "typescript": "^4.9.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
   },

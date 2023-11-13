@@ -12,24 +12,27 @@
   "bugs": {
     "url": "https://github.com/WalletConnect/walletconnect-utils/issues"
   },
+  "workspaces": [
+    "browser/*",
+    "jsonrpc/*",
+    "crypto/*",
+    "misc/*",
+    "relay/*"
+  ],
   "scripts": {
-    "clean": "lerna clean --yes",
-    "bootstrap": "lerna bootstrap",
-    "lint": "lerna run lint",
-    "prettier": "lerna run prettier",
-    "format": "lerna run format",
-    "build": "lerna run build",
-    "test": "lerna run test",
-    "check": "run-s prettier lint build test",
-    "reset": "run-s clean bootstrap check",
-    "new-version": "lerna version --no-git-tag-version",
-    "pre-publish": "run-s new-version reset",
-    "npm-publish:latest": "lerna exec -- npm publish --access public --tag latest",
-    "audit:prod": "lerna exec --no-bail -- npm audit --omit dev",
-    "audit:all": "lerna exec --no-bail -- npm audit",
-    "audit:fix": "lerna exec --no-bail -- npm audit fix"
+    "lint": "turbo lint",
+    "prettier": "turbo prettier",
+    "format": "turbo format",
+    "build": "turbo build",
+    "test": "turbo test",
+    "check": "turbo run prettier lint build test",
+    "check:force": "turbo run prettier lint build test --force=true",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "npm-publish": "changeset version && turbo pre-publish && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "13.3.0",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
@@ -41,12 +44,12 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-standard": "^5.0.0",
-    "lerna": "^6.5.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "rollup": "2.78.0",
     "rollup-plugin-esbuild": "4.9.3",
-    "tsc": "^2.0.3"
+    "turbo": "^1.10.16",
+    "typescript": "^4.9.5"
   },
   "optionalDependencies": {
     "@nrwl/nx-linux-x64-gnu": "^15.9.2"
