@@ -29,7 +29,7 @@
     "check:force": "turbo run prettier lint build test --force=true",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "npm-publish": "turbo pre-publish && changeset publish"
+    "npm-publish": "changeset version && turbo pre-publish && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.2",

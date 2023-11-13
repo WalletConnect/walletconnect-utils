@@ -28,28 +28,23 @@ TEST_PROJECT_ID=YOUR_PROJECT_ID npm run check
 
 ## Publishing a package
 
-1. Navigate to the package you want to publish, e.g.
+1. To register a change relevant for a package's release, call `changeset`:
 
 ```bash
-cd <package-dir>/<package-name>
+npm run changeset
 ```
 
-2. Bump the package version:
+In the interactive shell:
+
+- select the relevant package(s) with the `<space>` bar where changes have been made
+- select (via `<space>`) which packages should receive a major/minor/patch version bump. To simply skip a version level, hit `<enter>` without selecting anything.
+- Confirm the changes, which will auto-create a changeset file inside the `.changeset` directory
+
+2. Version and publish the changeset of the affected packages:
 
 ```bash
-npm version <major|minor|patch>
-```
-
-3. Commit the version bump:
-
-```bash
-git commit -am "chore(release): <package-name> <version>"
-```
-
-4. Publish the package:
-
-```bash
-npm publish # this will run test + build first via the `prepublishOnly` hook
+# will run `changeset version && turbo pre-publish && changeset publish` under the hood.
+npm run npm-publish
 ```
 
 ## License
