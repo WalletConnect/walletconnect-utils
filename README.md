@@ -16,18 +16,13 @@ git clone https://github.com/WalletConnect/walletconnect-utils.git
 npm install
 ```
 
-3. Configure all monorepo packages:
-
-```bash
-npm run bootstrap
-```
-
-4. Ensure all packages lint, build, and test successfully:
+3. Ensure all packages lint, build, and test successfully:
 
 > **For all tests to pass in the following command, you will need your own `TEST_PROJECT_ID` value**,
 > which will be generated for you when you set up a new project on [WalletConnect Cloud](https://cloud.walletconnect.com).
 
 ```bash
+# `check` will call `turbo run prettier lint build test` under the hood.
 TEST_PROJECT_ID=YOUR_PROJECT_ID npm run check
 ```
 
