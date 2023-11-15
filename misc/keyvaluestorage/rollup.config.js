@@ -6,6 +6,7 @@ import { name, dependencies } from "./package.json";
 
 const input = "./src/index.ts";
 const browserInput = "./src/browser/index.ts";
+const reactNativeInput = "./src/react-native/index.ts";
 const plugins = [
   nodeResolve({ preferBuiltins: false, browser: true }),
   commonjs(),
@@ -20,7 +21,7 @@ const plugins = [
 
 export default createConfig(name, Object.keys(dependencies || {}));
 
-function createConfig(packageName, packageDependencies, umd = {}, cjs = {}, es = {}) {
+function createConfig(packageName, packageDependencies) {
   return [
     {
       input,
@@ -31,7 +32,6 @@ function createConfig(packageName, packageDependencies, umd = {}, cjs = {}, es =
         exports: "named",
         name: packageName,
         sourcemap: true,
-        ...umd,
       },
     },
     {
@@ -44,7 +44,6 @@ function createConfig(packageName, packageDependencies, umd = {}, cjs = {}, es =
         exports: "named",
         name: packageName,
         sourcemap: true,
-        ...cjs,
       },
     },
     {
@@ -57,7 +56,18 @@ function createConfig(packageName, packageDependencies, umd = {}, cjs = {}, es =
         exports: "named",
         name: packageName,
         sourcemap: true,
-        ...es,
+      },
+    },
+    {
+      input: reactNativeInput,
+      plugins,
+      external: [/node_modules/],
+      output: {
+        file: "./dist/react-native/index.js",
+        format: "cjs",
+        exports: "named",
+        name: packageName,
+        sourcemap: true,
       },
     },
   ];
