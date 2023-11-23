@@ -49,7 +49,7 @@ describe("@walletconnect/identity-keys", () => {
     expect(fetchedFromKeyServer.status).eq(200);
   });
 
-  it("does not presist identity keys that failed to register", async () => {
+  it("does not persist identity keys that failed to register", async () => {
     // rejectedWith & rejected are not supported on this version of chai
     let failMessage = "";
     await identityKeys
