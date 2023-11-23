@@ -1,11 +1,11 @@
 import "mocha";
-import "isomorphic-unfetch";
 import { expect } from "chai";
 import { Core } from "@walletconnect/core";
 import { Wallet } from "@ethersproject/wallet";
 import { IdentityKeys, DEFAULT_KEYSERVER_URL } from "../src/";
 import { encodeEd25519Key } from "@walletconnect/did-jwt";
 import { ICore } from "@walletconnect/types";
+import axios from "axios";
 
 const PROJECT_ID = process.env.TEST_PROJECT_ID;
 
@@ -44,7 +44,7 @@ describe("@walletconnect/identity-keys", () => {
 
     const fetchUrl = `${DEFAULT_KEYSERVER_URL}/identity?publicKey=${encodedIdentity}`;
 
-    const fetchedFromKeyServer = await fetch(fetchUrl);
+    const fetchedFromKeyServer = await axios.get(fetchUrl);
 
     expect(fetchedFromKeyServer.status).eq(200);
   });
