@@ -126,7 +126,7 @@ export class IdentityKeys implements IIdentityKeys {
             },
           });
         } catch (e) {
-          throw new Error(`Failed to register on keyserver`);
+          throw new Error(`Failed to register on keyserver: ${e}`);
         }
 
         await presist();
