@@ -44,6 +44,7 @@
   ],
   "devDependencies": {
     "@ethersproject/wallet": "^5.7.0",
+    "@walletconnect/heartbeat": "^1.2.1",
     "@walletconnect/keyvaluestorage": "^1.1.1",
     "webpack-cli": "^5.0.1"
   },
