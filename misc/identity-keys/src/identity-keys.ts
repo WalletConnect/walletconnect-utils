@@ -52,7 +52,7 @@ export class IdentityKeys implements IIdentityKeys {
     return {
       pubKeyHex,
       presist: async () => {
-        // Deferring presistence to caller to only presist after success
+        // Deferring persistence to caller to only persist after success
         // of signing and registering full cacao on keyserver
         await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
         await this.identityKeys.set(accountId, {
