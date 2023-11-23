@@ -3,7 +3,7 @@ import { JwtPayload } from "@walletconnect/did-jwt";
 
 export interface RegisterIdentityParams {
   accountId: string;
-  onSign: (message: string) => Promise<string>;
+  onSign: (message: string) => Promise<string | undefined>;
   domain: string;
   statement: string;
 }

@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/identity-keys",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Utilities to register, resolve and unregister identity keys",
   "keywords": [
     "identity",
@@ -43,6 +43,11 @@
     "dist"
   ],
   "devDependencies": {
+    "@ethersproject/wallet": "^5.7.0",
+    "@walletconnect/heartbeat": "^1.2.1",
+    "@walletconnect/jsonrpc-provider": "^1.0.13",
+    "@walletconnect/keyvaluestorage": "^1.1.1",
+    "@walletconnect/logger": "^2.0.1",
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
