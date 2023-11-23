@@ -43,6 +43,7 @@
     "dist"
   ],
   "devDependencies": {
+    "@ethersproject/wallet": "^5.7.0",
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
