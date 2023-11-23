@@ -48,8 +48,8 @@ export class IdentityKeys implements IIdentityKeys {
 
     const pubKeyHex = ed25519.utils.bytesToHex(publicKey).toLowerCase();
     const privKeyHex = ed25519.utils.bytesToHex(privateKey).toLowerCase();
-    this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
-    return [pubKeyHex, privKeyHex];
+    
+    return {keys: [pubKeyHex, privKeyHex], presist: () => this.core.crypto.keychain.set(pubKeyHex, privKeyHex)};
   };
 
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
@@ -69,7 +69,8 @@ export class IdentityKeys implements IIdentityKeys {
       return storedKeyPair.identityKeyPub;
     } else {
       try {
-        const [pubKeyHex, privKeyHex] = await this.generateIdentityKey();
+        const {keys: [pubKeyHex, privKeyHex], presist} = await this.generateIdentityKey();
+
         const didKey = encodeEd25519Key(pubKeyHex);
 
         const cacao: Cacao = {
@@ -96,6 +97,10 @@ export class IdentityKeys implements IIdentityKeys {
 
         const signature = await onSign(cacaoMessage);
 
+	if(!signature) {
+	  throw new Error("Provided an empty signature");
+	}
+
         // Storing keys after signature creation to prevent having false statement
         // Eg, onSign failing / never resolving but having identity keys stored.
         this.identityKeys.set(accountId, {
@@ -119,6 +124,8 @@ export class IdentityKeys implements IIdentityKeys {
         if (response.status !== 200) {
           throw new Error(`Failed to register on keyserver ${response.status}`);
         }
+
+	presist();
 
         return pubKeyHex;
       } catch (error) {
