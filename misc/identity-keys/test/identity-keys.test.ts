@@ -1,4 +1,5 @@
 import "mocha";
+import "isomorphic-unfetch";
 import { expect } from "chai";
 import { Core } from "@walletconnect/core";
 import { Wallet } from "@ethersproject/wallet";

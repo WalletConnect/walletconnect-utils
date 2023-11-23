@@ -10,7 +10,6 @@ import {
 } from "@walletconnect/did-jwt";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
-import "isomorphic-unfetch";
 import axios from "axios";
 import {
   IIdentityKeys,
