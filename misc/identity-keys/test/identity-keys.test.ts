@@ -61,7 +61,7 @@ describe("@walletconnect/identity-keys", () => {
       })
       .catch((err) => (failMessage = err.message));
 
-    expect(failMessage).eq(`Failed to register on keyserver`);
+    expect(failMessage).eq(`Failed to register on keyserver: AxiosError: Request failed with status code 400`);
 
     const keys = identityKeys.identityKeys.getAll();
     expect(keys.length).eq(0);
@@ -79,7 +79,7 @@ describe("@walletconnect/identity-keys", () => {
       })
       .catch((err) => (failMessage = err.message));
 
-    expect(failMessage).eq("Provided an empty signature");
+    expect(failMessage).eq("Provided an invalid signature");
 
     const keys = identityKeys.identityKeys.getAll();
     expect(keys.length).eq(0);
