@@ -51,7 +51,7 @@ export class IdentityKeys implements IIdentityKeys {
 
     return {
       pubKeyHex,
-      presist: async () => {
+      persist: async () => {
         // Deferring persistence to caller to only persist after success
         // of signing and registering full cacao on keyserver
         await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
@@ -81,7 +81,7 @@ export class IdentityKeys implements IIdentityKeys {
       return storedKeyPair.identityKeyPub;
     } else {
       try {
-        const { pubKeyHex, presist } = await this.generateIdentityKey(accountId);
+        const { pubKeyHex, persist } = await this.generateIdentityKey(accountId);
 
         const didKey = encodeEd25519Key(pubKeyHex);
 
@@ -129,7 +129,7 @@ export class IdentityKeys implements IIdentityKeys {
           throw new Error(`Failed to register on keyserver: ${e}`);
         }
 
-        await presist();
+        await persist();
 
         return pubKeyHex;
       } catch (error) {
