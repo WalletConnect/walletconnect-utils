@@ -79,7 +79,7 @@ describe("@walletconnect/identity-keys", () => {
       })
       .catch((err) => (failMessage = err.message));
 
-    expect(failMessage).eq("Provided an invalid signature");
+    expect(failMessage).eq("Provided an invalid signature. Expected a string but got: ");
 
     const keys = identityKeys.identityKeys.getAll();
     expect(keys.length).eq(0);
