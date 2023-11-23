@@ -110,7 +110,7 @@ export class IdentityKeys implements IIdentityKeys {
         const signature = await onSign(cacaoMessage);
 
         if (!signature) {
-          throw new Error("Provided an empty signature");
+          throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
         const url = `${this.keyserverUrl}/identity`;
