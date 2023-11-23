@@ -20,12 +20,12 @@ import {
   GetIdentityParams,
 } from "./types";
 
-const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com";
+export const DEFAULT_KEYSERVER_URL = "https://keys.walletconnect.com";
 const IDENTITY_KEYS_STORAGE_PREFIX = "wc@2:identityKeys:";
 
 export class IdentityKeys implements IIdentityKeys {
   private keyserverUrl: string;
-  private identityKeys: IStore<IdentityKeychain["accountId"], IdentityKeychain>;
+  public identityKeys: IStore<IdentityKeychain["accountId"], IdentityKeychain>;
 
   constructor(private core: ICore, keyServerUrl?: string) {
     this.keyserverUrl = keyServerUrl ?? DEFAULT_KEYSERVER_URL;
@@ -42,14 +42,26 @@ export class IdentityKeys implements IIdentityKeys {
     await this.identityKeys.init();
   };
 
-  private generateIdentityKey = async () => {
+  private generateIdentityKey = async (accountId: string) => {
     const privateKey = ed25519.utils.randomPrivateKey();
     const publicKey = await ed25519.getPublicKey(privateKey);
 
     const pubKeyHex = ed25519.utils.bytesToHex(publicKey).toLowerCase();
     const privKeyHex = ed25519.utils.bytesToHex(privateKey).toLowerCase();
-    
-    return {keys: [pubKeyHex, privKeyHex], presist: () => this.core.crypto.keychain.set(pubKeyHex, privKeyHex)};
+
+    return {
+      pubKeyHex,
+      presist: async () => {
+        // Deferring presistence to caller to only presist after success
+        // of signing and registering full cacao on keyserver
+        await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
+        await this.identityKeys.set(accountId, {
+          identityKeyPriv: privKeyHex,
+          identityKeyPub: pubKeyHex,
+          accountId,
+        });
+      },
+    };
   };
 
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
@@ -69,7 +81,7 @@ export class IdentityKeys implements IIdentityKeys {
       return storedKeyPair.identityKeyPub;
     } else {
       try {
-        const {keys: [pubKeyHex, privKeyHex], presist} = await this.generateIdentityKey();
+        const { pubKeyHex, presist } = await this.generateIdentityKey(accountId);
 
         const didKey = encodeEd25519Key(pubKeyHex);
 
@@ -97,35 +109,27 @@ export class IdentityKeys implements IIdentityKeys {
 
         const signature = await onSign(cacaoMessage);
 
-	if(!signature) {
-	  throw new Error("Provided an empty signature");
-	}
-
-        // Storing keys after signature creation to prevent having false statement
-        // Eg, onSign failing / never resolving but having identity keys stored.
-        this.identityKeys.set(accountId, {
-          identityKeyPriv: privKeyHex,
-          identityKeyPub: pubKeyHex,
-          accountId,
-        });
+        if (!signature) {
+          throw new Error("Provided an empty signature");
+        }
 
         const url = `${this.keyserverUrl}/identity`;
 
-        const response = await axios.post(url, {
-          cacao: {
-            ...cacao,
-            s: {
-              ...cacao.s,
-              s: signature,
+        try {
+          await axios.post(url, {
+            cacao: {
+              ...cacao,
+              s: {
+                ...cacao.s,
+                s: signature,
+              },
             },
-          },
-        });
-
-        if (response.status !== 200) {
-          throw new Error(`Failed to register on keyserver ${response.status}`);
+          });
+        } catch (e) {
+          throw new Error(`Failed to register on keyserver`);
         }
 
-	presist();
+        await presist();
 
         return pubKeyHex;
       } catch (error) {
