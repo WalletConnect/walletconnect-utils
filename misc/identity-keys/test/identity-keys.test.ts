@@ -23,11 +23,11 @@ describe("@walletconnect/identity-keys", () => {
     accountId = `eip155:1:${wallet.address}`;
     onSign = (m) => wallet.signMessage(m);
 
-    core = new Core({projectId: PROJECT_ID});
+    core = new Core({ projectId: PROJECT_ID });
 
     identityKeys = identityKeys = new IdentityKeys(core, DEFAULT_KEYSERVER_URL);
 
-    await core.start()
+    await core.start();
     await identityKeys.init();
   });
 
