@@ -101,8 +101,6 @@ export class IdentityKeys implements IIdentityKeys {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
-        console.log("Registering with signature", signature);
-
         const signatureValid = await verifyMessage({
           address: accountId.split(":").pop() as `0x${string}`,
           message,
