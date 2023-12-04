@@ -1,5 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
-import { verifyMessage } from "viem";
+import { verifyMessage } from "viem/utils";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
