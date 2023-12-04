@@ -63,11 +63,10 @@ export class IdentityKeys implements IIdentityKeys {
 
     const cacaoPayload = {
       aud: encodeEd25519Key(pubKeyHex),
-      iss: composeDidPkh(accountId),
       statement,
       domain,
+      iss: composeDidPkh(accountId),
       nonce: generateRandomBytes32(),
-
       iat: new Date().toISOString(),
       version: "1",
       resources: [
@@ -129,10 +128,8 @@ export class IdentityKeys implements IIdentityKeys {
           },
 	}
 
-	console.log(cacao)
-
         try {
-          await axios.post(url, cacao);
+          await axios.post(url, { cacao });
         } catch (e) {
 	  
           throw new Error(`Failed to register on keyserver: ${e}`);

@@ -63,15 +63,17 @@ describe("@walletconnect/identity-keys", () => {
     // rejectedWith & rejected are not supported on this version of chai
     let failMessage = "";
     
+    const signature = await wallet.signMessage("otherMessage");
     await identityKeys
       .registerIdentity({
 	registerParams,
-	signature: "badSignature",
+	signature,
       })
       .catch((err) => (failMessage = err.message));
 
-    expect(failMessage).eq(
-      `Failed to register on keyserver: AxiosError: Request failed with status code 400`,
+    expect(failMessage).match(
+      new RegExp(`Provided an invalid signature. Signature ${signature} by account
+            ${accountId} is not a valid signature for message .*`),
     );
 
     const keys = identityKeys.identityKeys.getAll();
