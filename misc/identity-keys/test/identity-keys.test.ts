@@ -15,15 +15,12 @@ describe("@walletconnect/identity-keys", () => {
 
   let wallet: Wallet;
   let accountId: string;
-  let onSign: (m: string) => Promise<string>;
   let core: ICore;
   let identityKeys: IdentityKeys;
 
   beforeEach(async () => {
     wallet = Wallet.createRandom();
     accountId = `eip155:1:${wallet.address}`;
-    onSign = (m) => wallet.signMessage(m);
-
     core = new Core({ projectId: PROJECT_ID });
 
     identityKeys = identityKeys = new IdentityKeys(core, DEFAULT_KEYSERVER_URL);
@@ -33,11 +30,17 @@ describe("@walletconnect/identity-keys", () => {
   });
 
   it("registers on keyserver", async () => {
-    const identity = await identityKeys.registerIdentity({
+    const { message, registerParams } = await identityKeys.prepareRegistration({
       accountId,
       statement,
-      onSign,
-      domain,
+      domain
+    })
+
+    const signature = await wallet.signMessage(message);
+
+    const identity = await identityKeys.registerIdentity({
+      registerParams,
+      signature 
     });
 
     const encodedIdentity = encodeEd25519Key(identity).split(":")[2];
@@ -50,14 +53,20 @@ describe("@walletconnect/identity-keys", () => {
   });
 
   it("does not persist identity keys that failed to register", async () => {
+
+    const { registerParams } = await identityKeys.prepareRegistration({
+      accountId,
+      statement,
+      domain
+    })
+
     // rejectedWith & rejected are not supported on this version of chai
     let failMessage = "";
+    
     await identityKeys
       .registerIdentity({
-        accountId,
-        statement,
-        onSign: () => Promise.resolve("badSignature"),
-        domain,
+	registerParams,
+	signature: "badSignature",
       })
       .catch((err) => (failMessage = err.message));
 
@@ -70,14 +79,19 @@ describe("@walletconnect/identity-keys", () => {
   });
 
   it("prevents registering with empty signatures", async () => {
+
+    const { registerParams } = await identityKeys.prepareRegistration({
+      accountId,
+      statement,
+      domain
+    });
+
     // rejectedWith & rejected are not supported on this version of chai
     let failMessage = "";
     await identityKeys
       .registerIdentity({
-        accountId,
-        statement,
-        onSign: () => Promise.resolve(""),
-        domain,
+	registerParams,
+	signature: ''
       })
       .catch((err) => (failMessage = err.message));
 

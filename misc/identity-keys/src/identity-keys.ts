@@ -43,97 +43,76 @@ export class IdentityKeys implements IIdentityKeys {
     await this.identityKeys.init();
   };
 
-  private generateIdentityKey = async (accountId: string) => {
-    const privateKey = ed25519.utils.randomPrivateKey();
-    const publicKey = await ed25519.getPublicKey(privateKey);
-
-    const pubKeyHex = ed25519.utils.bytesToHex(publicKey).toLowerCase();
-    const privKeyHex = ed25519.utils.bytesToHex(privateKey).toLowerCase();
-
-    return {
-      pubKeyHex,
-      persist: async () => {
-        // Deferring persistence to caller to only persist after success
-        // of signing and registering full cacao on keyserver
-        await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
-        await this.identityKeys.set(accountId, {
-          identityKeyPriv: privKeyHex,
-          identityKeyPub: pubKeyHex,
-          accountId,
-        });
-      },
-    };
-  };
-
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
     const { identityKeyPub, identityKeyPriv } = this.identityKeys.get(accountId);
 
     return generateJWT([identityKeyPub, identityKeyPriv], payload);
   };
 
-  public getCacaoPayload({
-    statement,
-    publicIdentityKey: string,
-    domain,
-    accountId,
-  }: {
-    statement: string,
-    aud: string,
-    domain: string,
-    accountId: string
-    
-  }) {
-    const cacaoPayload: Cacao['p'] = {
-      aud,
-      statement,
-      domain,
-      iss: composeDidPkh(accountId),
-      nonce: generateRandomBytes32(),
-      iat: new Date().toISOString(),
-      version: "1",
-      resources: [this.keyserverUrl],
-    };
-
-    return cacaoPayload;
+  public isRegistered(account: string) {
+    return this.identityKeys.keys.includes(account);
   }
 
-  public formatMessage({cacaoPayload, accountId}: {
-    cacaoPayload: Cacao["p"],
+
+  public async prepareRegistration({domain, accountId, statement}: {
+    domain: string,
+    statement?: string,
     accountId: string
   }) {
-    return formatMessage(cacaoPayload, composeDidPkh(accountId));
+    const {privateKey,pubKeyHex} = await this.generateIdentityKey();
+
+    const cacaoPayload = {
+      aud: encodeEd25519Key(pubKeyHex),
+      iss: composeDidPkh(accountId),
+      statement,
+      domain,
+      nonce: generateRandomBytes32(),
+
+      iat: new Date().toISOString(),
+      version: "1",
+      resources: [
+	this.keyserverUrl
+      ]
+    }
+
+    return { message: formatMessage(cacaoPayload, composeDidPkh(accountId)), registerParams: {
+      cacaoPayload,
+      privateIdentityKey: privateKey,
+    }};
   }
 
   public async registerIdentity({
-    cacaoPayload,
+    registerParams,
     signature,
   }: RegisterIdentityParams): Promise<string> {
 
-    const accountId = cacaoPayload.iss.split(':').slice(-3).join(':');
+    const accountId = registerParams.cacaoPayload.iss.split(':').slice(-3).join(':');
 
-    if (this.identityKeys.keys.includes(accountId)) {
+    if (this.isRegistered(accountId)) {
       const storedKeyPair = this.identityKeys.get(accountId);
       return storedKeyPair.identityKeyPub;
     } else {
       try {
-        const cacaoMessage = this.formatMessage({
-	  accountId: composeDidPkh(accountId),
-	  cacaoPayload
-	});
+        const message = formatMessage(
+	  registerParams.cacaoPayload,
+	  registerParams.cacaoPayload.iss,
+	);
 
         if (!signature) {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
+	console.log("Registering with signature", signature);
+
 	const signatureValid = await verifyMessage({
 	  address: accountId.split(':').pop() as `0x${string}`,
-	  message: cacaoMessage,
+	  message,
 	  signature: signature as `0x${string}`,
 	})
 
 	if(!signatureValid) {
           throw new Error(`Provided an invalid signature. Signature ${signature} by account
-            ${accountId} is not a valid signature for message ${cacaoMessage}`);
+            ${accountId} is not a valid signature for message ${message}`);
 	}
 
         const url = `${this.keyserverUrl}/identity`;
@@ -143,29 +122,33 @@ export class IdentityKeys implements IIdentityKeys {
           h: {
             t: "eip4361",
           },
-	  p: cacaoPayload,
+	  p: registerParams.cacaoPayload,
           s: {
             t: "eip191",
             s: signature,
           },
 	}
 
+	console.log(cacao)
+
         try {
-          await axios.post(url, {
-            cacao: {
-              ...cacao,
-              s: {
-                t: "eip191",
-                s: signature,
-              },
-            },
-          });
+          await axios.post(url, cacao);
         } catch (e) {
+	  
           throw new Error(`Failed to register on keyserver: ${e}`);
         }
 
+	// Persist keys only after successful registration
+	const { pubKeyHex, privKeyHex } = await this.getKeyData(registerParams.privateIdentityKey);
 
-        return publicKeyHex;
+	await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
+        await this.identityKeys.set(accountId, {
+          identityKeyPriv: privKeyHex,
+          identityKeyPub: pubKeyHex,
+          accountId,
+        });
+
+        return pubKeyHex;
       } catch (error) {
         this.core.logger.error(error);
         throw error;
@@ -231,4 +214,28 @@ export class IdentityKeys implements IIdentityKeys {
   public async hasIdentity({ account }: GetIdentityParams): Promise<boolean> {
     return this.identityKeys.keys.includes(account);
   }
+
+  // --------------------------- Private Helpers -----------------------------//
+  
+  private generateIdentityKey = () => {
+    const privateKey = ed25519.utils.randomPrivateKey()
+
+    return this.getKeyData(privateKey);
+  };
+
+  private getKeyHex = (key: Uint8Array) => {
+    return ed25519.utils.bytesToHex(key).toLowerCase();
+  }
+
+  private getKeyData = async (privateKey: Uint8Array) => {
+    const publicKey = await ed25519.getPublicKey(privateKey)
+
+    return {
+      publicKey,
+      privateKey,
+      pubKeyHex: this.getKeyHex(publicKey),
+      privKeyHex: this.getKeyHex(privateKey)
+    }
+  }
+
 }

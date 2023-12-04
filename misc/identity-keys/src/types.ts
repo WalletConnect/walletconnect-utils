@@ -2,7 +2,10 @@ import { CacaoPayload, Cacao } from "@walletconnect/cacao";
 import { JwtPayload } from "@walletconnect/did-jwt";
 
 export interface RegisterIdentityParams {
-  cacaoPayload: CacaoPayload
+  registerParams: {
+    cacaoPayload: CacaoPayload,
+    privateIdentityKey: Uint8Array
+  }
   signature: string
 }
 
