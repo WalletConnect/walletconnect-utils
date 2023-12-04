@@ -1,4 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
+import { verifyMessage } from 'viem'
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
@@ -70,57 +71,91 @@ export class IdentityKeys implements IIdentityKeys {
     return generateJWT([identityKeyPub, identityKeyPriv], payload);
   };
 
-  public async registerIdentity({
-    accountId,
-    onSign,
-    domain,
+  public getCacaoPayload({
     statement,
+    publicIdentityKey: string,
+    domain,
+    accountId,
+  }: {
+    statement: string,
+    aud: string,
+    domain: string,
+    accountId: string
+    
+  }) {
+    const cacaoPayload: Cacao['p'] = {
+      aud,
+      statement,
+      domain,
+      iss: composeDidPkh(accountId),
+      nonce: generateRandomBytes32(),
+      iat: new Date().toISOString(),
+      version: "1",
+      resources: [this.keyserverUrl],
+    };
+
+    return cacaoPayload;
+  }
+
+  public formatMessage({cacaoPayload, accountId}: {
+    cacaoPayload: Cacao["p"],
+    accountId: string
+  }) {
+    return formatMessage(cacaoPayload, composeDidPkh(accountId));
+  }
+
+  public async registerIdentity({
+    cacaoPayload,
+    signature,
   }: RegisterIdentityParams): Promise<string> {
+
+    const accountId = cacaoPayload.iss.split(':').slice(-3).join(':');
+
     if (this.identityKeys.keys.includes(accountId)) {
       const storedKeyPair = this.identityKeys.get(accountId);
       return storedKeyPair.identityKeyPub;
     } else {
       try {
-        const { pubKeyHex, persist } = await this.generateIdentityKey(accountId);
-
-        const didKey = encodeEd25519Key(pubKeyHex);
-
-        const cacao: Cacao = {
-          h: {
-            t: "eip4361",
-          },
-          p: {
-            aud: didKey,
-            statement,
-            domain,
-            iss: composeDidPkh(accountId),
-            nonce: generateRandomBytes32(),
-            iat: new Date().toISOString(),
-            version: "1",
-            resources: [this.keyserverUrl],
-          },
-          s: {
-            t: "eip191",
-            s: "",
-          },
-        };
-
-        const cacaoMessage = formatMessage(cacao.p, composeDidPkh(accountId));
-
-        const signature = await onSign(cacaoMessage);
+        const cacaoMessage = this.formatMessage({
+	  accountId: composeDidPkh(accountId),
+	  cacaoPayload
+	});
 
         if (!signature) {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
+	const signatureValid = await verifyMessage({
+	  address: accountId.split(':').pop() as `0x${string}`,
+	  message: cacaoMessage,
+	  signature: signature as `0x${string}`,
+	})
+
+	if(!signatureValid) {
+          throw new Error(`Provided an invalid signature. Signature ${signature} by account
+            ${accountId} is not a valid signature for message ${cacaoMessage}`);
+	}
+
         const url = `${this.keyserverUrl}/identity`;
+
+	const cacao: Cacao = {
+
+          h: {
+            t: "eip4361",
+          },
+	  p: cacaoPayload,
+          s: {
+            t: "eip191",
+            s: signature,
+          },
+	}
 
         try {
           await axios.post(url, {
             cacao: {
               ...cacao,
               s: {
-                ...cacao.s,
+                t: "eip191",
                 s: signature,
               },
             },
@@ -129,9 +164,8 @@ export class IdentityKeys implements IIdentityKeys {
           throw new Error(`Failed to register on keyserver: ${e}`);
         }
 
-        await persist();
 
-        return pubKeyHex;
+        return publicKeyHex;
       } catch (error) {
         this.core.logger.error(error);
         throw error;
