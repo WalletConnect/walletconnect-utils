@@ -1,5 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
-import { verifyMessage } from 'viem'
+import { verifyMessage } from "viem";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
@@ -53,13 +53,16 @@ export class IdentityKeys implements IIdentityKeys {
     return this.identityKeys.keys.includes(account);
   }
 
-
-  public async prepareRegistration({domain, accountId, statement}: {
-    domain: string,
-    statement?: string,
-    accountId: string
+  public async prepareRegistration({
+    domain,
+    accountId,
+    statement,
+  }: {
+    domain: string;
+    statement?: string;
+    accountId: string;
   }) {
-    const {privateKey,pubKeyHex} = await this.generateIdentityKey();
+    const { privateKey, pubKeyHex } = await this.generateIdentityKey();
 
     const cacaoPayload = {
       aud: encodeEd25519Key(pubKeyHex),
@@ -69,76 +72,71 @@ export class IdentityKeys implements IIdentityKeys {
       nonce: generateRandomBytes32(),
       iat: new Date().toISOString(),
       version: "1",
-      resources: [
-	this.keyserverUrl
-      ]
-    }
+      resources: [this.keyserverUrl],
+    };
 
-    return { message: formatMessage(cacaoPayload, composeDidPkh(accountId)), registerParams: {
-      cacaoPayload,
-      privateIdentityKey: privateKey,
-    }};
+    return {
+      message: formatMessage(cacaoPayload, composeDidPkh(accountId)),
+      registerParams: {
+        cacaoPayload,
+        privateIdentityKey: privateKey,
+      },
+    };
   }
 
   public async registerIdentity({
     registerParams,
     signature,
   }: RegisterIdentityParams): Promise<string> {
-
-    const accountId = registerParams.cacaoPayload.iss.split(':').slice(-3).join(':');
+    const accountId = registerParams.cacaoPayload.iss.split(":").slice(-3).join(":");
 
     if (this.isRegistered(accountId)) {
       const storedKeyPair = this.identityKeys.get(accountId);
       return storedKeyPair.identityKeyPub;
     } else {
       try {
-        const message = formatMessage(
-	  registerParams.cacaoPayload,
-	  registerParams.cacaoPayload.iss,
-	);
+        const message = formatMessage(registerParams.cacaoPayload, registerParams.cacaoPayload.iss);
 
         if (!signature) {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
-	console.log("Registering with signature", signature);
+        console.log("Registering with signature", signature);
 
-	const signatureValid = await verifyMessage({
-	  address: accountId.split(':').pop() as `0x${string}`,
-	  message,
-	  signature: signature as `0x${string}`,
-	})
+        const signatureValid = await verifyMessage({
+          address: accountId.split(":").pop() as `0x${string}`,
+          message,
+          signature: signature as `0x${string}`,
+        });
 
-	if(!signatureValid) {
+        if (!signatureValid) {
           throw new Error(`Provided an invalid signature. Signature ${signature} by account
             ${accountId} is not a valid signature for message ${message}`);
-	}
+        }
 
         const url = `${this.keyserverUrl}/identity`;
 
-	const cacao: Cacao = {
-
+        const cacao: Cacao = {
           h: {
             t: "eip4361",
           },
-	  p: registerParams.cacaoPayload,
+          p: registerParams.cacaoPayload,
           s: {
             t: "eip191",
             s: signature,
           },
-	}
+        };
 
         try {
           await axios.post(url, { cacao });
         } catch (e) {
-	  
           throw new Error(`Failed to register on keyserver: ${e}`);
         }
 
-	// Persist keys only after successful registration
-	const { pubKeyHex, privKeyHex } = await this.getKeyData(registerParams.privateIdentityKey);
+        // Persist keys only after successful registration
+        const { pubKeyHex, privKeyHex } = await this.getKeyData(registerParams.privateIdentityKey);
 
-	await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
+        await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
         await this.identityKeys.set(accountId, {
           identityKeyPriv: privKeyHex,
           identityKeyPub: pubKeyHex,
@@ -213,26 +211,25 @@ export class IdentityKeys implements IIdentityKeys {
   }
 
   // --------------------------- Private Helpers -----------------------------//
-  
+
   private generateIdentityKey = () => {
-    const privateKey = ed25519.utils.randomPrivateKey()
+    const privateKey = ed25519.utils.randomPrivateKey();
 
     return this.getKeyData(privateKey);
   };
 
   private getKeyHex = (key: Uint8Array) => {
     return ed25519.utils.bytesToHex(key).toLowerCase();
-  }
+  };
 
   private getKeyData = async (privateKey: Uint8Array) => {
-    const publicKey = await ed25519.getPublicKey(privateKey)
+    const publicKey = await ed25519.getPublicKey(privateKey);
 
     return {
       publicKey,
       privateKey,
       pubKeyHex: this.getKeyHex(publicKey),
-      privKeyHex: this.getKeyHex(privateKey)
-    }
-  }
-
+      privKeyHex: this.getKeyHex(privateKey),
+    };
+  };
 }

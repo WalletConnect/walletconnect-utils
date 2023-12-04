@@ -33,14 +33,14 @@ describe("@walletconnect/identity-keys", () => {
     const { message, registerParams } = await identityKeys.prepareRegistration({
       accountId,
       statement,
-      domain
-    })
+      domain,
+    });
 
     const signature = await wallet.signMessage(message);
 
     const identity = await identityKeys.registerIdentity({
       registerParams,
-      signature 
+      signature,
     });
 
     const encodedIdentity = encodeEd25519Key(identity).split(":")[2];
@@ -53,21 +53,20 @@ describe("@walletconnect/identity-keys", () => {
   });
 
   it("does not persist identity keys that failed to register", async () => {
-
     const { registerParams } = await identityKeys.prepareRegistration({
       accountId,
       statement,
-      domain
-    })
+      domain,
+    });
 
     // rejectedWith & rejected are not supported on this version of chai
     let failMessage = "";
-    
+
     const signature = await wallet.signMessage("otherMessage");
     await identityKeys
       .registerIdentity({
-	registerParams,
-	signature,
+        registerParams,
+        signature,
       })
       .catch((err) => (failMessage = err.message));
 
@@ -81,19 +80,18 @@ describe("@walletconnect/identity-keys", () => {
   });
 
   it("prevents registering with empty signatures", async () => {
-
     const { registerParams } = await identityKeys.prepareRegistration({
       accountId,
       statement,
-      domain
+      domain,
     });
 
     // rejectedWith & rejected are not supported on this version of chai
     let failMessage = "";
     await identityKeys
       .registerIdentity({
-	registerParams,
-	signature: ''
+        registerParams,
+        signature: "",
       })
       .catch((err) => (failMessage = err.message));
 
