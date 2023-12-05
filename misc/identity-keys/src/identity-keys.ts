@@ -8,8 +8,8 @@ import {
   generateJWT,
   jwtExp,
 } from "@walletconnect/did-jwt";
-import { hashMessage } from '@ethersproject/hash'
-import { recoverAddress } from '@ethersproject/transactions'
+import { hashMessage } from "@ethersproject/hash";
+import { recoverAddress } from "@ethersproject/transactions";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
@@ -102,8 +102,9 @@ export class IdentityKeys implements IIdentityKeys {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
-	const recoveredAddress = recoverAddress(hashMessage(message), signature);
-	const signatureValid = recoveredAddress.toLowerCase() === accountId.split(':').pop()!.toLowerCase();
+        const recoveredAddress = recoverAddress(hashMessage(message), signature);
+        const signatureValid =
+          recoveredAddress.toLowerCase() === accountId.split(":").pop()!.toLowerCase();
 
         if (!signatureValid) {
           throw new Error(`Provided an invalid signature. Signature ${signature} by account
