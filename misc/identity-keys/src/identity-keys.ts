@@ -1,5 +1,4 @@
 import * as ed25519 from "@noble/ed25519";
-import { verifyMessage } from "viem/utils";
 import { Cacao } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
@@ -9,6 +8,8 @@ import {
   generateJWT,
   jwtExp,
 } from "@walletconnect/did-jwt";
+import { hashMessage } from '@ethersproject/hash'
+import { recoverAddress } from '@ethersproject/transactions'
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
@@ -101,11 +102,8 @@ export class IdentityKeys implements IIdentityKeys {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
-        const signatureValid = await verifyMessage({
-          address: accountId.split(":").pop() as `0x${string}`,
-          message,
-          signature: signature as `0x${string}`,
-        });
+	const recoveredAddress = recoverAddress(hashMessage(message), signature);
+	const signatureValid = recoveredAddress.toLowerCase() === accountId.split(':').pop()!.toLowerCase();
 
         if (!signatureValid) {
           throw new Error(`Provided an invalid signature. Signature ${signature} by account
