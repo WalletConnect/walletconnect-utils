@@ -42,6 +42,13 @@ describe("@walletconnect/safe-json", () => {
       const result = safeJsonParse(nested);
       chai.expect(result).to.deep.eq(JSON.parse(nested));
     });
+
+    it("should handle BigInt", () => {
+      const bigIntId = "1702044452707006208";
+      const data = `{"id":${bigIntId},"jsonrpc":"2.0","result":"cb0072aaf3f3aab9b5a334f3a273634a2a6d2bee5fe7be205dc9f30f032c9734"}`;
+      const result = safeJsonParse(data);
+      chai.expect(result.id).to.deep.eq(BigInt(bigIntId));
+    });
   });
   describe("safeJsonStringify", () => {
     it("should return a stringfied json", () => {
