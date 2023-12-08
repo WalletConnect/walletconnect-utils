@@ -28,6 +28,20 @@ describe("@walletconnect/safe-json", () => {
       const result = safeJsonParse(safeJsonStringify({ bigint: BigInt(1) }));
       chai.expect(result).to.deep.eq({ bigint: BigInt(1) });
     });
+    it("should handle number inside string literal. Case 1", () => {
+      const nested = '{"x":"12345678901234567,"}';
+      const result = safeJsonParse(nested);
+      chai.expect(result).to.deep.eq(JSON.parse(nested));
+      const big = safeJsonParse(safeJsonStringify({ bigint: BigInt(1) }));
+      chai.expect(big).to.deep.eq({ bigint: BigInt(1) });
+    });
+
+    it("should handle number inside string literal. Case 2", () => {
+      const nested =
+        '{"params":{"proposer":{"metadata":{"description":"Trade Any Token on DODOEX. Swap ETH to WETH at 0.99852536006139370845107244063040676283327993685155310925333096461126073315184832, 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE, 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"}}}}';
+      const result = safeJsonParse(nested);
+      chai.expect(result).to.deep.eq(JSON.parse(nested));
+    });
   });
   describe("safeJsonStringify", () => {
     it("should return a stringfied json", () => {
