@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/identity-keys",
-  "version": "0.2.3",
+  "version": "1.0.1",
   "description": "Utilities to register, resolve and unregister identity keys",
   "keywords": [
     "identity",
@@ -51,6 +51,8 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@ethersproject/hash": "^5.7.0",
+    "@ethersproject/transactions": "^5.7.0",
     "@noble/ed25519": "^1.7.1",
     "@walletconnect/cacao": "1.0.2",
     "@walletconnect/core": "^2.10.1",

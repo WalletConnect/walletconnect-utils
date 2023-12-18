@@ -4,6 +4,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "./dist/types",
+    "ignoreDeprecations": "5.0",
     "emitDeclarationOnly": true
   }
 }

@@ -8,6 +8,8 @@ import {
   generateJWT,
   jwtExp,
 } from "@walletconnect/did-jwt";
+import { hashMessage } from "@ethersproject/hash";
+import { recoverAddress } from "@ethersproject/transactions";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
@@ -42,94 +44,101 @@ export class IdentityKeys implements IIdentityKeys {
     await this.identityKeys.init();
   };
 
-  private generateIdentityKey = async (accountId: string) => {
-    const privateKey = ed25519.utils.randomPrivateKey();
-    const publicKey = await ed25519.getPublicKey(privateKey);
-
-    const pubKeyHex = ed25519.utils.bytesToHex(publicKey).toLowerCase();
-    const privKeyHex = ed25519.utils.bytesToHex(privateKey).toLowerCase();
-
-    return {
-      pubKeyHex,
-      persist: async () => {
-        // Deferring persistence to caller to only persist after success
-        // of signing and registering full cacao on keyserver
-        await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
-        await this.identityKeys.set(accountId, {
-          identityKeyPriv: privKeyHex,
-          identityKeyPub: pubKeyHex,
-          accountId,
-        });
-      },
-    };
-  };
-
   public generateIdAuth = async (accountId: string, payload: JwtPayload) => {
     const { identityKeyPub, identityKeyPriv } = this.identityKeys.get(accountId);
 
     return generateJWT([identityKeyPub, identityKeyPriv], payload);
   };
 
-  public async registerIdentity({
-    accountId,
-    onSign,
+  public isRegistered(account: string) {
+    return this.identityKeys.keys.includes(account);
+  }
+
+  public async prepareRegistration({
     domain,
+    accountId,
     statement,
+  }: {
+    domain: string;
+    statement?: string;
+    accountId: string;
+  }) {
+    const { privateKey, pubKeyHex } = await this.generateIdentityKey();
+
+    const cacaoPayload = {
+      aud: encodeEd25519Key(pubKeyHex),
+      statement,
+      domain,
+      iss: composeDidPkh(accountId),
+      nonce: generateRandomBytes32(),
+      iat: new Date().toISOString(),
+      version: "1",
+      resources: [this.keyserverUrl],
+    };
+
+    return {
+      message: formatMessage(cacaoPayload, composeDidPkh(accountId)),
+      registerParams: {
+        cacaoPayload,
+        privateIdentityKey: privateKey,
+      },
+    };
+  }
+
+  public async registerIdentity({
+    registerParams,
+    signature,
   }: RegisterIdentityParams): Promise<string> {
-    if (this.identityKeys.keys.includes(accountId)) {
+    const accountId = registerParams.cacaoPayload.iss.split(":").slice(-3).join(":");
+
+    if (this.isRegistered(accountId)) {
       const storedKeyPair = this.identityKeys.get(accountId);
       return storedKeyPair.identityKeyPub;
     } else {
       try {
-        const { pubKeyHex, persist } = await this.generateIdentityKey(accountId);
-
-        const didKey = encodeEd25519Key(pubKeyHex);
-
-        const cacao: Cacao = {
-          h: {
-            t: "eip4361",
-          },
-          p: {
-            aud: didKey,
-            statement,
-            domain,
-            iss: composeDidPkh(accountId),
-            nonce: generateRandomBytes32(),
-            iat: new Date().toISOString(),
-            version: "1",
-            resources: [this.keyserverUrl],
-          },
-          s: {
-            t: "eip191",
-            s: "",
-          },
-        };
-
-        const cacaoMessage = formatMessage(cacao.p, composeDidPkh(accountId));
-
-        const signature = await onSign(cacaoMessage);
+        const message = formatMessage(registerParams.cacaoPayload, registerParams.cacaoPayload.iss);
 
         if (!signature) {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
+        const recoveredAddress = recoverAddress(hashMessage(message), signature);
+        const signatureValid =
+          recoveredAddress.toLowerCase() === accountId.split(":").pop()!.toLowerCase();
+
+        if (!signatureValid) {
+          throw new Error(`Provided an invalid signature. Signature ${signature} by account
+            ${accountId} is not a valid signature for message ${message}`);
+        }
+
         const url = `${this.keyserverUrl}/identity`;
 
+        const cacao: Cacao = {
+          h: {
+            t: "eip4361",
+          },
+          p: registerParams.cacaoPayload,
+          s: {
+            t: "eip191",
+            s: signature,
+          },
+        };
+
         try {
-          await axios.post(url, {
-            cacao: {
-              ...cacao,
-              s: {
-                ...cacao.s,
-                s: signature,
-              },
-            },
-          });
+          await axios.post(url, { cacao });
         } catch (e) {
           throw new Error(`Failed to register on keyserver: ${e}`);
         }
 
-        await persist();
+        // Persist keys only after successful registration
+        const { pubKeyHex, privKeyHex } = await this.getKeyData(registerParams.privateIdentityKey);
+
+        await this.core.crypto.keychain.set(pubKeyHex, privKeyHex);
+        await this.identityKeys.set(accountId, {
+          identityKeyPriv: privKeyHex,
+          identityKeyPub: pubKeyHex,
+          accountId,
+        });
 
         return pubKeyHex;
       } catch (error) {
@@ -197,4 +206,27 @@ export class IdentityKeys implements IIdentityKeys {
   public async hasIdentity({ account }: GetIdentityParams): Promise<boolean> {
     return this.identityKeys.keys.includes(account);
   }
+
+  // --------------------------- Private Helpers -----------------------------//
+
+  private generateIdentityKey = () => {
+    const privateKey = ed25519.utils.randomPrivateKey();
+
+    return this.getKeyData(privateKey);
+  };
+
+  private getKeyHex = (key: Uint8Array) => {
+    return ed25519.utils.bytesToHex(key).toLowerCase();
+  };
+
+  private getKeyData = async (privateKey: Uint8Array) => {
+    const publicKey = await ed25519.getPublicKey(privateKey);
+
+    return {
+      publicKey,
+      privateKey,
+      pubKeyHex: this.getKeyHex(publicKey),
+      privKeyHex: this.getKeyHex(privateKey),
+    };
+  };
 }
