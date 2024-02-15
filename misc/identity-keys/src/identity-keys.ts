@@ -1,5 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
-import { Cacao } from "@walletconnect/cacao";
+import { Cacao, verifySignature } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
   JwtPayload,
@@ -8,8 +8,6 @@ import {
   generateJWT,
   jwtExp,
 } from "@walletconnect/did-jwt";
-import { hashMessage } from "@ethersproject/hash";
-import { recoverAddress } from "@ethersproject/transactions";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
@@ -29,7 +27,7 @@ export class IdentityKeys implements IIdentityKeys {
   private keyserverUrl: string;
   public identityKeys: IStore<IdentityKeychain["accountId"], IdentityKeychain>;
 
-  constructor(private core: ICore, keyServerUrl?: string) {
+  constructor(private core: ICore, private projectId: string, keyServerUrl?: string) {
     this.keyserverUrl = keyServerUrl ?? DEFAULT_KEYSERVER_URL;
     this.identityKeys = new Store(
       core,
@@ -102,9 +100,14 @@ export class IdentityKeys implements IIdentityKeys {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
-        const recoveredAddress = recoverAddress(hashMessage(message), signature);
-        const signatureValid =
-          recoveredAddress.toLowerCase() === accountId.split(":").pop()!.toLowerCase();
+	const [,chain,address] = accountId.split(':');
+        const signatureValid = verifySignature(
+	  address,
+	  message,
+	  signature,
+	  chain,
+	  this.projectId
+	);
 
         if (!signatureValid) {
           throw new Error(`Provided an invalid signature. Signature ${signature} by account
@@ -118,10 +121,7 @@ export class IdentityKeys implements IIdentityKeys {
             t: "eip4361",
           },
           p: registerParams.cacaoPayload,
-          s: {
-            t: "eip191",
-            s: signature,
-          },
+          s: signature,
         };
 
         try {

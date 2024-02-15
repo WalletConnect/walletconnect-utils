@@ -5,7 +5,7 @@ export interface JwtHeader {
 
 export interface JwtPayload {
   iss: string;
-  sub: string;
+  sub?: string;
   iat: number;
   exp: number;
   act: string;
