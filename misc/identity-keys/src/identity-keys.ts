@@ -100,14 +100,8 @@ export class IdentityKeys implements IIdentityKeys {
           throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
         }
 
-	const [,chain,address] = accountId.split(':');
-        const signatureValid = verifySignature(
-	  address,
-	  message,
-	  signature,
-	  chain,
-	  this.projectId
-	);
+        const [, chain, address] = accountId.split(":");
+        const signatureValid = verifySignature(address, message, signature, chain, this.projectId);
 
         if (!signatureValid) {
           throw new Error(`Provided an invalid signature. Signature ${signature} by account
