@@ -41,8 +41,8 @@ describe("@walletconnect/identity-keys", () => {
     const identity = await identityKeys.registerIdentity({
       registerParams,
       signature: {
-	s: signature,
-	t: 'eip191'
+        s: signature,
+        t: "eip191",
       },
     });
 
@@ -71,7 +71,7 @@ describe("@walletconnect/identity-keys", () => {
         registerParams,
         signature: {
           s: signature,
-          t: 'eip191'
+          t: "eip191",
         },
       })
       .catch((err) => (failMessage = err.message));
@@ -99,7 +99,7 @@ describe("@walletconnect/identity-keys", () => {
         registerParams,
         signature: {
           s: "",
-          t: 'eip191'
+          t: "eip191",
         },
       })
       .catch((err) => (failMessage = err.message));
