@@ -77,7 +77,9 @@ describe("@walletconnect/identity-keys", () => {
       .catch((err) => (failMessage = err.message));
 
     expect(failMessage).match(
-      new RegExp(`Provided an invalid signature. Signature ${signature} of type eip191 by account ${accountId} is not a valid signature for message.*`),
+      new RegExp(
+        `Provided an invalid signature. Signature ${signature} of type eip191 by account ${accountId} is not a valid signature for message.*`,
+      ),
     );
 
     const keys = identityKeys.identityKeys.getAll();
