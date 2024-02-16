@@ -96,17 +96,29 @@ export class IdentityKeys implements IIdentityKeys {
       try {
         const message = formatMessage(registerParams.cacaoPayload, registerParams.cacaoPayload.iss);
 
-        if (!signature) {
-          throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
+        if (!signature.s) {
+          throw new Error(`Provided an invalid signature. Expected a string but got: ${signature.s}`);
         }
 
         const [, chain, address] = accountId.split(":");
-        const signatureValid = verifySignature(address, message, signature, chain, this.projectId);
+	const invalidSignatureError =
+	  `Provided an invalid signature. Signature ${signature.s} by account ${accountId} is not a valid signature for message ${message}`
+
+	let signatureValid = false;
+
+	// account for an invalid signature
+	try {
+	  signatureValid = await verifySignature(address, message, signature, chain, this.projectId);
+	}
+	catch {
+	  signatureValid = false;
+	}
 
         if (!signatureValid) {
-          throw new Error(`Provided an invalid signature. Signature ${signature} by account
-            ${accountId} is not a valid signature for message ${message}`);
+          throw new Error(invalidSignatureError);
         }
+
+
 
         const url = `${this.keyserverUrl}/identity`;
 
