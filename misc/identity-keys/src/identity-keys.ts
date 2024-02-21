@@ -102,7 +102,7 @@ export class IdentityKeys implements IIdentityKeys {
           );
         }
 
-        const [, chain, address] = accountId.split(":");
+        const [chainPrefix, chain, address] = accountId.split(":");
         const invalidSignatureError = `Provided an invalid signature. Signature ${signature.s} of type ${signature.t} by account ${accountId} is not a valid signature for message ${message}`;
 
         let signatureValid = false;
@@ -113,7 +113,7 @@ export class IdentityKeys implements IIdentityKeys {
             address,
             message,
             signature,
-            chain,
+            `${chainPrefix}:${chain}`,
             this.projectId,
           );
         } catch {
