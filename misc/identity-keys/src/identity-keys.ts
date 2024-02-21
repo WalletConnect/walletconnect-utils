@@ -1,5 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
-import { Cacao } from "@walletconnect/cacao";
+import { Cacao, verifySignature } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
   JwtPayload,
@@ -8,8 +8,6 @@ import {
   generateJWT,
   jwtExp,
 } from "@walletconnect/did-jwt";
-import { hashMessage } from "@ethersproject/hash";
-import { recoverAddress } from "@ethersproject/transactions";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
 import axios from "axios";
@@ -29,7 +27,7 @@ export class IdentityKeys implements IIdentityKeys {
   private keyserverUrl: string;
   public identityKeys: IStore<IdentityKeychain["accountId"], IdentityKeychain>;
 
-  constructor(private core: ICore, keyServerUrl?: string) {
+  constructor(private core: ICore, private projectId: string, keyServerUrl?: string) {
     this.keyserverUrl = keyServerUrl ?? DEFAULT_KEYSERVER_URL;
     this.identityKeys = new Store(
       core,
@@ -98,17 +96,32 @@ export class IdentityKeys implements IIdentityKeys {
       try {
         const message = formatMessage(registerParams.cacaoPayload, registerParams.cacaoPayload.iss);
 
-        if (!signature) {
-          throw new Error(`Provided an invalid signature. Expected a string but got: ${signature}`);
+        if (!signature.s) {
+          throw new Error(
+            `Provided an invalid signature. Expected a string but got: ${signature.s}`,
+          );
         }
 
-        const recoveredAddress = recoverAddress(hashMessage(message), signature);
-        const signatureValid =
-          recoveredAddress.toLowerCase() === accountId.split(":").pop()!.toLowerCase();
+        const [chainPrefix, chain, address] = accountId.split(":");
+        const invalidSignatureError = `Provided an invalid signature. Signature ${signature.s} of type ${signature.t} by account ${accountId} is not a valid signature for message ${message}`;
+
+        let signatureValid = false;
+
+        // account for an invalid signature
+        try {
+          signatureValid = await verifySignature(
+            address,
+            message,
+            signature,
+            `${chainPrefix}:${chain}`,
+            this.projectId,
+          );
+        } catch {
+          signatureValid = false;
+        }
 
         if (!signatureValid) {
-          throw new Error(`Provided an invalid signature. Signature ${signature} by account
-            ${accountId} is not a valid signature for message ${message}`);
+          throw new Error(invalidSignatureError);
         }
 
         const url = `${this.keyserverUrl}/identity`;
@@ -118,10 +131,7 @@ export class IdentityKeys implements IIdentityKeys {
             t: "eip4361",
           },
           p: registerParams.cacaoPayload,
-          s: {
-            t: "eip191",
-            s: signature,
-          },
+          s: signature,
         };
 
         try {

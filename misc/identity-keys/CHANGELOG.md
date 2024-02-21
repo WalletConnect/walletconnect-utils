@@ -1,5 +1,18 @@
 # @walletconnect/identity-keys
 
+## 2.0.1
+
+### Patch Changes
+
+- Fix bug where chainPrefix is not added for eip1271 calls
+
+## 2.0.0
+
+### Major Changes
+
+- Add support for eip1271 verification
+- Change API to accept type alongwith the signature
+
 ## 1.0.1
 
 ### Patch Changes

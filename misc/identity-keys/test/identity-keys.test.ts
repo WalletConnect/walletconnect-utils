@@ -40,7 +40,10 @@ describe("@walletconnect/identity-keys", () => {
 
     const identity = await identityKeys.registerIdentity({
       registerParams,
-      signature,
+      signature: {
+        s: signature,
+        t: "eip191",
+      },
     });
 
     const encodedIdentity = encodeEd25519Key(identity).split(":")[2];
@@ -66,13 +69,17 @@ describe("@walletconnect/identity-keys", () => {
     await identityKeys
       .registerIdentity({
         registerParams,
-        signature,
+        signature: {
+          s: signature,
+          t: "eip191",
+        },
       })
       .catch((err) => (failMessage = err.message));
 
     expect(failMessage).match(
-      new RegExp(`Provided an invalid signature. Signature ${signature} by account
-            ${accountId} is not a valid signature for message .*`),
+      new RegExp(
+        `Provided an invalid signature. Signature ${signature} of type eip191 by account ${accountId} is not a valid signature for message.*`,
+      ),
     );
 
     const keys = identityKeys.identityKeys.getAll();
@@ -91,7 +98,10 @@ describe("@walletconnect/identity-keys", () => {
     await identityKeys
       .registerIdentity({
         registerParams,
-        signature: "",
+        signature: {
+          s: "",
+          t: "eip191",
+        },
       })
       .catch((err) => (failMessage = err.message));
 
