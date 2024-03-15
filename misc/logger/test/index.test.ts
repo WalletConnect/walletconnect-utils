@@ -1,5 +1,6 @@
 import "mocha";
 import * as chai from "chai";
+import sinon from 'sinon'
 
 import pino, { Logger } from "pino";
 
@@ -62,26 +63,31 @@ describe("Logger", () => {
         chai.expect(logArray.filter(log => log.includes("Foo1")).length).eq(1)
         chai.expect(logArray.filter(log => log.includes("Foo2")).length).eq(1)
         chai.expect(logArray.filter(log => log.includes("Baz")).length).eq(1)
-
       })
 
       it("Forwards logs to console when necessary", () => {
+	const consoleWarn = sinon.stub(console, 'warn')
+	const consoleError = sinon.stub(console, 'error')
         const { logger, chunkLoggerController }  = generateServerLogger({opts: {
-	  level: 'warn'
+	  level: 'error'
 	}});
 
 	const aString = 'a'.repeat(4);
 	const bString = 'b'.repeat(4);
 
-	logger.info(aString)
-	logger.warn(bString)
+	logger.warn(aString)
+	logger.error(bString)
 
 	const logArray = chunkLoggerController.getLogArray()
-	console.log({logArray})
 
+	chai.expect(consoleWarn.called).eq(false)
+	chai.expect(consoleError.called).eq(true)
 	
         chai.expect(logArray.filter(log => log.includes(aString)).length).eq(1)
         chai.expect(logArray.filter(log => log.includes(bString)).length).eq(1)
+
+	consoleError.restore()
+	consoleWarn.restore()
       })
 
       it("Does not store more than MAX_SIZE_IN_BYTES bytes", () => {

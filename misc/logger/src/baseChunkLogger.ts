@@ -17,11 +17,11 @@ export default class BaseChunkLogger {
     this.logs = new LogLinkedList();
   }
 
-  public forwardToConsole(chunk: any) {
-    if(chunk.level === levels.values['error']) {
+  public forwardToConsole(chunk: any, level: number) {
+    if(level === levels.values['error']) {
       console.error(chunk)
     }
-    else if (chunk.level === levels.values['warn']) {
+    else if (level === levels.values['warn']) {
       console.warn(chunk)
     }
     else {
@@ -38,8 +38,9 @@ export default class BaseChunkLogger {
     );
 
     // Based on https://github.com/pinojs/pino/blob/master/lib/constants.js
-    if(chunk.level >= this.levelValue) {
-      this.forwardToConsole(chunk)
+    const level = typeof chunk === "string"? JSON.parse(chunk).level : chunk.level;
+    if(level >= this.levelValue) {
+      this.forwardToConsole(chunk, level)
     }
 
     if (this.logs.size >= this.MAX_LOG_SIZE_IN_BYTES) {
