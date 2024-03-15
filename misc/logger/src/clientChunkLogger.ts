@@ -1,12 +1,15 @@
 import { MAX_LOG_SIZE_IN_BYTES_DEFAULT } from "./constants";
-import type { LoggerOptions } from 'pino'
+import type { LoggerOptions } from "pino";
 import BaseChunkLogger from "./baseChunkLogger";
 
 export default class ClientChunkLogger {
-  private baseChunkLogger: BaseChunkLogger
+  private baseChunkLogger: BaseChunkLogger;
 
-  public constructor(level: LoggerOptions['level'], MAX_LOG_SIZE_IN_BYTES: number = MAX_LOG_SIZE_IN_BYTES_DEFAULT) {
-    this.baseChunkLogger = new BaseChunkLogger(level, MAX_LOG_SIZE_IN_BYTES)
+  public constructor(
+    level: LoggerOptions["level"],
+    MAX_LOG_SIZE_IN_BYTES: number = MAX_LOG_SIZE_IN_BYTES_DEFAULT,
+  ) {
+    this.baseChunkLogger = new BaseChunkLogger(level, MAX_LOG_SIZE_IN_BYTES);
 
     // if (typeof window !== 'undefined') {
     if (window) {
@@ -18,7 +21,6 @@ export default class ClientChunkLogger {
     }
   }
 
-
   public write(chunk: any): void {
     this.baseChunkLogger.appendToLogs(chunk);
   }
@@ -28,15 +30,15 @@ export default class ClientChunkLogger {
   }
 
   public clearLogs() {
-    this.baseChunkLogger.clearLogs()
+    this.baseChunkLogger.clearLogs();
   }
 
   public getLogArray() {
-    return this.baseChunkLogger.getLogArray()
+    return this.baseChunkLogger.getLogArray();
   }
 
   public logsToBlob(extraMetadata: Record<string, string>) {
-    return this.baseChunkLogger.logsToBlob(extraMetadata)
+    return this.baseChunkLogger.logsToBlob(extraMetadata);
   }
 
   public downloadLogsBlobInBrowser(extraMetadata: Record<string, string>) {
