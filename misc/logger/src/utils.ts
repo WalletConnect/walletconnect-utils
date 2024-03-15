@@ -63,7 +63,7 @@ export function generateChildLogger(
 
 export function generateClientLogger(params: {
   opts?: LoggerOptions;
-  maxSizeInBytes?: number
+  maxSizeInBytes?: number;
 }) {
   const clientLogger = new ClientChunkLogger(params.opts?.level, params.maxSizeInBytes)
   const logger = pino({
@@ -78,7 +78,10 @@ export function generateClientLogger(params: {
   return { logger, chunkLoggerController: clientLogger };
 }
 
-export function generateServerLogger(params: { maxSizeInBytes?: number, opts?: LoggerOptions }) {
+export function generateServerLogger(params: {
+  maxSizeInBytes?: number,
+  opts?: LoggerOptions
+}) {
   const serverLogger = new ServerChunkLogger(params.opts?.level, params.maxSizeInBytes)
   const logger = pino(
     {
