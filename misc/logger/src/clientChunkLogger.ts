@@ -11,13 +11,15 @@ export class ClientChunkLogger {
     this.MAX_LOG_SIZE_IN_BYTES = MAX_LOG_SIZE_IN_BYTES;
     this.logs = new LogLinkedList()
 
-    // @ts-ignore
-    window.w3iLogger = this
+    if(window) {
+      // @ts-ignore
+      window.w3iLogger = this
 
-    // @ts-ignore
-    window.downloadLogsBlob = (clientMetadata?: LogClientMetadata) => {
-      this.downloadLogsBlobInBrowser(clientMetadata ?? { clientId: 'N/A' })
-      this.clearLogs()
+      // @ts-ignore
+      window.downloadLogsBlob = (clientMetadata?: LogClientMetadata) => {
+        this.downloadLogsBlobInBrowser(clientMetadata ?? { clientId: 'N/A' })
+        this.clearLogs()
+      }
     }
   }
 
