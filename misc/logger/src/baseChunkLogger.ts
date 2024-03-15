@@ -1,13 +1,14 @@
 import { MAX_LOG_SIZE_IN_BYTES_DEFAULT } from "./constants";
-import { LogLinkedList } from "./linkedList";
 import type { LoggerOptions } from "pino";
 import { levels } from "pino";
+import CircularArray from "./circularArray";
 
 export default class BaseChunkLogger {
-  private logs: LogLinkedList;
-  private MAX_LOG_SIZE_IN_BYTES: number;
+  private logs: CircularArray;
   private level: LoggerOptions["level"];
   private levelValue: number;
+
+  private MAX_LOG_SIZE_IN_BYTES: number;
 
   public constructor(
     level: LoggerOptions["level"],
@@ -17,7 +18,7 @@ export default class BaseChunkLogger {
     this.levelValue = levels.values[this.level];
 
     this.MAX_LOG_SIZE_IN_BYTES = MAX_LOG_SIZE_IN_BYTES;
-    this.logs = new LogLinkedList();
+    this.logs = new CircularArray(MAX_LOG_SIZE_IN_BYTES);
   }
 
   public forwardToConsole(chunk: any, level: number) {
@@ -34,7 +35,7 @@ export default class BaseChunkLogger {
   }
 
   public appendToLogs(chunk: any) {
-    this.logs.append(
+    this.logs.enqueue(
       JSON.stringify({
         timestamp: new Date().toISOString(),
         log: chunk,
@@ -46,10 +47,6 @@ export default class BaseChunkLogger {
     if (level >= this.levelValue) {
       this.forwardToConsole(chunk, level);
     }
-
-    if (this.logs.size >= this.MAX_LOG_SIZE_IN_BYTES) {
-      this.logs.shift();
-    }
   }
 
   public getLogs() {
@@ -57,16 +54,16 @@ export default class BaseChunkLogger {
   }
 
   public clearLogs() {
-    this.logs = new LogLinkedList();
+    this.logs = new CircularArray(this.MAX_LOG_SIZE_IN_BYTES);
   }
 
   public getLogArray() {
-    return this.logs.toArray();
+    return Array.from(this.logs);
   }
 
   public logsToBlob(extraMetadata: Record<string, string>) {
-    this.logs.append(JSON.stringify({ extraMetadata }));
-    const blob = new Blob(this.logs.toArray(), { type: "application/json" });
+    this.logs.enqueue(JSON.stringify({ extraMetadata }));
+    const blob = new Blob(this.getLogArray(), { type: "application/json" });
     return blob;
   }
 }
