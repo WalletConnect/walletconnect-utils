@@ -1,5 +1,4 @@
 import pino, { Logger, LoggerOptions } from "pino";
-
 import { PINO_CUSTOM_CONTEXT_KEY, PINO_LOGGER_DEFAULTS } from "./constants";
 import ClientChunkLogger from "./clientChunkLogger";
 import ServerChunkLogger from "./serverChunkLogger";
@@ -61,7 +60,10 @@ export function generateChildLogger(
   return setBrowserLoggerContext(child, context, customContextKey);
 }
 
-export function generateClientLogger(params: { opts?: LoggerOptions; maxSizeInBytes?: number }) {
+export function generateClientLogger(params: { opts?: LoggerOptions; maxSizeInBytes?: number }): {
+  logger: Logger<any>;
+  chunkLoggerController: ClientChunkLogger;
+} {
   const clientLogger = new ClientChunkLogger(params.opts?.level, params.maxSizeInBytes);
   const logger = pino({
     ...params.opts,
@@ -75,7 +77,10 @@ export function generateClientLogger(params: { opts?: LoggerOptions; maxSizeInBy
   return { logger, chunkLoggerController: clientLogger };
 }
 
-export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: LoggerOptions }) {
+export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: LoggerOptions }): {
+  logger: Logger<any>;
+  chunkLoggerController: ServerChunkLogger;
+} {
   const serverLogger = new ServerChunkLogger(params.opts?.level, params.maxSizeInBytes);
   const logger = pino(
     {
