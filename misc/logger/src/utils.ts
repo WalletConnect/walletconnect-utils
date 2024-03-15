@@ -1,4 +1,5 @@
-import { Logger, LoggerOptions } from "pino";
+import pino, { Logger, LoggerOptions } from "pino";
+import type { Writable } from 'stream'
 
 import { PINO_CUSTOM_CONTEXT_KEY, PINO_LOGGER_DEFAULTS } from "./constants";
 
@@ -57,4 +58,31 @@ export function generateChildLogger(
   const context = formatChildLoggerContext(logger, childContext, customContextKey);
   const child = logger.child({ context });
   return setBrowserLoggerContext(child, context, customContextKey);
+}
+
+
+export function generateBrowserLogger(params: {
+  writeFunction: (obj: object) => void,
+  opts?: LoggerOptions
+}) {
+  const logger = pino({
+    ...params.opts,
+    browser: {
+      ...params.opts?.browser,
+      write: (obj) => params.writeFunction(obj),
+    }
+  })
+
+  return logger;
+}
+
+export function generateServerLogger(params: {
+  stream: Writable,
+  opts?: LoggerOptions
+}) {
+  const logger = pino({
+    ...params.opts
+  }, params.stream)
+
+  return logger;
 }
