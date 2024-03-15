@@ -181,20 +181,20 @@ describe("Logger", () => {
         logger.info(cString);
         logger.info(dString);
         logger.info(eString);
-	logger.info(fString)
-	logger.info(gString)
-	logger.info(hString)
-	logger.info(iString)
-	logger.info(jString)
-	logger.info(kString)
-	logger.info(lString)
-	logger.info(mString)
-	logger.info(nString)
-	logger.info(oString)
-	logger.info(pString)
+        logger.info(fString);
+        logger.info(gString);
+        logger.info(hString);
+        logger.info(iString);
+        logger.info(jString);
+        logger.info(kString);
+        logger.info(lString);
+        logger.info(mString);
+        logger.info(nString);
+        logger.info(oString);
+        logger.info(pString);
 
         const logArray = chunkLoggerController.getLogArray();
-	console.log({logArray})
+        console.log({ logArray });
 
         chai.expect(logArray.filter((log) => log.includes(bString)).length).eq(0);
         chai.expect(logArray.filter((log) => log.includes(cString)).length).eq(0);
@@ -206,8 +206,7 @@ describe("Logger", () => {
         chai.expect(logArray.filter((log) => log.includes(nString)).length).eq(1);
         chai.expect(logArray.filter((log) => log.includes(oString)).length).eq(1);
         chai.expect(logArray.filter((log) => log.includes(pString)).length).eq(1);
-
-      })
+      });
     });
   });
 });
