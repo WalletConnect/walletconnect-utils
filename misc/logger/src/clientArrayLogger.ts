@@ -1,7 +1,7 @@
 import { MAX_LOG_SIZE_IN_BYTES_DEFAULT } from "./constants";
 import { LogLinkedList } from "./linkedList";
 
-export class ClientArrayLogger {
+export class ClientChunkLogger {
   private logs: LogLinkedList
   private MAX_LOG_SIZE_IN_BYTES: number; 
 
