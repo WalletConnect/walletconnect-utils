@@ -16,7 +16,6 @@ class LogListNode {
   public get size() {
     return this.sizeInBytes;
   }
-
 }
 
 export class LogLinkedList {
@@ -39,7 +38,7 @@ export class LogLinkedList {
       this.tail = newNode;
     } else {
       if (this.tail) {
-          this.tail.next = newNode;
+        this.tail.next = newNode;
       }
       this.tail = newNode;
     }
@@ -60,17 +59,17 @@ export class LogLinkedList {
     }
 
     this.lengthInNodes--;
-    this.sizeInBytes -= removedNode.size
+    this.sizeInBytes -= removedNode.size;
   }
 
   public toArray(): string[] {
-      const array: string[] = [];
-      let currentNode = this.head;
-      while (currentNode !== null) {
-          array.push(currentNode.value);
-          currentNode = currentNode.next;
-      }
-      return array;
+    const array: string[] = [];
+    let currentNode = this.head;
+    while (currentNode !== null) {
+      array.push(currentNode.value);
+      currentNode = currentNode.next;
+    }
+    return array;
   }
 
   public get length() {
