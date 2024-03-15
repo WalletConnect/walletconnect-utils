@@ -14,8 +14,8 @@ export default class ClientChunkLogger {
     // if (typeof window !== 'undefined') {
     if (window) {
       // @ts-ignore
-      window.downloadLogsBlob = (clientMetadata?: LogClientMetadata) => {
-        this.downloadLogsBlobInBrowser(clientMetadata ?? { clientId: "N/A" });
+      window.downloadLogsBlob = (extraMetadata: Record<string, string>) => {
+        this.downloadLogsBlobInBrowser(extraMetadata ?? { clientId: "N/A" });
         this.clearLogs();
       };
     }

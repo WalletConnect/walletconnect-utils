@@ -21,11 +21,14 @@ export default class BaseChunkLogger {
   }
 
   public forwardToConsole(chunk: any, level: number) {
-    if (level === levels.values["error"]) {
+    if (level === levels.values.error) {
+      // eslint-disable-next-line no-console
       console.error(chunk);
-    } else if (level === levels.values["warn"]) {
+    } else if (level === levels.values.warn) {
+      // eslint-disable-next-line no-console
       console.warn(chunk);
     } else {
+      // eslint-disable-next-line no-console
       console.log(chunk);
     }
   }
