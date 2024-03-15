@@ -5,7 +5,7 @@ class LogListNode {
 
   constructor(value: string) {
     this.nodeValue = value;
-    this.sizeInBytes = new TextEncoder().encode(value).length;
+    this.sizeInBytes = new TextEncoder().encode(this.nodeValue).length;
     this.next = null;
   }
 
