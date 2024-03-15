@@ -28,6 +28,12 @@ export default class BaseChunkLogger {
     } else if (level === levels.values.warn) {
       // eslint-disable-next-line no-console
       console.warn(chunk);
+    } else if (level === levels.values.debug) {
+      // eslint-disable-next-line no-console
+      console.debug(chunk);
+    } else if (level === levels.values.trace) {
+      // eslint-disable-next-line no-console
+      console.trace(chunk);
     } else {
       // eslint-disable-next-line no-console
       console.log(chunk);
