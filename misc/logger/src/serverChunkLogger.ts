@@ -12,8 +12,14 @@ export default class ServerChunkLogger extends Writable {
     this.baseChunkLogger = new BaseChunkLogger(level, MAX_LOG_SIZE_IN_BYTES)
   }
 
-  public _write(chunk: any): void {
-    this.baseChunkLogger.appendToLogs(chunk)
+  public _write(chunk: any, _encoding: string, callback: (error?: Error | null) => void): void {
+    try {
+      this.baseChunkLogger.appendToLogs(chunk)
+      callback()
+    }
+    catch (error: any) {
+      callback(error)
+    }
   }
 
   public getLogs() {
