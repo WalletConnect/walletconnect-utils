@@ -1,7 +1,8 @@
 import pino, { Logger, LoggerOptions } from "pino";
-import type { Writable } from "stream";
 
 import { PINO_CUSTOM_CONTEXT_KEY, PINO_LOGGER_DEFAULTS } from "./constants";
+import ClientChunkLogger from "./clientChunkLogger";
+import  ServerChunkLogger from "./serverChunkLogger";
 
 export function getDefaultLoggerOptions(opts?: LoggerOptions): LoggerOptions {
   return {
@@ -60,28 +61,32 @@ export function generateChildLogger(
   return setBrowserLoggerContext(child, context, customContextKey);
 }
 
-export function generateBrowserLogger(params: {
-  writeFunction: (obj: object) => void;
+export function generateClientLogger(params: {
   opts?: LoggerOptions;
+  maxSizeInBytes?: number
 }) {
+  const clientLogger = new ClientChunkLogger(params.opts?.level, params.maxSizeInBytes)
   const logger = pino({
     ...params.opts,
+    level: 'trace',
     browser: {
       ...params.opts?.browser,
-      write: (obj) => params.writeFunction(obj),
+      write: (obj) => clientLogger.write(obj),
     },
   });
 
-  return logger;
+  return { logger, chunkLoggerController: clientLogger };
 }
 
-export function generateServerLogger(params: { stream: Writable; opts?: LoggerOptions }) {
+export function generateServerLogger(params: { maxSizeInBytes?: number, opts?: LoggerOptions }) {
+  const serverLogger = new ServerChunkLogger(params.opts?.level, params.maxSizeInBytes)
   const logger = pino(
     {
       ...params.opts,
+      level: 'trace'
     },
-    params.stream,
+    serverLogger,
   );
 
-  return logger;
+  return { logger, chunkLoggerController: serverLogger };
 }

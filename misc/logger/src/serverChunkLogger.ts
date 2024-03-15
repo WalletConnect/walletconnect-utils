@@ -4,7 +4,7 @@ import { LogLinkedList } from "./linkedList";
 import type { LoggerOptions } from 'pino'
 import { levels } from 'pino'
 
-export class ServerChunkLogger extends Writable {
+export default class ServerChunkLogger extends Writable {
   private logs: LogLinkedList;
   private MAX_LOG_SIZE_IN_BYTES: number;
   private level: LoggerOptions['level']
