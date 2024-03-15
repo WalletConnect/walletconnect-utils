@@ -1,18 +1,17 @@
 export default class CircularArray {
   private array: string[];
-  private head = 0;
-  private capacityInBytes: number;
+  private head: number;
   private currentSizeInBytes: number;
+  private capacityInBytes: number;
 
-  public constructor(capacityInBytes: number) {
+  constructor(capacityInBytes: number) {
     this.capacityInBytes = capacityInBytes;
     this.currentSizeInBytes = 0;
-
-    // Get an initial size for the array on the assumption that each
+    this.head = 0;
     this.array = [];
   }
 
-  private calculateStringSize(item: string) {
+  private calculateStringSize(item: string): number {
     return new TextEncoder().encode(item).length;
   }
 
@@ -22,26 +21,28 @@ export default class CircularArray {
       throw new Error("Item size exceeds total capacity.");
     }
 
+    let insertIdx = this.array.length;
     while (this.currentSizeInBytes + itemSize > this.capacityInBytes) {
       const headItem = this.array[this.head];
       this.currentSizeInBytes -= this.calculateStringSize(headItem);
-      this.head = (this.head + 1) % this.array.length;
-      this.array[this.head] = "";
+      insertIdx = this.head;
+      this.head = (this.head + 1) % Math.max(this.array.length, 1); // Avoid modulo 0, was causing bugs
     }
 
-    this.array.push(item);
+    if (insertIdx >= this.array.length) {
+      this.array.push(item);
+    } else {
+      this.array[insertIdx] = item;
+    }
+
     this.currentSizeInBytes += itemSize;
   }
 
-  get(index: number): string {
+  public get(index: number): string {
     if (index < 0 || index >= this.array.length) {
       throw new Error("Index out of bounds");
     }
     return this.array[(this.head + index) % this.array.length];
-  }
-
-  public get size() {
-    return this.capacityInBytes;
   }
 
   [Symbol.iterator](): Iterator<string> {
@@ -55,7 +56,7 @@ export default class CircularArray {
         }
 
         const value = this.array[index % this.array.length];
-        index++;
+        index = (index + 1) % this.array.length;
         count++;
         return { done: false, value };
       },

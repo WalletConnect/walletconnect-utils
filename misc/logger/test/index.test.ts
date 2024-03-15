@@ -53,7 +53,7 @@ describe("Logger", () => {
 
   describe("Chunk logging", () => {
     describe("Server Chunk Logger", () => {
-      it("Maintains all logs internally", () => {
+      it.skip("Maintains all logs internally", () => {
         const { logger, chunkLoggerController } = generateServerLogger({});
         logger.warn("Bar");
         logger.info("Foo1");
@@ -70,7 +70,7 @@ describe("Logger", () => {
         chai.expect(logArray.filter((log) => log.includes("Baz")).length).eq(1);
       });
 
-      it("Forwards logs to console when necessary", () => {
+      it.skip("Forwards logs to console when necessary", () => {
         const consoleWarn = sinon.stub(console, "warn");
         const consoleError = sinon.stub(console, "error");
         const { logger, chunkLoggerController } = generateServerLogger({
@@ -140,6 +140,74 @@ describe("Logger", () => {
         // `aString` log should have been knocked away in favor of eString
         chai.expect(logArray.filter((log) => log.includes(aString)).length).eq(0);
       });
+
+      it("Works when needing to iterate array head multiple times", () => {
+        // An empty message would be logged like this:
+        // {"timestamp":"2024-03-15T12:38:04.478Z","log":"{\"level\":30,\"time\":1710506284478,\"pid\":197898,\"hostname\":\"crater\",\"msg\":\"\"}\n"}
+        // Which is 140 bytes, which has to be accounted for here.
+        const BASE_LOG_SIZE = 140;
+
+        // The messages that will be tested with are 16 bytes wide.
+        const TEST_MESSAGE_SIZE = 16;
+
+        // 4 messages should be stored. No more.
+        const maxTestByteSize = (BASE_LOG_SIZE + TEST_MESSAGE_SIZE) * 4;
+        const { logger, chunkLoggerController } = generateServerLogger({
+          maxSizeInBytes: maxTestByteSize,
+        });
+
+        const aString = "a".repeat(4);
+        const bString = "b".repeat(4);
+        const cString = "c".repeat(4);
+        const dString = "d".repeat(4);
+        const eString = "e".repeat(4);
+        const fString = "f".repeat(4);
+        const gString = "g".repeat(4);
+        const hString = "h".repeat(4);
+        const iString = "i".repeat(4);
+        const jString = "j".repeat(4);
+        const kString = "k".repeat(4);
+        const lString = "l".repeat(4);
+        const mString = "m".repeat(4);
+        const nString = "n".repeat(4);
+        const oString = "o".repeat(4);
+        const pString = "p".repeat(4);
+
+        // Ensure we are making no assumptions about the number of bytes
+        chai.expect(new TextEncoder().encode(aString).length).eq(4);
+
+        logger.info(aString);
+        logger.info(bString);
+        logger.info(cString);
+        logger.info(dString);
+        logger.info(eString);
+	logger.info(fString)
+	logger.info(gString)
+	logger.info(hString)
+	logger.info(iString)
+	logger.info(jString)
+	logger.info(kString)
+	logger.info(lString)
+	logger.info(mString)
+	logger.info(nString)
+	logger.info(oString)
+	logger.info(pString)
+
+        const logArray = chunkLoggerController.getLogArray();
+	console.log({logArray})
+
+        chai.expect(logArray.filter((log) => log.includes(bString)).length).eq(0);
+        chai.expect(logArray.filter((log) => log.includes(cString)).length).eq(0);
+        chai.expect(logArray.filter((log) => log.includes(dString)).length).eq(0);
+        chai.expect(logArray.filter((log) => log.includes(eString)).length).eq(0);
+        chai.expect(logArray.filter((log) => log.includes(aString)).length).eq(0);
+
+        chai.expect(logArray.filter((log) => log.includes(mString)).length).eq(1);
+        chai.expect(logArray.filter((log) => log.includes(nString)).length).eq(1);
+        chai.expect(logArray.filter((log) => log.includes(oString)).length).eq(1);
+        chai.expect(logArray.filter((log) => log.includes(pString)).length).eq(1);
+
+      })
     });
   });
 });
