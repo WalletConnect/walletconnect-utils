@@ -47,18 +47,15 @@ export default class CircularArray {
   }
 
   [Symbol.iterator](): Iterator<string> {
-    let count = 0;
-    let index = this.head;
-
+    let index = 0;
     
     const next = (): IteratorResult<string> => {
-      if (count >= this.array.length) {
+      if (index >= this.array.length) {
         return { done: true, value: null };
       }
 
-      const value = this.array[index % this.array.length];
-      index = (index + 1) % this.array.length;
-      count++;
+      const value = this.get(index)
+      index++;
 
       if(!value) {
         return next();
