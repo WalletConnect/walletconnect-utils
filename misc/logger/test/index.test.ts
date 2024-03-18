@@ -183,7 +183,7 @@ describe("Logger", () => {
         // `aString` and `bString` logs should have been knocked away in favor of eString
         chai.expect(logArray.filter((log) => log.includes(aString)).length).eq(0);
         chai.expect(logArray.filter((log) => log.includes(bString)).length).eq(0);
-      })
+      });
 
       it("Works when needing to iterate array head multiple times", () => {
         // An empty message would be logged like this:
