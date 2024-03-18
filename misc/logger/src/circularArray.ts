@@ -26,6 +26,7 @@ export default class CircularArray {
       const headItem = this.array[this.head];
       this.currentSizeInBytes -= this.calculateStringSize(headItem);
       insertIdx = this.head;
+      this.array[this.head] = '';
       this.head = (this.head + 1) % Math.max(this.array.length, 1); // Avoid modulo 0, was causing bugs
     }
 
@@ -49,17 +50,25 @@ export default class CircularArray {
     let count = 0;
     let index = this.head;
 
-    return {
-      next: (): IteratorResult<string> => {
-        if (count >= this.array.length) {
-          return { done: true, value: null };
-        }
+    
+    const next = (): IteratorResult<string> => {
+      if (count >= this.array.length) {
+        return { done: true, value: null };
+      }
 
-        const value = this.array[index % this.array.length];
-        index = (index + 1) % this.array.length;
-        count++;
-        return { done: false, value };
-      },
+      const value = this.array[index % this.array.length];
+      index = (index + 1) % this.array.length;
+      count++;
+
+      if(!value) {
+        return next();
+      }
+
+      return { done: false, value };
+    }
+
+    return {
+      next
     };
   }
 }
