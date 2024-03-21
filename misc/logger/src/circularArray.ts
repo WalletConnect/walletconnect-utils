@@ -46,6 +46,14 @@ export default class CircularArray {
     return this.array[(this.head + index) % this.array.length];
   }
 
+  public toOrderedArray() {
+    return Array.from(this);
+  }
+
+  public getRawArray() {
+    return this.array;
+  }
+
   [Symbol.iterator](): Iterator<string> {
     let index = 0;
 
