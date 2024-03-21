@@ -136,6 +136,13 @@ describe("Circular Array", () => {
       chai.expect(array.toOrderedArray()).deep.equal([bString, cString, dString, eString, fString]);
     })
 
+    it("Does not permit inserting item above limit", () => {
+      const array = new LinkedList(16);
+      const aString = "a".repeat(17)
 
+      const expectedError = `[LinkedList] Value too big to insert into list: ${aString} with size ${17}`
+
+      chai.expect(array.append.bind(array, aString)).throws(expectedError)
+    })
   })
 });

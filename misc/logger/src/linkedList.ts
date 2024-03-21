@@ -36,6 +36,10 @@ export default class LogLinkedList {
   public append(value: string): void {
     const newNode = new LogListNode(value);
 
+    if(newNode.size > this.maxSizeInBytes) {
+      throw new Error(`[LinkedList] Value too big to insert into list: ${value} with size ${newNode.size}`);
+    }
+
     while(this.size + newNode.size > this.maxSizeInBytes) {
       this.shift();
     }
