@@ -2,6 +2,14 @@ import pino, { Logger, LoggerOptions } from "pino";
 import { PINO_CUSTOM_CONTEXT_KEY, PINO_LOGGER_DEFAULTS } from "./constants";
 import ClientChunkLogger from "./clientChunkLogger";
 import ServerChunkLogger from "./serverChunkLogger";
+import BaseChunkLogger from "./baseChunkLogger";
+
+export interface ChunkLoggerController {
+  logsToBlob: BaseChunkLogger["logsToBlob"];
+  getLogArray: () => string[];
+  clearLogs: () => void;
+  downloadLogsBlobInBrowser?: ClientChunkLogger["downloadLogsBlobInBrowser"];
+}
 
 export function getDefaultLoggerOptions(opts?: LoggerOptions): LoggerOptions {
   return {
@@ -91,4 +99,25 @@ export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: L
   );
 
   return { logger, chunkLoggerController: serverLogger };
+}
+
+export function getPlatformLogger(params: {
+  maxSizeInBytes?: number;
+  opts?: LoggerOptions;
+  loggerOverride: string | Logger<any>;
+}): {
+  logger: Logger<any>;
+  chunkLoggerController: ChunkLoggerController | null;
+} {
+  if (typeof params.loggerOverride !== "undefined" && typeof params.loggerOverride !== "string") {
+    return {
+      logger: params.loggerOverride,
+      chunkLoggerController: null,
+    };
+  }
+  if (typeof window !== "undefined") {
+    return generateServerLogger(params);
+  } else {
+    return generateClientLogger(params);
+  }
 }

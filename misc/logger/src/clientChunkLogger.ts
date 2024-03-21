@@ -10,15 +10,6 @@ export default class ClientChunkLogger {
     MAX_LOG_SIZE_IN_BYTES: number = MAX_LOG_SIZE_IN_BYTES_DEFAULT,
   ) {
     this.baseChunkLogger = new BaseChunkLogger(level, MAX_LOG_SIZE_IN_BYTES);
-
-    // if (typeof window !== 'undefined') {
-    if (window) {
-      // @ts-ignore
-      window.downloadLogsBlob = (extraMetadata: Record<string, string>) => {
-        this.downloadLogsBlobInBrowser(extraMetadata ?? { clientId: "N/A" });
-        this.clearLogs();
-      };
-    }
   }
 
   public write(chunk: any): void {
