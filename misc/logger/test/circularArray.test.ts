@@ -1,12 +1,12 @@
 import "mocha";
 import * as chai from "chai";
 
-import CircularArray from "../src/circularArray";
+import CircularByteArray from "../src/circularByteArray";
 
 describe("Circular Array", () => {
   describe("Basic use case", () => {
     it("Able to insert items up to byte count", () => {
-	const array = new CircularArray(16);
+	const array = new CircularByteArray(16);
 	const aString = "a".repeat(4)
 	const bString = "b".repeat(4)
 	const cString = "c".repeat(4)
@@ -23,7 +23,7 @@ describe("Circular Array", () => {
     })
 
     it("Able to insert items less than byte count and return correct array", () => {
-	const array = new CircularArray(16);
+	const array = new CircularByteArray(16);
 	const aString = "a".repeat(4)
 	const bString = "b".repeat(4)
 
@@ -36,7 +36,7 @@ describe("Circular Array", () => {
     })
 
     it("Able to overwrite old items when going over max byte count", () => {
-	const array = new CircularArray(16);
+	const array = new CircularByteArray(16);
 	const aString = "a".repeat(4)
 	const bString = "b".repeat(4)
 	const cString = "c".repeat(4)
@@ -55,7 +55,7 @@ describe("Circular Array", () => {
     })
 
     it("Able to overwrite old items when going over max byte count and order correctly", () => {
-	const array = new CircularArray(16);
+	const array = new CircularByteArray(16);
 	const aString = "a".repeat(4)
 	const bString = "b".repeat(4)
 	const cString = "c".repeat(4)
@@ -74,7 +74,7 @@ describe("Circular Array", () => {
     })
 
     it("Is able to fully overwrite the array using new items", () => {
-	const array = new CircularArray(16);
+	const array = new CircularByteArray(16);
 	const aString = "a".repeat(4)
 	const bString = "b".repeat(4)
 	const cString = "c".repeat(4)
@@ -107,7 +107,7 @@ describe("Circular Array", () => {
 
   describe("Byte capacity enforcing", () => {
     it("Handles inserts of different sizes", () => {
-      const array = new CircularArray(16);
+      const array = new CircularByteArray(16);
       const aString = "a".repeat(4)
       const bString = "b".repeat(8)
       const cString = "c".repeat(4)
@@ -120,7 +120,7 @@ describe("Circular Array", () => {
     })
 
     it("Handles inserts of different sizes and overwrites correctly", () => {
-      const array = new CircularArray(16);
+      const array = new CircularByteArray(16);
       const aString = "a".repeat(4)
       const bString = "b".repeat(8)
       const cString = "c".repeat(4)
@@ -135,7 +135,7 @@ describe("Circular Array", () => {
     })
 
     it("Extends array length when appropiate via pushing new values", () => {
-      const array = new CircularArray(16);
+      const array = new CircularByteArray(16);
       const aString = "a".repeat(4)
       const bString = "b".repeat(4)
       const cString = "c".repeat(4)
@@ -158,6 +158,9 @@ describe("Circular Array", () => {
       array.enqueue(fString);
 
       chai.expect(array.getRawArray()).deep.equal([eString, bString, cString, dString, fString]);
+
+      chai.expect(array.getReadOrder()).deep.equal([1,2,3,0,4]);
+
       chai.expect(array.toOrderedArray()).deep.equal([bString, cString, dString, eString, fString]);
     })
 

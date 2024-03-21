@@ -1,10 +1,10 @@
 import { MAX_LOG_SIZE_IN_BYTES_DEFAULT } from "./constants";
 import type { LoggerOptions } from "pino";
 import { levels } from "pino";
-import CircularArray from "./circularArray";
+import CircularByteArray from "./circularByteArray";
 
 export default class BaseChunkLogger {
-  private logs: CircularArray;
+  private logs: CircularByteArray;
   private level: LoggerOptions["level"];
   private levelValue: number;
 
@@ -18,7 +18,7 @@ export default class BaseChunkLogger {
     this.levelValue = levels.values[this.level];
 
     this.MAX_LOG_SIZE_IN_BYTES = MAX_LOG_SIZE_IN_BYTES;
-    this.logs = new CircularArray(MAX_LOG_SIZE_IN_BYTES);
+    this.logs = new CircularByteArray(MAX_LOG_SIZE_IN_BYTES);
   }
 
   public forwardToConsole(chunk: any, level: number) {
@@ -60,7 +60,7 @@ export default class BaseChunkLogger {
   }
 
   public clearLogs() {
-    this.logs = new CircularArray(this.MAX_LOG_SIZE_IN_BYTES);
+    this.logs = new CircularByteArray(this.MAX_LOG_SIZE_IN_BYTES);
   }
 
   public getLogArray() {

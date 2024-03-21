@@ -1,5 +1,8 @@
-export default class CircularArray {
+import CircularLengthArray from './circularLengthArray'
+
+export default class CircularByteArray {
   private array: string[];
+  private order: CircularLengthArray;
   private head: number;
   private currentSizeInBytes: number;
   private capacityInBytes: number;
@@ -9,6 +12,7 @@ export default class CircularArray {
     this.currentSizeInBytes = 0;
     this.head = 0;
     this.array = [];
+    this.order = new CircularLengthArray(0);
   }
 
   private calculateStringSize(item: string): number {
@@ -30,11 +34,15 @@ export default class CircularArray {
       this.head = (this.head + 1) % Math.max(this.array.length, 1); // Avoid modulo 0, was causing bugs
     }
 
+
     if (insertIdx >= this.array.length) {
       this.array.push(item);
     } else {
       this.array[insertIdx] = item;
     }
+
+    this.appendReadOrder(insertIdx);
+
 
     this.currentSizeInBytes += itemSize;
   }
@@ -54,6 +62,10 @@ export default class CircularArray {
     return this.array;
   }
 
+  public getReadOrder() {
+    return this.order;
+  }
+
   [Symbol.iterator](): Iterator<string> {
     let index = 0;
 
@@ -62,7 +74,9 @@ export default class CircularArray {
         return { done: true, value: null };
       }
 
-      const value = this.get(index);
+      const idx = this.order.get(index);
+      const value = this.get(idx);
+
       index++;
 
       if (!value) {
@@ -75,5 +89,20 @@ export default class CircularArray {
     return {
       next,
     };
+  }
+
+  private appendReadOrder(idx: number) {
+    const orderSize = this.order.getSize();
+    if(orderSize === this.array.length) {
+
+      this.order.enqueue(idx);
+    }
+    else if(orderSize < this.array.length) {
+      this.order.enlargeWithItem(idx);
+    }
+    else {
+      this.order.shortenWithItem(idx);
+
+    }
   }
 }
