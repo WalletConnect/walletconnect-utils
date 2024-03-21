@@ -18,7 +18,7 @@ export default class BaseChunkLogger {
     this.levelValue = levels.values[this.level];
 
     this.MAX_LOG_SIZE_IN_BYTES = MAX_LOG_SIZE_IN_BYTES;
-    this.logs = new LinkedList(this.MAX_LOG_SIZE_IN_BYTES)
+    this.logs = new LinkedList(this.MAX_LOG_SIZE_IN_BYTES);
   }
 
   public forwardToConsole(chunk: any, level: number) {
@@ -41,7 +41,6 @@ export default class BaseChunkLogger {
   }
 
   public appendToLogs(chunk: any) {
-
     this.logs.append(
       JSON.stringify({
         timestamp: new Date().toISOString(),
@@ -54,7 +53,6 @@ export default class BaseChunkLogger {
     if (level >= this.levelValue) {
       this.forwardToConsole(chunk, level);
     }
-
   }
 
   public getLogs() {

@@ -36,11 +36,13 @@ export default class LogLinkedList {
   public append(value: string): void {
     const newNode = new LogListNode(value);
 
-    if(newNode.size > this.maxSizeInBytes) {
-      throw new Error(`[LinkedList] Value too big to insert into list: ${value} with size ${newNode.size}`);
+    if (newNode.size > this.maxSizeInBytes) {
+      throw new Error(
+        `[LinkedList] Value too big to insert into list: ${value} with size ${newNode.size}`,
+      );
     }
 
-    while(this.size + newNode.size > this.maxSizeInBytes) {
+    while (this.size + newNode.size > this.maxSizeInBytes) {
       this.shift();
     }
 
@@ -92,23 +94,23 @@ export default class LogLinkedList {
   }
 
   public toOrderedArray() {
-    return Array.from(this)
+    return Array.from(this);
   }
 
   [Symbol.iterator](): Iterator<string> {
-    let node = this.head
+    let node = this.head;
 
     const next = (): IteratorResult<string> => {
-      if(!node) {
-	return { done: true, value: null }
+      if (!node) {
+        return { done: true, value: null };
       }
 
       const value = node.value;
       node = node.next;
 
-      return { done: false, value: value }
-    }
+      return { done: false, value };
+    };
 
-    return { next }
+    return { next };
   }
 }
