@@ -1,10 +1,10 @@
 import { MAX_LOG_SIZE_IN_BYTES_DEFAULT } from "./constants";
 import type { LoggerOptions } from "pino";
 import { levels } from "pino";
-import CircularByteArray from "./circularByteArray";
+import LinkedList from "./linkedList";
 
 export default class BaseChunkLogger {
-  private logs: CircularByteArray;
+  private logs: LinkedList;
   private level: LoggerOptions["level"];
   private levelValue: number;
 
@@ -18,7 +18,7 @@ export default class BaseChunkLogger {
     this.levelValue = levels.values[this.level];
 
     this.MAX_LOG_SIZE_IN_BYTES = MAX_LOG_SIZE_IN_BYTES;
-    this.logs = new CircularByteArray(MAX_LOG_SIZE_IN_BYTES);
+    this.logs = new LinkedList(this.MAX_LOG_SIZE_IN_BYTES)
   }
 
   public forwardToConsole(chunk: any, level: number) {
@@ -41,7 +41,8 @@ export default class BaseChunkLogger {
   }
 
   public appendToLogs(chunk: any) {
-    this.logs.enqueue(
+
+    this.logs.append(
       JSON.stringify({
         timestamp: new Date().toISOString(),
         log: chunk,
@@ -53,6 +54,7 @@ export default class BaseChunkLogger {
     if (level >= this.levelValue) {
       this.forwardToConsole(chunk, level);
     }
+
   }
 
   public getLogs() {
@@ -60,7 +62,7 @@ export default class BaseChunkLogger {
   }
 
   public clearLogs() {
-    this.logs = new CircularByteArray(this.MAX_LOG_SIZE_IN_BYTES);
+    this.logs = new LinkedList(this.MAX_LOG_SIZE_IN_BYTES);
   }
 
   public getLogArray() {
@@ -68,7 +70,7 @@ export default class BaseChunkLogger {
   }
 
   public logsToBlob(extraMetadata: Record<string, string>) {
-    this.logs.enqueue(JSON.stringify({ extraMetadata }));
+    this.logs.append(JSON.stringify({ extraMetadata }));
     const blob = new Blob(this.getLogArray(), { type: "application/json" });
     return blob;
   }
