@@ -101,10 +101,10 @@ export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: L
   return { logger, chunkLoggerController: serverLogger };
 }
 
-export function getPlatformLogger(params: {
+export function generatePlatformLogger(params: {
   maxSizeInBytes?: number;
   opts?: LoggerOptions;
-  loggerOverride: string | Logger<any>;
+  loggerOverride?: string | Logger<any>;
 }): {
   logger: Logger<any>;
   chunkLoggerController: ChunkLoggerController | null;
