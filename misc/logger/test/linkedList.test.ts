@@ -144,5 +144,27 @@ describe("Circular Array", () => {
 
       chai.expect(array.append.bind(array, aString)).throws(expectedError);
     });
+
+    it("Measure of performance", () => {
+      const oneMillionBytes = 1024 * 1000;
+      const baseItemSize = 20;
+      const array = new LinkedList(oneMillionBytes);
+      let insertedItemsCount = 0;
+      let totalInsertionTime = 0;
+      for(let i = 0; i < oneMillionBytes / baseItemSize; ++i) {
+	const byteSize = Math.floor(baseItemSize + (Math.random() * 200))
+	const insertionStartTime = performance.now();
+	array.append('a'.repeat(byteSize))
+	totalInsertionTime += performance.now() - insertionStartTime;
+	insertedItemsCount++;
+      }
+      console.log(`It took ${totalInsertionTime}ms to insert ${insertedItemsCount} items`)
+
+      const toArrayStartTime = performance.now();
+      const orderedArray = array.toOrderedArray();
+      const toArrayElapsedTime = performance.now() - toArrayStartTime;
+
+      console.log(`It took ${toArrayElapsedTime}ms to create the ordered array of len ${orderedArray.length}`)
+    })
   });
 });
