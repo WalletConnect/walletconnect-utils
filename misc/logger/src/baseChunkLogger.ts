@@ -2,6 +2,7 @@ import { MAX_LOG_SIZE_IN_BYTES_DEFAULT } from "./constants";
 import type { LoggerOptions } from "pino";
 import { levels } from "pino";
 import LinkedList from "./linkedList";
+import { safeJsonStringify } from "@walletconnect/safe-json";
 
 export default class BaseChunkLogger {
   private logs: LinkedList;
@@ -42,7 +43,7 @@ export default class BaseChunkLogger {
 
   public appendToLogs(chunk: any) {
     this.logs.append(
-      JSON.stringify({
+      safeJsonStringify({
         timestamp: new Date().toISOString(),
         log: chunk,
       }),
@@ -69,7 +70,7 @@ export default class BaseChunkLogger {
 
   public logsToBlob(extraMetadata: Record<string, string>) {
     const logArray = this.getLogArray();
-    logArray.push(JSON.stringify({ extraMetadata }));
+    logArray.push(safeJsonStringify({ extraMetadata }));
     const blob = new Blob(logArray, { type: "application/json" });
     return blob;
   }

@@ -115,6 +115,7 @@ export function generatePlatformLogger(params: {
       chunkLoggerController: null,
     };
   }
+
   if (typeof window !== "undefined") {
     return generateClientLogger(params);
   } else {
