@@ -116,8 +116,8 @@ export function generatePlatformLogger(params: {
     };
   }
   if (typeof window !== "undefined") {
-    return generateServerLogger(params);
-  } else {
     return generateClientLogger(params);
+  } else {
+    return generateServerLogger(params);
   }
 }
