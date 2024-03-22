@@ -68,8 +68,8 @@ export default class BaseChunkLogger {
   }
 
   public logsToBlob(extraMetadata: Record<string, string>) {
-    const logArray = this.getLogArray()
-    logArray.push(JSON.stringify({ extraMetadata }))
+    const logArray = this.getLogArray();
+    logArray.push(JSON.stringify({ extraMetadata }));
     const blob = new Blob(logArray, { type: "application/json" });
     return blob;
   }
