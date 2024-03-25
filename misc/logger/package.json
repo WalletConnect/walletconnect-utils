@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/logger",
   "description": "Logger Utils",
-  "version": "2.1.0-27c6d93",
+  "version": "2.0.1",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
