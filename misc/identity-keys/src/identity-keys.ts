@@ -59,7 +59,7 @@ export class IdentityKeys implements IIdentityKeys {
   }: {
     domain: string
     recapObject: {
-      att: Record<string,any>
+      att: Record<string, Record<string, Record<string, any>[]>
     }
   }) {
     const encodedRecap = objectToHex(recapObject);
