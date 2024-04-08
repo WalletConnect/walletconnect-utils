@@ -1,5 +1,11 @@
 # @walletconnect/logger
 
+## 2.1.2
+
+### Patch Changes
+
+- Fix build bug caused by depending on stream
+
 ## 2.1.1
 
 ### Patch Changes

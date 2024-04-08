@@ -1,27 +1,19 @@
 import { MAX_LOG_SIZE_IN_BYTES_DEFAULT } from "./constants";
-import { Writable } from "stream";
-import type { LoggerOptions } from "pino";
+import type { DestinationStream, LoggerOptions } from "pino";
 import BaseChunkLogger from "./baseChunkLogger";
 
-export default class ServerChunkLogger extends Writable {
+export default class ServerChunkLogger implements DestinationStream {
   private baseChunkLogger: BaseChunkLogger;
 
   public constructor(
     level: LoggerOptions["level"],
     MAX_LOG_SIZE_IN_BYTES: number = MAX_LOG_SIZE_IN_BYTES_DEFAULT,
   ) {
-    super({ objectMode: true });
-
     this.baseChunkLogger = new BaseChunkLogger(level, MAX_LOG_SIZE_IN_BYTES);
   }
 
-  public _write(chunk: any, _encoding: string, callback: (error?: Error | null) => void): void {
-    try {
-      this.baseChunkLogger.appendToLogs(chunk);
-      callback();
-    } catch (error: any) {
-      callback(error);
-    }
+  public write(chunk: any): void {
+    this.baseChunkLogger.appendToLogs(chunk);
   }
 
   public getLogs() {
