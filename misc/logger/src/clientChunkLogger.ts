@@ -36,7 +36,7 @@ export default class ClientChunkLogger {
     const url = URL.createObjectURL(this.logsToBlob(extraMetadata));
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `w3i-logs-${new Date().toISOString()}.txt`;
+    anchor.download = `walletconnect-logs-${new Date().toISOString()}.txt`;
     document.body.appendChild(anchor);
     anchor.click();
     document.body.removeChild(anchor);
