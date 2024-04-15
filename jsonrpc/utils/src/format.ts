@@ -3,41 +3,34 @@ import { INTERNAL_ERROR, SERVER_ERROR } from "./constants";
 import { ErrorResponse, JsonRpcError, JsonRpcRequest, JsonRpcResult } from "./types";
 
 class IncrementalRandomGenerator {
-  private typedArray: Uint8Array | Uint16Array | Uint32Array;
-  private shift: number;
-  private base = 1;
-
-  static getBitsOf(typedArray: Uint8Array | Uint16Array | Uint32Array) {
-    if (!typedArray.length) {
-      throw new Error("Empty typed array");
-    }
-    return (typedArray.byteLength / typedArray.length) * 8;
-  }
+  private initialValue: number;
+  private i = 1;
 
   constructor(bits: 8 | 16 | 32) {
-    this.typedArray =
+    const typedArray =
       bits === 8 ? new Uint8Array(1) : bits === 16 ? new Uint16Array(1) : new Uint32Array(1);
-    this.shift = IncrementalRandomGenerator.getBitsOf(this.typedArray);
+    this.initialValue = crypto.getRandomValues(typedArray)[0];
   }
 
-  getRandomValue() {
-    return (this.base++ << this.shift) + crypto.getRandomValues(this.typedArray)[0];
+  getNextValue() {
+    return this.initialValue + this.i++;
   }
 }
 
 const uint8Generator = new IncrementalRandomGenerator(8);
-const uint16Generator = new IncrementalRandomGenerator(16);
+const uint32Generator = new IncrementalRandomGenerator(32);
 
-export function payloadId(entropy = 3): number {
-  const generator = entropy > 3 ? uint16Generator : uint8Generator;
-  const shift = entropy > 3 ? 10000 : 1000000;
-  const date = Date.now() * Math.pow(10, shift);
-  const extra = generator.getRandomValue();
+export function payloadId(): number {
+  const now = Date.now();
+  const date = now * 1000;
+  const extra = uint8Generator.getNextValue();
   return date + extra;
 }
 
-export function getBigIntRpcId(entropy = 6): bigint {
-  return BigInt(payloadId(entropy));
+export function getBigIntRpcId(): bigint {
+  const date = BigInt(Date.now()) * BigInt(10000000000);
+  const extra = BigInt(uint32Generator.getNextValue());
+  return date + extra;
 }
 
 export function formatJsonRpcRequest<T = any>(
