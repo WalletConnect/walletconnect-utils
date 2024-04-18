@@ -7,6 +7,7 @@ export declare namespace RelayJsonRpc {
     subscription: string;
     unsubscribe: string;
     batchUnsubscribe: string;
+    batchFetchMessages?: string;
   }
 
   export interface SubscribeParams {

@@ -18,6 +18,7 @@ export const RELAY_JSONRPC: { [protocol: string]: RelayJsonRpc.Methods } = {
     subscription: "irn_subscription",
     unsubscribe: "irn_unsubscribe",
     batchUnsubscribe: "irn_batchUnsubscribe",
+    batchFetchMessages: "irn_batchFetchMessages",
   },
   iridium: {
     publish: "iridium_publish",
