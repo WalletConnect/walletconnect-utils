@@ -68,7 +68,7 @@ export class IdentityKeys implements IIdentityKeys {
     const { privKeyHex, pubKeyHex, privateKey } = await this.generateIdentityKey();
     const didKey = encodeEd25519Key(privKeyHex);
 
-    const uri = `${domain}?walletconnect_identity_token=${didKey}`
+    const uri = `${domain}?walletconnect_identity_key=${didKey}`
 
     const cacaoPayload = {
       aud: encodeEd25519Key(pubKeyHex),
