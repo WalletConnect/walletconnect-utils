@@ -100,7 +100,7 @@ describe("@walletconnect/jsonrpc-ws-connection", () => {
       await new Promise<void>(async (resolve) => {
         conn.once("close", (event: CloseEvent) => {
           chai.expect(event.code).to.equal(3000);
-          chai.expect(event.reason).to.equal("Authorization error: Project ID is missing");
+          chai.expect(event.reason).to.equal("Project ID is missing");
           resolve();
         });
         await conn.open();

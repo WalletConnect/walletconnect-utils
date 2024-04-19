@@ -9,6 +9,7 @@ export const RELAY_JSONRPC: { [protocol: string]: RelayJsonRpc.Methods } = {
     subscription: "waku_subscription",
     unsubscribe: "waku_unsubscribe",
     batchUnsubscribe: "waku_batchUnsubscribe",
+    batchFetchMessages: "waku_batchFetchMessages",
   },
   irn: {
     publish: "irn_publish",
@@ -18,6 +19,7 @@ export const RELAY_JSONRPC: { [protocol: string]: RelayJsonRpc.Methods } = {
     subscription: "irn_subscription",
     unsubscribe: "irn_unsubscribe",
     batchUnsubscribe: "irn_batchUnsubscribe",
+    batchFetchMessages: "irn_batchFetchMessages",
   },
   iridium: {
     publish: "iridium_publish",
@@ -27,5 +29,6 @@ export const RELAY_JSONRPC: { [protocol: string]: RelayJsonRpc.Methods } = {
     subscription: "iridium_subscription",
     unsubscribe: "iridium_unsubscribe",
     batchUnsubscribe: "iridium_batchUnsubscribe",
+    batchFetchMessages: "iridium_batchFetchMessages",
   },
 };
