@@ -65,13 +65,13 @@ export class IdentityKeys implements IIdentityKeys {
     const encodedRecap = objectToHex(recapObject);
     const authRecap = `urn:recap:${encodedRecap}`
 
-    const { privKeyHex, pubKeyHex, privateKey } = await this.generateIdentityKey();
+    const { privKeyHex, privateKey } = await this.generateIdentityKey();
     const didKey = encodeEd25519Key(privKeyHex);
 
     const uri = `${domain}?walletconnect_identity_key=${didKey}`
 
     const cacaoPayload = {
-      aud: encodeEd25519Key(pubKeyHex),
+      aud: uri,
       statement: null,
       domain,
       uri,
