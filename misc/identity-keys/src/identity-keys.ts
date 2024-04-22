@@ -65,8 +65,8 @@ export class IdentityKeys implements IIdentityKeys {
     const encodedRecap = objectToHex(recapObject);
     const authRecap = `urn:recap:${encodedRecap}`
 
-    const { privKeyHex, privateKey } = await this.generateIdentityKey();
-    const didKey = encodeEd25519Key(privKeyHex);
+    const { pubKeyHex, privateKey } = await this.generateIdentityKey();
+    const didKey = encodeEd25519Key(pubKeyHex);
 
     const uri = `https://${domain}?walletconnect_identity_key=${didKey}`
 
