@@ -1,5 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
-import { Cacao, verifySignature } from "@walletconnect/cacao";
+import { Cacao, CacaoPayload, verifySignature } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
   JwtPayload,
@@ -70,11 +70,11 @@ export class IdentityKeys implements IIdentityKeys {
 
     const uri = `https://${domain}?walletconnect_identity_key=${didKey}`
 
-    const cacaoPayload = {
+    const cacaoPayload: Omit<CacaoPayload, 'iss'> & { uri: string } = {
       aud: uri,
-      statement: null,
-      domain,
       uri,
+      statement: undefined,
+      domain,
       nonce: generateRandomBytes32(),
       iat: new Date().toISOString(),
       version: "1",
