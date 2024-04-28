@@ -21,8 +21,7 @@ const uint8Generator = new IncrementalRandomGenerator(8);
 const uint32Generator = new IncrementalRandomGenerator(32);
 
 export function payloadId(): number {
-  const now = Date.now();
-  const date = now * 1000;
+  const date = Date.now() * 1000;
   const extra = uint8Generator.getNextValue();
   return date + extra;
 }

@@ -60,11 +60,9 @@ describe("Payload Id", () => {
   it("generates non-repeating values when called within same tick", () => {
     let i = 0;
     while (i++ < 10000) {
-      const value1 = payloadId();
-      const value2 = payloadId();
-      const value3 = payloadId();
-      const value4 = payloadId();
-      if (value1 === value2 || value2 === value3 || value3 === value4) {
+      const values = [payloadId(), payloadId(), payloadId(), payloadId()];
+      const set = new Set(values);
+      if (set.size !== values.length) {
         chai.assert.fail("Not unique values");
       }
     }
@@ -99,11 +97,9 @@ describe("Get BigInt Rpc Id", () => {
   it("generates non-repeating values when called within same tick", () => {
     let i = 0;
     while (i++ < 10000) {
-      const value1 = getBigIntRpcId();
-      const value2 = getBigIntRpcId();
-      const value3 = getBigIntRpcId();
-      const value4 = getBigIntRpcId();
-      if (value1 === value2 || value2 === value3 || value3 === value4) {
+      const values = [getBigIntRpcId(), getBigIntRpcId(), getBigIntRpcId(), getBigIntRpcId()];
+      const set = new Set(values);
+      if (set.size !== values.length) {
         chai.assert.fail("Not unique values");
       }
     }
