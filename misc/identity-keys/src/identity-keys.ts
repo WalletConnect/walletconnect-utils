@@ -53,7 +53,7 @@ export class IdentityKeys implements IIdentityKeys {
     return this.identityKeys.keys.includes(account);
   }
 
-  public async prepareRegistrationViaRecaps({
+  public async prepareRegistrationWithRecaps({
     domain,
     recapObject,
   }: {
