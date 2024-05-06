@@ -1,5 +1,11 @@
 # @walletconnect/identity-keys
 
+## 2.1.0
+
+### Minor Changes
+
+- Add support for recaps registration
+
 ## 2.0.1
 
 ### Patch Changes

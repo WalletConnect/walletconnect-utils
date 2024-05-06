@@ -1,5 +1,5 @@
 import * as ed25519 from "@noble/ed25519";
-import { Cacao, verifySignature } from "@walletconnect/cacao";
+import { Cacao, CacaoPayload, verifySignature } from "@walletconnect/cacao";
 import { Store } from "@walletconnect/core";
 import {
   JwtPayload,
@@ -7,6 +7,7 @@ import {
   encodeEd25519Key,
   generateJWT,
   jwtExp,
+  objectToHex,
 } from "@walletconnect/did-jwt";
 import { ICore, IStore } from "@walletconnect/types";
 import { formatMessage, generateRandomBytes32 } from "@walletconnect/utils";
@@ -50,6 +51,40 @@ export class IdentityKeys implements IIdentityKeys {
 
   public isRegistered(account: string) {
     return this.identityKeys.keys.includes(account);
+  }
+
+  public async prepareRegistrationWithRecaps({
+    domain,
+    recapObject,
+  }: {
+    domain: string;
+    recapObject: {
+      att: Record<string, Record<string, Record<string, any>[]>>;
+    };
+  }) {
+    const encodedRecap = objectToHex(recapObject);
+    const authRecap = `urn:recap:${encodedRecap}`;
+
+    const { pubKeyHex, privateKey } = await this.generateIdentityKey();
+    const didKey = encodeEd25519Key(pubKeyHex);
+
+    const uri = `https://${domain}?walletconnect_identity_key=${didKey}`;
+
+    const cacaoPayload: Omit<CacaoPayload, "iss"> & { uri: string } = {
+      aud: uri,
+      uri,
+      statement: undefined,
+      domain,
+      nonce: generateRandomBytes32(),
+      iat: new Date().toISOString(),
+      version: "1",
+      resources: [this.keyserverUrl, authRecap],
+    };
+
+    return {
+      cacaoPayload,
+      privateIdentityKey: privateKey,
+    };
   }
 
   public async prepareRegistration({
