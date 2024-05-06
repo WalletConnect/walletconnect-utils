@@ -45,7 +45,6 @@
     "format": "prettier --config ../../.prettierrc --write {src,test}/**/*.ts"
   },
   "dependencies": {
-    "events": "^3.3.0",
     "keyvaluestorage-interface": "^1.0.0"
   },
   "devDependencies": {
