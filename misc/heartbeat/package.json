@@ -45,7 +45,8 @@
   },
   "dependencies": {
     "@walletconnect/events": "^1.0.1",
-    "@walletconnect/time": "^1.0.2"
+    "@walletconnect/time": "^1.0.2",
+    "events": "^3.3.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
