@@ -15,7 +15,6 @@ jobs:
           - misc/keyvaluestorage
           - misc/time
           - misc/heartbeat
-          - misc/history
           - misc/environment
           - misc/cacao
           - misc/identity-keys
