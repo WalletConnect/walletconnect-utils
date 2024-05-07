@@ -1,6 +1,6 @@
 {
   "name": "@walletconnect/history",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Utilities for communicating with history server",
   "keywords": [
     "history",
@@ -42,7 +42,6 @@
   "devDependencies": {
     "@walletconnect/core": "^2.10.1",
     "@walletconnect/events": "^1.0.1",
-    "@walletconnect/heartbeat": "1.2.1",
     "@walletconnect/jsonrpc-utils": "^1.0.7",
     "@walletconnect/jsonrpc-types": "^1.0.3",
     "@walletconnect/jsonrpc-provider": "^1.0.13",
