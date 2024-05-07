@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/jsonrpc-provider",
   "description": "Provider for JSON-RPC",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
