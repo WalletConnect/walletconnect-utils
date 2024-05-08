@@ -2,14 +2,34 @@ import { getError, getErrorByCode, isReservedErrorCode } from "./error";
 import { INTERNAL_ERROR, SERVER_ERROR } from "./constants";
 import { ErrorResponse, JsonRpcError, JsonRpcRequest, JsonRpcResult } from "./types";
 
-export function payloadId(entropy = 3): number {
-  const date = Date.now() * Math.pow(10, entropy);
-  const extra = Math.floor(Math.random() * Math.pow(10, entropy));
+class IncrementalRandomGenerator {
+  private initialValue: number;
+  private i = 1;
+
+  constructor(bits: 8 | 16 | 32) {
+    const typedArray =
+      bits === 8 ? new Uint8Array(1) : bits === 16 ? new Uint16Array(1) : new Uint32Array(1);
+    this.initialValue = crypto.getRandomValues(typedArray)[0];
+  }
+
+  getNextValue() {
+    return this.initialValue + this.i++;
+  }
+}
+
+const uint8Generator = new IncrementalRandomGenerator(8);
+const uint16Generator = new IncrementalRandomGenerator(16);
+
+export function payloadId(): number {
+  const date = Date.now() * 1000;
+  const extra = uint8Generator.getNextValue();
   return date + extra;
 }
 
-export function getBigIntRpcId(entropy = 6): bigint {
-  return BigInt(payloadId(entropy));
+export function getBigIntRpcId(): bigint {
+  const date = BigInt(Date.now()) * BigInt(1000000);
+  const extra = BigInt(uint16Generator.getNextValue());
+  return date + extra;
 }
 
 export function formatJsonRpcRequest<T = any>(
