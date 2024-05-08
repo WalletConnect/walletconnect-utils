@@ -18,7 +18,7 @@ class IncrementalRandomGenerator {
 }
 
 const uint8Generator = new IncrementalRandomGenerator(8);
-const uint32Generator = new IncrementalRandomGenerator(32);
+const uint16Generator = new IncrementalRandomGenerator(16);
 
 export function payloadId(): number {
   const date = Date.now() * 1000;
@@ -27,8 +27,8 @@ export function payloadId(): number {
 }
 
 export function getBigIntRpcId(): bigint {
-  const date = BigInt(Date.now()) * BigInt(10000000000);
-  const extra = BigInt(uint32Generator.getNextValue());
+  const date = BigInt(Date.now()) * BigInt(1000000);
+  const extra = BigInt(uint16Generator.getNextValue());
   return date + extra;
 }
 

@@ -76,8 +76,8 @@ describe("Get BigInt Rpc Id", () => {
     chai.expect(typeof value === "bigint").to.be.true;
   });
 
-  it("returns a bigint with 23 digits", () => {
-    chai.expect(getBigIntRpcId().toString().length).to.equal(23);
+  it("returns a bigint with 19 digits", () => {
+    chai.expect(getBigIntRpcId().toString().length).to.equal(19);
   });
 
   it("generates increasing values when called within same tick", () => {
