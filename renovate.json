@@ -8,6 +8,7 @@
     ":semanticCommitScope(deps)"
   ],
   "updateInternalDeps": true,
+  "postUpdateOptions": ["npmDedupe"],
   "packageRules": [
     {
       "matchPackagePatterns": ["*"],
