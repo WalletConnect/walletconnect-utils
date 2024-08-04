@@ -48,14 +48,15 @@
     "did-jwt": "^6.1.2",
     "did-resolver": "^3.2.2",
     "key-did-resolver": "^2.0.4",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "webpack": "5.93.0",
+    "webpack-cli": "5.1.4"
   },
   "dependencies": {
     "@noble/curves": "1.4.2",
     "@noble/hashes": "1.4.0",
     "@walletconnect/safe-json": "^1.0.1",
     "@walletconnect/time": "^1.0.2",
+    "mocha": "10.7.0",
     "uint8arrays": "^3.0.0"
   }
 }

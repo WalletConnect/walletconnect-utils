@@ -1,7 +1,5 @@
-import crypto from "crypto";
-import { bufferToArray } from "@walletconnect/encoding";
+import { randomBytes as rb } from "@noble/hashes/utils";
 
 export function randomBytes(length: number): Uint8Array {
-  const buf = crypto.randomBytes(length);
-  return bufferToArray(buf);
+  return rb(length);
 }
