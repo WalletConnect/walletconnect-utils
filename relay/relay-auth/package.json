@@ -52,8 +52,8 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "@stablelib/ed25519": "^1.0.2",
-    "@stablelib/random": "^1.0.1",
+    "@noble/curves": "1.4.2",
+    "@noble/hashes": "1.4.0",
     "@walletconnect/safe-json": "^1.0.1",
     "@walletconnect/time": "^1.0.2",
     "uint8arrays": "^3.0.0"

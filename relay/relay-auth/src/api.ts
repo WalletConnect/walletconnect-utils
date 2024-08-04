@@ -1,21 +1,32 @@
-import * as ed25519 from "@stablelib/ed25519";
-import { randomBytes } from "@stablelib/random";
+import { ed25519 } from "@noble/curves/ed25519";
+import { randomBytes } from "@noble/hashes/utils";
 import { fromMiliseconds } from "@walletconnect/time";
 import { JWT_IRIDIUM_ALG, JWT_IRIDIUM_TYP, KEY_PAIR_SEED_LENGTH } from "./constants";
 
 import { decodeIss, decodeJWT, encodeData, encodeIss, encodeJWT } from "./utils";
+import { concat } from "uint8arrays/concat";
+
+export interface Keypair {
+  secretKey: Uint8Array;
+  publicKey: Uint8Array;
+}
 
 export function generateKeyPair(
   seed: Uint8Array = randomBytes(KEY_PAIR_SEED_LENGTH),
-): ed25519.KeyPair {
-  return ed25519.generateKeyPairFromSeed(seed);
+): Keypair {
+  const publicKey = ed25519.getPublicKey(seed);
+  const secretKey = concat([seed, publicKey])
+  return {
+    secretKey: secretKey,
+    publicKey: publicKey
+  };
 }
 
 export async function signJWT(
   sub: string,
   aud: string,
   ttl: number,
-  keyPair: ed25519.KeyPair,
+  keyPair: Keypair,
   iat: number = fromMiliseconds(Date.now()),
 ) {
   const header = { alg: JWT_IRIDIUM_ALG, typ: JWT_IRIDIUM_TYP };
@@ -23,7 +34,7 @@ export async function signJWT(
   const exp = iat + ttl;
   const payload = { iss, sub, aud, iat, exp };
   const data = encodeData({ header, payload });
-  const signature = ed25519.sign(keyPair.secretKey, data);
+  const signature = ed25519.sign(data, keyPair.secretKey.slice(0, 32));
   return encodeJWT({ header, payload, signature });
 }
 
@@ -33,5 +44,5 @@ export async function verifyJWT(jwt: string) {
     throw new Error("JWT must use EdDSA algorithm");
   }
   const publicKey = decodeIss(payload.iss);
-  return ed25519.verify(publicKey, data, signature);
+  return ed25519.verify(signature, data, publicKey);
 }
