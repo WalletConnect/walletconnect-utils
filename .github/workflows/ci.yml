@@ -65,4 +65,4 @@ jobs:
       - name: Test
         run: npm run test -- --filter=./${{ matrix.test-prefix }}
         env:
-          TEST_PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}
+          TEST_PROJECT_ID: "9acf8177401b786e74ffb6cbd5ac11fe"
