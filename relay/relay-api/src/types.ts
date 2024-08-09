@@ -32,6 +32,7 @@ export declare namespace RelayJsonRpc {
     ttl: number;
     prompt?: boolean;
     tag?: number;
+    attestation?: string;
   }
 
   export interface BatchPublishParams {
@@ -42,6 +43,7 @@ export declare namespace RelayJsonRpc {
     topic: string;
     message: string;
     publishedAt: number;
+    attestation?: string;
   }
 
   export interface SubscriptionParams {

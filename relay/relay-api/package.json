@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/relay-api",
   "description": "Relay JSON-RPC API",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
