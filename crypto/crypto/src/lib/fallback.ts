@@ -1,54 +1,33 @@
-import aesJs from "aes-js";
-import { hexToArray } from "@walletconnect/encoding";
-import * as hash from "hash.js";
-
-import { HEX_ENC, SHA256_NODE_ALGO, SHA512_NODE_ALGO } from "../constants";
-import { pkcs7 } from "../helpers";
+import { cbc } from "@noble/ciphers/aes";
+import { hmac } from "@noble/hashes/hmac";
+import { sha256 } from "@noble/hashes/sha256";
+import { sha512 } from "@noble/hashes/sha512";
+import { ripemd160 } from "@noble/hashes/ripemd160";
 
 export function fallbackAesEncrypt(iv: Uint8Array, key: Uint8Array, data: Uint8Array) {
-  // eslint-disable-next-line new-cap
-  const aesCbc = new aesJs.ModeOfOperation.cbc(key, iv);
-  const padded = pkcs7.pad(data);
-  const encryptedBytes = aesCbc.encrypt(padded);
-  return new Uint8Array(encryptedBytes);
+  return cbc(key, iv).encrypt(data);
 }
 
 export function fallbackAesDecrypt(iv: Uint8Array, key: Uint8Array, data: Uint8Array) {
-  // eslint-disable-next-line new-cap
-  const aesCbc = new aesJs.ModeOfOperation.cbc(key, iv);
-  const encryptedBytes = aesCbc.decrypt(data);
-  const padded = new Uint8Array(encryptedBytes);
-  const result = pkcs7.unpad(padded);
-  return result;
+  return cbc(key, iv).decrypt(data);
 }
 
 export function fallbackHmacSha256Sign(key: Uint8Array, data: Uint8Array): Uint8Array {
-  const result = hash
-    .hmac((hash as any)[SHA256_NODE_ALGO], key)
-    .update(data)
-    .digest(HEX_ENC);
-  return hexToArray(result);
+  return hmac(sha256, key, data);
 }
 
 export function fallbackHmacSha512Sign(key: Uint8Array, data: Uint8Array): Uint8Array {
-  const result = hash
-    .hmac((hash as any)[SHA512_NODE_ALGO], key)
-    .update(data)
-    .digest(HEX_ENC);
-  return hexToArray(result);
+  return hmac(sha512, key, data);
 }
 
 export function fallbackSha256(msg: Uint8Array): Uint8Array {
-  const result = hash.sha256().update(msg).digest(HEX_ENC);
-  return hexToArray(result);
+  return sha256(msg);
 }
 
 export function fallbackSha512(msg: Uint8Array): Uint8Array {
-  const result = hash.sha512().update(msg).digest(HEX_ENC);
-  return hexToArray(result);
+  return sha512(msg);
 }
 
 export function fallbackRipemd160(msg: Uint8Array): Uint8Array {
-  const result = hash.ripemd160().update(msg).digest(HEX_ENC);
-  return hexToArray(result);
+  return ripemd160(msg);
 }
