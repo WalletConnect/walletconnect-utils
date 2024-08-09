@@ -35,7 +35,7 @@ const formatRelayUrl = async () => {
     version: 2,
     sdkVersion: version,
     relayUrl: RELAY_URL,
-    projectId: "3cbaa32f8fbf3cdcc87d27ca1fa68069",
+    projectId: "9acf8177401b786e74ffb6cbd5ac11fe",
     auth,
   });
 };
