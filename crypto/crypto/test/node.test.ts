@@ -19,7 +19,8 @@ import {
   TEST_HMAC_SIG,
 } from "./common";
 
-global.crypto = new Crypto();
+// New node already has crypto API, use if available
+if (global.crypto === undefined) global.crypto = new Crypto();
 
 describe("NodeJS", () => {
   describe("isNode", () => {
