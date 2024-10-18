@@ -2,7 +2,6 @@
 import * as chai from "chai";
 
 import * as didJWT from "did-jwt";
-import * as ed25519 from "@stablelib/ed25519";
 import { fromString } from "uint8arrays/from-string";
 
 import {
@@ -22,7 +21,7 @@ import {
 import { decodeIss, encodeData, encodeIss, generateKeyPair, signJWT, verifyJWT } from "../src";
 
 describe("Relay Auth", () => {
-  let keyPair: ed25519.KeyPair;
+  let keyPair: any;
   before(() => {
     const seed = fromString(TEST_SEED, "base16");
     keyPair = generateKeyPair(seed);

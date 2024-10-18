@@ -42,9 +42,9 @@
     "format": "prettier --config ../../.prettierrc --write {src,test}/**/*.ts"
   },
   "dependencies": {
+    "@noble/hashes": "1.4.0",
     "@walletconnect/encoding": "^1.0.2",
     "@walletconnect/environment": "^1.0.1",
-    "randombytes": "^2.1.0",
     "tslib": "1.14.1"
   },
   "devDependencies": {
@@ -53,12 +53,11 @@
     "@types/jest": "^26.0.15",
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.7",
-    "@types/randombytes": "^2.0.0",
     "chai": "^4.2.0",
     "jsdom": "^16.6.0",
     "jsdom-global": "^3.0.2",
-    "mocha": "^8.1.3",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "mocha": "10.7.0",
+    "webpack": "5.93.0",
+    "webpack-cli": "5.1.4"
   }
 }
