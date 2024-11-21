@@ -117,9 +117,10 @@ export class WsConnection implements IJsonRpcConnection {
     this.registering = true;
 
     return new Promise((resolve, reject) => {
-      const origin = new URLSearchParams(url).get("origin");
+      const packageName = new URLSearchParams(url).get("packageName");
+      const bundleId = new URLSearchParams(url).get("bundleId");
       const opts = isReactNative()
-        ? { headers: { origin } }
+        ? { headers: { bundleId, packageName } }
         : { rejectUnauthorized: !isLocalhostUrl(url) };
       const socket: WebSocket = new WS(url, [], opts);
       if (hasBuiltInWebSocket()) {
