@@ -40,7 +40,7 @@ describe("ECIES", () => {
     chai.expect(keyPair.publicKey).to.eql(encoding.hexToArray(TEST_KEY_PAIR.a.publicKey));
   });
 
-  it("should derive shared keys succesfully", async () => {
+  it("should derive shared keys successfully", async () => {
     const { sharedKey1, sharedKey2 } = await testSharedKeys(keyPairA, keyPairB);
     const sharedKey = encoding.hexToArray(TEST_SHARED_KEY);
     chai.expect(sharedKey1).to.eql(sharedKey);
