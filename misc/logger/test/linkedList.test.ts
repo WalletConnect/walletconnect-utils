@@ -111,7 +111,7 @@ describe("Circular Array", () => {
       chai.expect(array.toOrderedArray()).deep.equal([bString, cString, dString]);
     });
 
-    it("Extends array length when appropiate via pushing new values", () => {
+    it("Extends array length when appropriate via pushing new values", () => {
       const array = new LinkedList(16);
       const aString = "a".repeat(4);
       const bString = "b".repeat(4);
