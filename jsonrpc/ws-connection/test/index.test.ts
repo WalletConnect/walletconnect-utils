@@ -12,6 +12,10 @@ import { fromString } from "uint8arrays/from-string";
 
 chai.use(chaiAsPromised);
 
+if (!process.env.TEST_PROJECT_ID) {
+  throw new Error("TEST_PROJECT_ID env var not set");
+}
+
 const BASE16 = "base16";
 
 function generateRandomBytes32(): string {
@@ -35,7 +39,7 @@ const formatRelayUrl = async () => {
     version: 2,
     sdkVersion: version,
     relayUrl: RELAY_URL,
-    projectId: "3cbaa32f8fbf3cdcc87d27ca1fa68069",
+    projectId: process.env.TEST_PROJECT_ID,
     auth,
   });
 };

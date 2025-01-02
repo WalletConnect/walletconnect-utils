@@ -13,6 +13,10 @@ import { fromString } from "uint8arrays/from-string";
 
 import JsonRpcProvider from "../src";
 
+if (!process.env.TEST_PROJECT_ID) {
+  throw new Error("TEST_PROJECT_ID env var not set");
+}
+
 chai.use(chaiAsPromised);
 
 const TEST_RANDOM_HOST = "random.domain.that.does.not.exist";
@@ -63,7 +67,7 @@ describe("@walletconnect/jsonrpc-provider", () => {
       version: 2,
       sdkVersion: version,
       relayUrl: TEST_URL.ws.good,
-      projectId: "3cbaa32f8fbf3cdcc87d27ca1fa68069",
+      projectId: process.env.TEST_PROJECT_ID,
       auth,
     });
 
