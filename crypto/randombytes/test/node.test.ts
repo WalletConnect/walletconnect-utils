@@ -1,10 +1,7 @@
 import "mocha";
 import * as chai from "chai";
-import { Crypto } from "@peculiar/webcrypto";
 
 import * as nodeCrypto from "../src/node";
-
-global.crypto = new Crypto();
 
 describe("NodeJS", () => {
   describe("RandomBytes", () => {
