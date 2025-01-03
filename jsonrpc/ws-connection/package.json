@@ -48,7 +48,7 @@
     "@walletconnect/jsonrpc-utils": "^1.0.6",
     "@walletconnect/safe-json": "^1.0.2",
     "events": "^3.3.0",
-    "ws": "^7.5.1"
+    "ws": "^8.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
