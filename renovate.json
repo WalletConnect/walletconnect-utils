@@ -16,7 +16,7 @@
     },
     {
       "schedule": ["at any time"],
-      "matchPackageNames": ["/@walletconnect/*/"]
+      "matchPackageNames": ["@walletconnect/**"]
     }
   ]
 }
