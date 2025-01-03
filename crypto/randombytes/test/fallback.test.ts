@@ -1,10 +1,7 @@
 import "mocha";
 import * as chai from "chai";
-import { Crypto } from "@peculiar/webcrypto";
 
 import * as fallbackCrypto from "../src/fallback";
-
-global.crypto = new Crypto();
 
 describe("Fallback", () => {
   describe("RandomBytes", () => {

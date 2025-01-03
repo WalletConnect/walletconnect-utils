@@ -56,7 +56,6 @@
     "tslib": "1.14.1"
   },
   "devDependencies": {
-    "@peculiar/webcrypto": "^1.1.7",
     "@types/chai": "^4.2.14",
     "@types/jest": "^26.0.15",
     "@types/mocha": "^8.2.0",
