@@ -22,8 +22,10 @@ chai.use(chaiAsPromised);
 const TEST_RANDOM_HOST = "random.domain.that.does.not.exist";
 
 const TEST_ETH_REQUEST = {
+  jsonrpc: "2.0",
   method: "eth_chainId",
   params: [],
+  id: 1,
 };
 const TEST_ETH_RESULT = "0x1";
 const BASE16 = "base16";
@@ -50,7 +52,7 @@ const signJWT = async (aud: string) => {
 
 const TEST_URL = {
   http: {
-    good: `https://cloudflare-eth.com`,
+    good: `https://rpc.walletconnect.org/v1?chainId=eip155%3A1&projectId=${process.env.TEST_PROJECT_ID}`,
     bad: `http://${TEST_RANDOM_HOST}`,
   },
   ws: {
@@ -94,7 +96,7 @@ describe("@walletconnect/jsonrpc-provider", () => {
       const connection = new HttpConnection(TEST_URL.http.good);
       const provider = new JsonRpcProvider(connection);
       const promise = provider.request({ ...TEST_ETH_REQUEST, method: "test_method" });
-      await chai.expect(promise).to.eventually.be.rejectedWith(`Method not found`);
+      await chai.expect(promise).to.eventually.be.rejected;
     });
     it("Throws when connecting to unavailable host", async () => {
       const connection = new HttpConnection(TEST_URL.http.bad);
