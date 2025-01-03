@@ -16,7 +16,18 @@
     },
     {
       "schedule": ["at any time"],
-      "matchPackageNames": ["@walletconnect/**"]
+      "groupName": "WalletConnect Monorepo Deps",
+      "groupSlug": "walletconnect-monorepo-deps-updates",
+      "matchDepTypes": ["dependencies", "devDependencies"],
+      "matchPackageNames": [
+        "@walletconnect/core",
+        "@walletconnect/sign-client",
+        "@walletconnect/types",
+        "@walletconnect/universal-provider",
+        "@walletconnect/ethereum-provider",
+        "@walletconnect/utils",
+        "@walletconnect/react-native-compat"
+      ]
     }
   ]
 }
