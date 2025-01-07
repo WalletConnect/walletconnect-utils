@@ -56,6 +56,6 @@
     "@stablelib/random": "^1.0.1",
     "@walletconnect/safe-json": "^1.0.1",
     "@walletconnect/time": "^1.0.2",
-    "uint8arrays": "^5.1.0"
+    "uint8arrays": "^3.0.0"
   }
 }
