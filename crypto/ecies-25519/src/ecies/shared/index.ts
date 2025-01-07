@@ -1,4 +1,4 @@
-import * as x25519 from "@stablelib/x25519";
+import { x25519 } from "@noble/curves/ed25519";
 import { concatArrays } from "@walletconnect/encoding";
 import {
   KeyPair,
@@ -12,7 +12,7 @@ import {
 } from "@walletconnect/crypto";
 
 export function derive(privateKey: Uint8Array, publicKey: Uint8Array): Uint8Array {
-  return x25519.sharedKey(privateKey, publicKey);
+  return x25519.getSharedSecret(privateKey, publicKey);
 }
 
 export function generatePnrgFromEntropy(entropy: Uint8Array): PNRG {
@@ -22,12 +22,11 @@ export function generatePnrgFromEntropy(entropy: Uint8Array): PNRG {
   };
 }
 
-export function generateKeyPair(entropy?: Uint8Array): KeyPair {
-  const prng = typeof entropy !== "undefined" ? generatePnrgFromEntropy(entropy) : undefined;
-  const keyPair = x25519.generateKeyPair(prng);
+export function generateKeyPair(privKey?: Uint8Array): KeyPair {
+  const privateKey = privKey || x25519.utils.randomPrivateKey();
   return {
-    publicKey: keyPair.publicKey,
-    privateKey: keyPair.secretKey,
+    publicKey: x25519.getPublicKey(privateKey),
+    privateKey,
   };
 }
 

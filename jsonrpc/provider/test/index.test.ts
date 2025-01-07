@@ -5,7 +5,7 @@ import HttpConnection from "@walletconnect/jsonrpc-http-connection";
 import WsConnection from "@walletconnect/jsonrpc-ws-connection";
 import * as relayAuth from "@walletconnect/relay-auth";
 import { toString } from "uint8arrays";
-import { randomBytes } from "@stablelib/random";
+import { randomBytes } from "@noble/hashes/utils";
 import utils, { formatRelayRpcUrl } from "@walletconnect/utils";
 import { version } from "@walletconnect/utils/package.json";
 
