@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:recommended",
     ":disableDevDependencies",
     ":prConcurrentLimit10",
     ":semanticCommits",
@@ -11,12 +11,23 @@
   "postUpdateOptions": ["npmDedupe"],
   "packageRules": [
     {
-      "matchPackagePatterns": ["*"],
-      "schedule": ["every weekend"]
+      "schedule": ["every weekend"],
+      "matchPackageNames": ["*"]
     },
     {
-      "matchPackagePatterns": ["@walletconnect/*"],
-      "schedule": ["at any time"]
+      "schedule": ["at any time"],
+      "groupName": "WalletConnect Monorepo Deps",
+      "groupSlug": "walletconnect-monorepo-deps-updates",
+      "matchDepTypes": ["dependencies", "devDependencies"],
+      "matchPackageNames": [
+        "@walletconnect/core",
+        "@walletconnect/sign-client",
+        "@walletconnect/types",
+        "@walletconnect/universal-provider",
+        "@walletconnect/ethereum-provider",
+        "@walletconnect/utils",
+        "@walletconnect/react-native-compat"
+      ]
     }
   ]
 }

@@ -1,6 +1,5 @@
 import "mocha";
 import * as chai from "chai";
-import { Crypto } from "@peculiar/webcrypto";
 
 import * as nodeCrypto from "../src/lib/node";
 import * as browserCrypto from "../src/lib/browser";
@@ -16,8 +15,6 @@ import {
   TEST_HMAC_SIG,
 } from "./common";
 import { concatArrays, hexToArray, utf8ToArray } from "@walletconnect/encoding";
-
-global.crypto = new Crypto();
 
 describe("Fallback", () => {
   describe("AES", () => {

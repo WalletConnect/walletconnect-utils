@@ -1,7 +1,6 @@
 import "mocha";
 import * as chai from "chai";
 
-import { Crypto } from "@peculiar/webcrypto";
 import { concatArrays, hexToArray, utf8ToArray } from "@walletconnect/encoding";
 
 import * as isoCrypto from "../src/node";
@@ -18,8 +17,6 @@ import {
   TEST_FIXED_IV,
   TEST_HMAC_SIG,
 } from "./common";
-
-global.crypto = new Crypto();
 
 describe("NodeJS", () => {
   describe("isNode", () => {
