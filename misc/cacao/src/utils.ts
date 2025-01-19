@@ -1,7 +1,6 @@
 import { CacaoPayload, CacaoSignature } from "./types";
 import { hashMessage } from "@ethersproject/hash";
 import { recoverAddress } from "@ethersproject/transactions";
-import fetch from "isomorphic-unfetch";
 
 export const DEFAULT_RPC_URL = "https://rpc.walletconnect.com/v1";
 
