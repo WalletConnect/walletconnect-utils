@@ -47,8 +47,8 @@
     "@walletconnect/encoding": "^1.0.2",
     "@walletconnect/environment": "^1.0.1",
     "@walletconnect/randombytes": "^1.0.3",
-    "aes-js": "^3.1.2",
-    "hash.js": "^1.1.7",
+    "@noble/ciphers": "1.2.0",
+    "@noble/hashes": "1.7.0",
     "tslib": "1.14.1"
   },
   "devDependencies": {

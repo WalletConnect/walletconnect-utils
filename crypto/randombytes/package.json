@@ -44,7 +44,7 @@
   "dependencies": {
     "@walletconnect/encoding": "^1.0.2",
     "@walletconnect/environment": "^1.0.1",
-    "randombytes": "^2.1.0",
+    "@noble/hashes": "1.7.0",
     "tslib": "1.14.1"
   },
   "devDependencies": {

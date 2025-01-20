@@ -5,7 +5,7 @@ import { WsConnection } from "./../src/ws";
 import { RELAY_URL } from "./shared/values";
 import * as relayAuth from "@walletconnect/relay-auth";
 import { toString } from "uint8arrays";
-import { randomBytes } from "@stablelib/random";
+import { randomBytes } from "@noble/hashes/utils";
 import { formatRelayRpcUrl } from "@walletconnect/utils";
 import { version } from "@walletconnect/utils/package.json";
 import { fromString } from "uint8arrays/from-string";
