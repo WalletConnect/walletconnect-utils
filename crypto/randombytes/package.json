@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/randombytes",
   "description": "Isomorphic Library for Random Bytes",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
