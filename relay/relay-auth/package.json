@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/relay-auth",
   "description": "Relay Client Authentication",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "keywords": [
