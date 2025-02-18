@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@noble/curves": "1.8.0",
-    "@noble/hashes": "1.7.0",
+    "@noble/hashes": "1.7.1",
     "@walletconnect/safe-json": "^1.0.1",
     "@walletconnect/time": "^1.0.2",
     "uint8arrays": "^3.0.0"
