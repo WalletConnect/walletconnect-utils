@@ -1,4 +1,4 @@
-name: Publish Single Package to NPM
+name: Publish Single Package Canary to NPM
 
 on:
   workflow_dispatch:
@@ -70,8 +70,8 @@ jobs:
       # --- Publish Step ---
       - name: Publish to NPM 🚀
         run: |
-          echo "Publishing package from directory: ${{ github.event.inputs.packageDir }}"
+          echo "Publishing package from directory: ${{ github.event.inputs.packageDir }} with canary tag"
           cd ${{ github.event.inputs.packageDir }}
-          npm publish --access public
+          npm publish --access public --tag canary
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
