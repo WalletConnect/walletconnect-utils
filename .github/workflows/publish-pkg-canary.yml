@@ -8,10 +8,10 @@ on:
         required: true
         default: "master"
       packageName:
-        description: "Name of the package to publish (e.g., @walletconnect/utils)"
+        description: "Name of the package to publish (e.g., @walletconnect/heartbeat)"
         required: true
       packageDir:
-        description: "Relative path to the package directory (e.g., misc/utils)"
+        description: "Relative path to the package directory (e.g., misc/heartbeat)"
         required: true
       version:
         description: "Specific version to publish (e.g., 1.2.3)"
@@ -65,7 +65,7 @@ jobs:
       # --- Build Step ---
       # Build the target package AND any workspace packages it depends on.
       - name: Build package and dependencies 🏗️
-        run: npx turbo build --filter=${{ github.event.inputs.packageName }}...
+        run: npx turbo build --filter=./${{ github.event.inputs.packageDir }}
 
       # --- Publish Step ---
       - name: Publish to NPM 🚀
