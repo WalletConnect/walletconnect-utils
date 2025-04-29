@@ -1,0 +1,60 @@
+name: Changesets
+on:
+  push:
+    branches: [master]
+
+concurrency:
+  # Group concurrency by workflow and ref
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changesets:
+    name: Changesets Release
+    # Ensures the workflow has permissions to create PRs, write content (commits, tags, releases), and potentially use OIDC for auth
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch all history so Changesets can generate changelogs accurately
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Packages
+        run: npm run build
+
+      - name: Setup npm Authentication
+        # Sets up .npmrc for publishing using the provided NPM_TOKEN secret
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > $HOME/.npmrc
+
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: npm run npm-publish
+          version: npm run changeset:version
+          title: "chore: version packages"
+          commit: "chore: version packages"
+          # Create GitHub releases only when merging to the master branch
+          createGithubReleases: ${{ github.ref == 'refs/heads/master' }}
+        env:
+          # GITHUB_TOKEN is required by changesets/action to create PRs, releases, etc.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # NPM_TOKEN is required for the 'npm run npm-publish' step
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
