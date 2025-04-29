@@ -41,6 +41,9 @@ jobs:
       - name: Install dependencies 🔧
         run: npm ci
 
+      - name: Setup npm auth token 🔑
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > $HOME/.npmrc
+
       # --- Validate Version Format ---
       # Ensure the provided version string includes '-canary-' as this workflow
       # is intended specifically for canary releases.
