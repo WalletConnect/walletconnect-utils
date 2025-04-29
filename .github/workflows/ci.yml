@@ -1,4 +1,20 @@
-on: push
+on:
+  push:
+    paths:
+      - "misc/**"
+      - "crypto/**"
+      - "jsonrpc/**"
+      - "browser/**"
+      - "relay/**"
+      - ".github/workflows/ci.yml"
+  pull_request:
+    paths:
+      - "misc/**"
+      - "crypto/**"
+      - "jsonrpc/**"
+      - "browser/**"
+      - "relay/**"
+      - ".github/workflows/ci.yml"
 
 name: CI Checks
 
