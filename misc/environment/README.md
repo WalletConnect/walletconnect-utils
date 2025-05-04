@@ -4,7 +4,7 @@ Environment utilities
 
 ## Description
 
-This library provides utilties to detect environment for Browser, NodeJS and React-Native
+This library provides utilities to detect environment for Browser, NodeJS and React-Native
 
 ## Usage
 
