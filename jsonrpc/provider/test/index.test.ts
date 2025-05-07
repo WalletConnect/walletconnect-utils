@@ -56,7 +56,7 @@ const TEST_URL = {
     bad: `http://${TEST_RANDOM_HOST}`,
   },
   ws: {
-    good: `wss://staging.relay.walletconnect.com`,
+    good: `wss://relay.walletconnect.com`,
     bad: `ws://${TEST_RANDOM_HOST}`,
   },
 };
