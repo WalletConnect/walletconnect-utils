@@ -1,0 +1,52 @@
+name: Publish Single Package Latest to NPM
+
+on:
+  workflow_dispatch:
+    inputs:
+      packageName:
+        description: "Name of the package to publish (e.g., @walletconnect/heartbeat)"
+        required: true
+      packageDir:
+        description: "Relative path to the package directory (e.g., misc/heartbeat)"
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # The permissions block is removed as no step needs write access to the repository.
+
+    steps:
+      - name: Checkout code 🛎️
+        uses: actions/checkout@v4
+        with:
+          ref: master # Publish only from master branch
+          # Fetch all history so npm version can determine versions correctly (though not setting version here)
+          fetch-depth: 0
+
+      - name: Setup Node ⚙️
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+          # Cache npm dependencies based on the lock file
+          cache: "npm"
+
+      - name: Install dependencies 🔧
+        run: npm ci
+
+      # --- Build Step ---
+      # Build the target package AND any workspace packages it depends on.
+      # The version from package.json will be used.
+      - name: Build package and dependencies 🏗️
+        run: npx turbo build --filter=./${{ github.event.inputs.packageDir }}
+
+      # --- Publish Step ---
+      # Publishes the package using the version from its package.json
+      - name: Publish to NPM 🚀
+        run: |
+          echo "Publishing package from directory: ${{ github.event.inputs.packageDir }} with latest tag"
+          cd ${{ github.event.inputs.packageDir }}
+          # npm publish will use the version from package.json
+          npm publish --access public --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
