@@ -1,5 +1,4 @@
 import { RegisterPayload, GetMessagesPayload, GetMessagesResponse } from "./types";
-import fetch from "isomorphic-unfetch";
 import type { ICore } from "@walletconnect/types";
 
 export const DEFAULT_HISTORY_URL = "https://history.walletconnect.com";
