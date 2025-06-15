@@ -12,7 +12,7 @@ describe("RandomBytes", () => {
     key = testRandomBytes(length);
   });
 
-  it("should generate random bytes sucessfully", async () => {
+  it("should generate random bytes successfully", async () => {
     chai.expect(key).to.not.be.undefined;
   });
 
