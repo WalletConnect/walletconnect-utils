@@ -83,7 +83,7 @@ describe("Fallback", () => {
         expectedLength = 32;
         expectedOutput = hexToArray(TEST_SHA256_HASH);
       });
-      it("should hash buffer sucessfully", async () => {
+      it("should hash buffer successfully", async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = fallbackCrypto.fallbackSha256(input);
         chai.expect(output).to.eql(expectedOutput);
@@ -105,7 +105,7 @@ describe("Fallback", () => {
         expectedOutput = hexToArray(TEST_SHA512_HASH);
       });
 
-      it("should hash buffer sucessfully", async () => {
+      it("should hash buffer successfully", async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = fallbackCrypto.fallbackSha512(input);
         chai.expect(output).to.eql(expectedOutput);
@@ -134,7 +134,7 @@ describe("Fallback", () => {
       output = fallbackCrypto.fallbackHmacSha256Sign(macKey, dataToMac);
     });
 
-    it("should sign sucessfully", async () => {
+    it("should sign successfully", async () => {
       chai.expect(output).to.eql(expectedOutput);
     });
 

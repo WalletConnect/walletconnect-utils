@@ -14,7 +14,7 @@ describe("SHA256", () => {
     expectedOutput = hexToArray(TEST_SHA256_HASH);
   });
 
-  it("should hash buffer sucessfully", async () => {
+  it("should hash buffer successfully", async () => {
     const input = utf8ToArray(TEST_MESSAGE_STR);
     const output = await isoCrypto.sha256(input);
     chai.expect(output).to.eql(expectedOutput);
@@ -36,7 +36,7 @@ describe("SHA512", () => {
     expectedOutput = hexToArray(TEST_SHA512_HASH);
   });
 
-  it("should hash buffer sucessfully", async () => {
+  it("should hash buffer successfully", async () => {
     const input = utf8ToArray(TEST_MESSAGE_STR);
     const output = await isoCrypto.sha512(input);
     chai.expect(output).to.eql(expectedOutput);
