@@ -1,5 +1,4 @@
 {
-  "name": "walletconnect-utils",
   "description": "Monorepo for Javascript Utilities for WalletConnect",
   "private": true,
   "author": "WalletConnect, Inc. <walletconnect.com>",
