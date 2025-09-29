@@ -31,7 +31,7 @@
     "npm-publish": "changeset version && turbo pre-publish && changeset publish"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.2",
+    "@changesets/cli": "^2.29.7",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "13.3.0",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
