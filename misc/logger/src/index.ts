@@ -1,6 +1,6 @@
-/* eslint-disable-next-line import/no-named-default */
-import { default as pino } from "pino";
+import * as Pino from "pino";
+const defaultPino = Pino.default ?? Pino;
 export * from "./constants";
 export * from "./utils";
 export type { Logger } from "pino";
-export { pino };
+export { defaultPino as pino };
