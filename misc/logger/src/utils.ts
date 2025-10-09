@@ -18,14 +18,7 @@ export function getDefaultLoggerOptions(opts?: LoggerOptions): LoggerOptions {
   };
 }
 
-export function getBrowserLoggerContext(
-  logger: Logger,
-  customContextKey: string = PINO_CUSTOM_CONTEXT_KEY,
-): string {
-  return (logger as any)[customContextKey] || "";
-}
-
-export function setBrowserLoggerContext(
+export function setLoggerContext(
   logger: Logger,
   context: string,
   customContextKey: string = PINO_CUSTOM_CONTEXT_KEY,
@@ -38,7 +31,7 @@ export function getLoggerContext(
   logger: Logger,
   customContextKey: string = PINO_CUSTOM_CONTEXT_KEY,
 ): string {
-  return getBrowserLoggerContext(logger, customContextKey);
+  return (logger as any)[customContextKey] || "";
 }
 
 export function formatChildLoggerContext(
@@ -58,7 +51,7 @@ export function generateChildLogger(
 ): Logger {
   const context = formatChildLoggerContext(logger, childContext, customContextKey);
   const child = logger.child({ context });
-  return setBrowserLoggerContext(child, context, customContextKey);
+  return setLoggerContext(child, context, customContextKey);
 }
 
 export function generateClientLogger(params: { opts?: LoggerOptions; maxSizeInBytes?: number }): {
