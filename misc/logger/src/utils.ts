@@ -18,14 +18,7 @@ export function getDefaultLoggerOptions(opts?: LoggerOptions): LoggerOptions {
   };
 }
 
-export function getBrowserLoggerContext(
-  logger: Logger,
-  customContextKey: string = PINO_CUSTOM_CONTEXT_KEY,
-): string {
-  return (logger as any)[customContextKey] || "";
-}
-
-export function setBrowserLoggerContext(
+export function setLoggerContext(
   logger: Logger,
   context: string,
   customContextKey: string = PINO_CUSTOM_CONTEXT_KEY,
@@ -38,14 +31,7 @@ export function getLoggerContext(
   logger: Logger,
   customContextKey: string = PINO_CUSTOM_CONTEXT_KEY,
 ): string {
-  let context = "";
-  // logger.bindings is undefined in browser
-  if (typeof logger.bindings === "undefined") {
-    context = getBrowserLoggerContext(logger, customContextKey);
-  } else {
-    context = logger.bindings().context || "";
-  }
-  return context;
+  return (logger as any)[customContextKey] || "";
 }
 
 export function formatChildLoggerContext(
@@ -65,11 +51,11 @@ export function generateChildLogger(
 ): Logger {
   const context = formatChildLoggerContext(logger, childContext, customContextKey);
   const child = logger.child({ context });
-  return setBrowserLoggerContext(child, context, customContextKey);
+  return setLoggerContext(child, context, customContextKey);
 }
 
 export function generateClientLogger(params: { opts?: LoggerOptions; maxSizeInBytes?: number }): {
-  logger: Logger<any>;
+  logger: Logger;
   chunkLoggerController: ClientChunkLogger;
 } {
   const clientLogger = new ClientChunkLogger(params.opts?.level, params.maxSizeInBytes);
@@ -86,7 +72,7 @@ export function generateClientLogger(params: { opts?: LoggerOptions; maxSizeInBy
 }
 
 export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: LoggerOptions }): {
-  logger: Logger<any>;
+  logger: Logger;
   chunkLoggerController: ServerChunkLogger;
 } {
   const serverLogger = new ServerChunkLogger(params.opts?.level, params.maxSizeInBytes);
@@ -104,9 +90,9 @@ export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: L
 export function generatePlatformLogger(params: {
   maxSizeInBytes?: number;
   opts?: LoggerOptions;
-  loggerOverride?: string | Logger<any>;
+  loggerOverride?: string | Logger;
 }): {
-  logger: Logger<any>;
+  logger: Logger;
   chunkLoggerController: ChunkLoggerController | null;
 } {
   if (typeof params.loggerOverride !== "undefined" && typeof params.loggerOverride !== "string") {

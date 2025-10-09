@@ -47,7 +47,7 @@
     "@walletconnect/heartbeat": "^1.2.1",
     "@walletconnect/jsonrpc-provider": "^1.0.13",
     "@walletconnect/keyvaluestorage": "^1.1.1",
-    "@walletconnect/logger": "^2.0.1",
+    "@walletconnect/logger": "^3.0.0",
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
