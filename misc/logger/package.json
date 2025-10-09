@@ -45,15 +45,15 @@
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
-    "@types/pino": "^6.3.3",
+    "@types/pino": "^7.0.4",
     "@types/sinon": "^17.0.3",
-    "pino-pretty": "^7.6.0",
+    "pino-pretty": "^13.1.1",
     "sinon": "^17.0.1",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "@walletconnect/safe-json": "^1.0.2",
-    "pino": "7.11.0"
+    "pino": "10.0.0"
   }
 }

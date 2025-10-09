@@ -69,7 +69,7 @@ export function generateChildLogger(
 }
 
 export function generateClientLogger(params: { opts?: LoggerOptions; maxSizeInBytes?: number }): {
-  logger: Logger<any>;
+  logger: Logger;
   chunkLoggerController: ClientChunkLogger;
 } {
   const clientLogger = new ClientChunkLogger(params.opts?.level, params.maxSizeInBytes);
@@ -86,7 +86,7 @@ export function generateClientLogger(params: { opts?: LoggerOptions; maxSizeInBy
 }
 
 export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: LoggerOptions }): {
-  logger: Logger<any>;
+  logger: Logger;
   chunkLoggerController: ServerChunkLogger;
 } {
   const serverLogger = new ServerChunkLogger(params.opts?.level, params.maxSizeInBytes);
@@ -104,9 +104,9 @@ export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: L
 export function generatePlatformLogger(params: {
   maxSizeInBytes?: number;
   opts?: LoggerOptions;
-  loggerOverride?: string | Logger<any>;
+  loggerOverride?: string | Logger;
 }): {
-  logger: Logger<any>;
+  logger: Logger;
   chunkLoggerController: ChunkLoggerController | null;
 } {
   if (typeof params.loggerOverride !== "undefined" && typeof params.loggerOverride !== "string") {
