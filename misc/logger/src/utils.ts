@@ -38,14 +38,7 @@ export function getLoggerContext(
   logger: Logger,
   customContextKey: string = PINO_CUSTOM_CONTEXT_KEY,
 ): string {
-  let context = "";
-  // logger.bindings is undefined in browser
-  if (typeof logger.bindings === "undefined") {
-    context = getBrowserLoggerContext(logger, customContextKey);
-  } else {
-    context = logger.bindings().context || "";
-  }
-  return context;
+  return getBrowserLoggerContext(logger, customContextKey);
 }
 
 export function formatChildLoggerContext(
