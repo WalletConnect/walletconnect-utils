@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout code 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: master # Publish only from master branch
           # Fetch all history so npm version can determine versions correctly (though not setting version here)
