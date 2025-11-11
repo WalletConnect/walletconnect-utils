@@ -59,7 +59,6 @@
   "dependencies": {
     "@ethersproject/hash": "^5.7.0",
     "@ethersproject/transactions": "^5.7.0",
-    "@walletconnect/utils": "^2.10.1",
-    "isomorphic-unfetch": "^3.1.0"
+    "@walletconnect/utils": "^2.10.1"
   }
 }
