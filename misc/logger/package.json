@@ -54,6 +54,6 @@
   },
   "dependencies": {
     "@walletconnect/safe-json": "^1.0.2",
-    "pino": "10.0.0"
+    "pino": "10.1.0"
   }
 }
