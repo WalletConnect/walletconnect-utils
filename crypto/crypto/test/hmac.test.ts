@@ -26,7 +26,7 @@ describe("HMAC", () => {
     output = await testHmacSign(macKey, dataToMac);
   });
 
-  it("should sign sucessfully", async () => {
+  it("should sign successfully", async () => {
     chai.expect(output).to.eql(expectedOutput);
   });
 
@@ -34,7 +34,7 @@ describe("HMAC", () => {
     chai.expect(output.length).to.eql(expectedLength);
   });
 
-  it("should verify sucessfully", async () => {
+  it("should verify successfully", async () => {
     const macGood = await testHmacVerify(macKey, dataToMac, output);
     chai.expect(macGood).to.not.be.undefined;
   });
