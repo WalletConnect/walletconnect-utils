@@ -17,10 +17,12 @@ on:
         description: "Specific version to publish (e.g., 1.2.3)"
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
-    # The permissions block is removed as no step needs write access to the repository.
 
     steps:
       - name: Checkout code 🛎️

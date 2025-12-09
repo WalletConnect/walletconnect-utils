@@ -18,6 +18,9 @@ on:
 
 name: CI Checks
 
+permissions:
+  contents: read
+
 jobs:
   ci:
     name: CI
