@@ -49,8 +49,8 @@
     "@types/sinon": "^17.0.3",
     "pino-pretty": "^13.1.1",
     "sinon": "^17.0.1",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "webpack": "^5.103.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "@walletconnect/safe-json": "^1.0.2",

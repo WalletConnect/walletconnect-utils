@@ -48,7 +48,7 @@
     "did-jwt": "^6.1.2",
     "did-resolver": "^3.2.2",
     "key-did-resolver": "^2.0.4",
-    "webpack": "5.93.0",
+    "webpack": "^5.103.0",
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
