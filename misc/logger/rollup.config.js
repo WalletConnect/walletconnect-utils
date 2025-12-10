@@ -28,11 +28,10 @@ export default [
       sourcemap: true,
     },
   },
-  // CJS/ESM builds (pino bundled, only safe-json external)
+  // CJS/ESM builds (pino bundled)
   {
     input,
     plugins,
-    external: ["@walletconnect/safe-json"],
     output: [
       {
         file: "./dist/index.cjs.js",
