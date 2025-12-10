@@ -44,7 +44,6 @@ export default [
         format: "es",
         exports: "named",
         name: name,
-        sourcemap: true,
       },
     ],
   },
