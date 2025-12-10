@@ -38,7 +38,6 @@ export default [
         format: "cjs",
         exports: "named",
         name: name,
-        sourcemap: true,
       },
       {
         file: "./dist/index.es.js",
