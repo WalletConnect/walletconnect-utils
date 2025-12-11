@@ -1,7 +1,7 @@
 {
   "name": "@walletconnect/logger",
   "description": "Logger Utils",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "WalletConnect, Inc. <walletconnect.com>",
   "license": "MIT",
   "homepage": "https://github.com/WalletConnect/walletconnect-utils/",
@@ -28,6 +28,14 @@
   "browser": "dist/index.es.js",
   "unpkg": "dist/index.umd.js",
   "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js",
+      "default": "./dist/index.es.js"
+    }
+  },
   "scripts": {
     "clean": "rm -rf dist",
     "build:pre": "npm run clean",
