@@ -76,10 +76,15 @@ export function generateServerLogger(params: { maxSizeInBytes?: number; opts?: L
   chunkLoggerController: ServerChunkLogger;
 } {
   const serverLogger = new ServerChunkLogger(params.opts?.level, params.maxSizeInBytes);
+  // Use both destination stream (for Node.js pino) and browser.write (for bundled pino-browser)
   const logger = pino(
     {
       ...params.opts,
       level: "trace",
+      browser: {
+        ...params.opts?.browser,
+        write: (obj) => serverLogger.write(obj),
+      },
     },
     serverLogger,
   );
@@ -102,9 +107,15 @@ export function generatePlatformLogger(params: {
     };
   }
 
+  // When loggerOverride is a string, use it as the log level
+  const opts: LoggerOptions = {
+    ...params.opts,
+    level: typeof params.loggerOverride === "string" ? params.loggerOverride : params.opts?.level,
+  };
+
   if (typeof window !== "undefined") {
-    return generateClientLogger(params);
+    return generateClientLogger({ ...params, opts });
   } else {
-    return generateServerLogger(params);
+    return generateServerLogger({ ...params, opts });
   }
 }

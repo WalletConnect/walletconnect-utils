@@ -9,6 +9,7 @@ import {
   getDefaultLoggerOptions,
   generateChildLogger,
   generateServerLogger,
+  generatePlatformLogger,
 } from "../src";
 
 describe("Logger", () => {
@@ -250,6 +251,78 @@ describe("Logger", () => {
         chai.expect(logArray.filter((log) => log.includes(nString)).length).eq(1);
         chai.expect(logArray.filter((log) => log.includes(oString)).length).eq(1);
         chai.expect(logArray.filter((log) => log.includes(pString)).length).eq(1);
+      });
+    });
+
+    describe("Platform Logger", () => {
+      let consoleTrace: sinon.SinonStub;
+      let consoleDebug: sinon.SinonStub;
+      let consoleLog: sinon.SinonStub;
+      let consoleWarn: sinon.SinonStub;
+      let consoleError: sinon.SinonStub;
+
+      beforeEach(() => {
+        consoleTrace = sinon.stub(console, "trace");
+        consoleDebug = sinon.stub(console, "debug");
+        consoleLog = sinon.stub(console, "log");
+        consoleWarn = sinon.stub(console, "warn");
+        consoleError = sinon.stub(console, "error");
+      });
+
+      afterEach(() => {
+        consoleTrace.restore();
+        consoleDebug.restore();
+        consoleLog.restore();
+        consoleWarn.restore();
+        consoleError.restore();
+      });
+
+      it("Respects loggerOverride string as log level for console output", () => {
+        // Use "warn" level (NOT "error") to avoid coincidentally matching the default
+        // The default level in BaseChunkLogger is "error", so using "error" here
+        // would pass even if loggerOverride is not properly passed through
+        const { logger, chunkLoggerController } = generatePlatformLogger({
+          loggerOverride: "warn",
+        });
+
+        logger.trace("trace message");
+        logger.debug("debug message");
+        logger.info("info message");
+        logger.warn("warn message");
+        logger.error("error message");
+
+        const logArray = chunkLoggerController!.getLogArray();
+
+        // All logs should be stored in memory
+        chai.expect(logArray.length).eq(5);
+
+        // Only warn and error should be forwarded to console
+        chai.expect(consoleTrace.called).eq(false);
+        chai.expect(consoleDebug.called).eq(false);
+        chai.expect(consoleLog.called).eq(false);
+        chai.expect(consoleWarn.called).eq(true);
+        chai.expect(consoleError.called).eq(true);
+      });
+
+      it("Stores all logs in memory regardless of level", () => {
+        const { logger, chunkLoggerController } = generatePlatformLogger({
+          loggerOverride: "warn",
+        });
+
+        logger.trace("trace");
+        logger.debug("debug");
+        logger.info("info");
+        logger.warn("warn");
+        logger.error("error");
+
+        const logArray = chunkLoggerController!.getLogArray();
+
+        // All 5 logs should be stored
+        chai.expect(logArray.filter((log) => log.includes("trace")).length).eq(1);
+        chai.expect(logArray.filter((log) => log.includes("debug")).length).eq(1);
+        chai.expect(logArray.filter((log) => log.includes("info")).length).eq(1);
+        chai.expect(logArray.filter((log) => log.includes("warn")).length).eq(1);
+        chai.expect(logArray.filter((log) => log.includes("error")).length).eq(1);
       });
     });
   });
