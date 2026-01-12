@@ -17,7 +17,6 @@
     "dist"
   ],
   "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
   "browser": "dist/index.es.js",
   "unpkg": "dist/index.umd.js",
   "types": "dist/types/index.d.ts",
