@@ -97,7 +97,7 @@ describe("Browser", () => {
         expectedLength = 32;
         expectedOutput = hexToArray(TEST_SHA256_HASH);
       });
-      it("should hash buffer sucessfully", async () => {
+      it("should hash buffer successfully", async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = await browserCrypto.browserSha256(input);
         chai.expect(output).to.eql(expectedOutput);
@@ -119,7 +119,7 @@ describe("Browser", () => {
         expectedOutput = hexToArray(TEST_SHA512_HASH);
       });
 
-      it("should hash buffer sucessfully", async () => {
+      it("should hash buffer successfully", async () => {
         const input = utf8ToArray(TEST_MESSAGE_STR);
         const output = await browserCrypto.browserSha512(input);
         chai.expect(output).to.eql(expectedOutput);
@@ -148,7 +148,7 @@ describe("Browser", () => {
       output = await browserCrypto.browserHmacSha256Sign(macKey, dataToMac);
     });
 
-    it("should sign sucessfully", async () => {
+    it("should sign successfully", async () => {
       chai.expect(output).to.eql(expectedOutput);
     });
 

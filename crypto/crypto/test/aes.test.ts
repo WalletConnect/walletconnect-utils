@@ -19,12 +19,12 @@ describe("AES", () => {
     data = toEncrypt.msg;
   });
 
-  it("should encrypt sucessfully", async () => {
+  it("should encrypt successfully", async () => {
     const ciphertext = await testAesEncrypt(iv, key, data);
     chai.expect(ciphertext).to.not.be.undefined;
   });
 
-  it("should decrypt sucessfully", async () => {
+  it("should decrypt successfully", async () => {
     const ciphertext = await testAesEncrypt(iv, key, data);
     const result = await testAesDecrypt(iv, key, ciphertext);
     chai.expect(result).to.not.be.undefined;
