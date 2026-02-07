@@ -65,7 +65,7 @@
     "jsdom": "^16.6.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^10.8.2",
-    "webpack": "^5.103.0",
+    "webpack": "^5.104.1",
     "webpack-cli": "^5.1.4"
   }
 }
