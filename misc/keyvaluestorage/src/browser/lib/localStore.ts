@@ -10,7 +10,7 @@ export class LocalStore implements IKeyValueStorage {
     return Object.keys(this.localStorage);
   }
 
-  public async getEntries<T = any>(): Promise<[string, T][]> {
+  public async getEntries(): Promise<[string, unknown][]> {
     return Object.entries(this.localStorage).map(parseEntry);
   }
 

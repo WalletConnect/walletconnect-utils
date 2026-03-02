@@ -25,7 +25,7 @@ export class KeyValueStorage implements IKeyValueStorage {
     return this.database.getKeys();
   }
 
-  public async getEntries<T = any>(): Promise<[string, T][]> {
+  public async getEntries(): Promise<[string, unknown][]> {
     await this.initialize();
     return this.database.getEntries();
   }

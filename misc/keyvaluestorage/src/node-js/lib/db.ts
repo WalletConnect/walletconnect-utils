@@ -73,9 +73,9 @@ export default class Db {
     return this.database.getKeys();
   }
 
-  public async getEntries<T = any>(): Promise<[string, T][]> {
+  public async getEntries(): Promise<[string, unknown][]> {
     const entries = await this.database.getItems(await this.database.getKeys());
-    return entries.map((item: any) => [item.key, item.value] as [string, T]);
+    return entries.map((item: any) => [item.key, item.value]);
   }
 
   private async onWriteAction(params: {

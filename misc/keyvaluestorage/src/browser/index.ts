@@ -29,7 +29,7 @@ export class KeyValueStorage implements IKeyValueStorage {
     return this.storage.getKeys();
   }
 
-  public async getEntries<T = any>(): Promise<[string, T][]> {
+  public async getEntries(): Promise<[string, unknown][]> {
     await this.initialize();
     return this.storage.getEntries();
   }
