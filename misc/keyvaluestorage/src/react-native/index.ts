@@ -12,7 +12,7 @@ export class KeyValueStorage implements IKeyValueStorage {
     return this.asyncStorage.getAllKeys() as Promise<string[]>;
   }
 
-  public async getEntries<T = any>(): Promise<[string, T][]> {
+  public async getEntries(): Promise<[string, unknown][]> {
     const keys = await this.getKeys();
     const entries = await this.asyncStorage.multiGet(keys);
     return entries.map(parseEntry);

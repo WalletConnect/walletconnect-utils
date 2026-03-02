@@ -19,9 +19,9 @@ export class IndexedDb implements IKeyValueStorage {
     return this.indexedDb.getKeys();
   }
 
-  public async getEntries<T = any>(): Promise<[string, T][]> {
+  public async getEntries(): Promise<[string, unknown][]> {
     const entries = await this.indexedDb.getItems(await this.indexedDb.getKeys());
-    return entries.map((item: any) => [item.key, item.value] as [string, T]);
+    return entries.map((item: any) => [item.key, item.value]);
   }
 
   public async getItem<T = any>(key: string): Promise<T | undefined> {
