@@ -28,6 +28,10 @@ describe("@walletconnect/safe-json", () => {
       const result = safeJsonParse(safeJsonStringify({ bigint: BigInt(1) }));
       chai.expect(result).to.deep.eq({ bigint: BigInt(1) });
     });
+    it("should handle negative bigint", () => {
+      const result = safeJsonParse(safeJsonStringify({ amount: BigInt(-100) }));
+      chai.expect(result).to.deep.eq({ amount: BigInt(-100) });
+    });
     it("should handle number inside string literal. Case 1", () => {
       const nested = '{"x":"12345678901234567,"}';
       const result = safeJsonParse(nested);
