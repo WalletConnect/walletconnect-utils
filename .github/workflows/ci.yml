@@ -60,7 +60,7 @@ jobs:
 
       - name: Check node_modules cache
         id: cache-node-modules
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             node_modules
