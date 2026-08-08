@@ -49,7 +49,7 @@ describe("Relay Auth", () => {
     const data = encodeData({ header, payload });
     chai.expect(data).to.eql(fromString(EXPECTED_DATA, "utf8"));
   });
-  it("sign and verify JWT", async () => {
+  it("sign deterministic JWT and decode payload", async () => {
     const seed = fromString(TEST_SEED, "base16");
     const keyPair = generateKeyPair(seed);
     const sub = TEST_SUBJECT;
@@ -59,14 +59,20 @@ describe("Relay Auth", () => {
     const iat = TEST_IAT;
     const jwt = await signJWT(sub, aud, ttl, keyPair, iat);
     chai.expect(jwt).to.eql(EXPECTED_JWT);
+    // Historical vector is past exp; verifyJWT must fail closed on expiry.
     const verified = await verifyJWT(jwt);
-    chai.expect(verified).to.eql(true);
+    chai.expect(verified).to.eql(false);
     const decoded = didJWT.decodeJWT(jwt);
     chai.expect(decoded).to.eql(EXPECTED_DECODED);
-    // FIXME: currently errors with 'Unknown file extension ".ts"'
-    // const resolver = new Resolver(KeyDIDResolver.getResolver());
-    // const response = await didJWT.verifyJWT(jwt, { resolver });
-    // // eslint-disable-next-line
-    // console.log("response", response);
+  });
+
+  it("rejects expired JWT and accepts fresh JWT", async () => {
+    const seed = fromString(TEST_SEED, "base16");
+    const keyPair = generateKeyPair(seed);
+    const now = Math.floor(Date.now() / 1000);
+    const fresh = await signJWT(TEST_SUBJECT, TEST_AUDIENCE, TEST_TTL, keyPair, now);
+    chai.expect(await verifyJWT(fresh)).to.eql(true);
+    const expired = await signJWT(TEST_SUBJECT, TEST_AUDIENCE, 3600, keyPair, now - 7200);
+    chai.expect(await verifyJWT(expired)).to.eql(false);
   });
 });
