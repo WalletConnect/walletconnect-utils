@@ -42,6 +42,9 @@ export const formatMessage = (cacao: CacaoPayload, iss: string) => {
   const chainId = `Chain ID: ${getDidChainId(iss)}`;
   const nonce = `Nonce: ${cacao.nonce}`;
   const issuedAt = `Issued At: ${cacao.iat}`;
+  const expirationTime = cacao.exp ? `Expiration Time: ${cacao.exp}` : undefined;
+  const notBefore = cacao.nbf ? `Not Before: ${cacao.nbf}` : undefined;
+  const requestId = cacao.requestId ? `Request ID: ${cacao.requestId}` : undefined;
   const resources =
     cacao.resources && cacao.resources.length > 0
       ? `Resources:\n${cacao.resources.map((resource) => `- ${resource}`).join("\n")}`
@@ -58,6 +61,9 @@ export const formatMessage = (cacao: CacaoPayload, iss: string) => {
     chainId,
     nonce,
     issuedAt,
+    expirationTime,
+    notBefore,
+    requestId,
     resources,
   ]
     .filter((val) => val !== undefined && val !== null) // remove unnecessary empty lines
@@ -82,8 +88,13 @@ async function isValidEip1271Signature(
   try {
     const eip1271MagicValue = "0x1626ba7e";
     const dynamicTypeOffset = "0000000000000000000000000000000000000000000000000000000000000040";
-    const dynamicTypeLength = "0000000000000000000000000000000000000000000000000000000000000041";
-    const nonPrefixedSignature = signature.substring(2);
+    // Derive ABI bytes length from the signature (parity with @walletconnect/utils).
+    // Hardcoding 0x41 (65) mis-encodes non-65-byte EIP-1271 / smart-account signatures.
+    const nonPrefixedSignature = signature.replace(/^0x/, "");
+    if (nonPrefixedSignature.length === 0 || nonPrefixedSignature.length % 2 !== 0) {
+      return false;
+    }
+    const dynamicTypeLength = (nonPrefixedSignature.length / 2).toString(16).padStart(64, "0");
     const nonPrefixedHashedMessage = hashMessage(reconstructedMessage).substring(2);
 
     const data =
