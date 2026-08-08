@@ -42,5 +42,18 @@ export async function verifyJWT(jwt: string) {
     throw new Error("JWT must use EdDSA algorithm");
   }
   const publicKey = decodeIss(payload.iss);
-  return ed25519.verify(signature, data, publicKey);
+  const validSig = ed25519.verify(signature, data, publicKey);
+  if (!validSig) {
+    return false;
+  }
+  // signJWT always sets exp; reject missing/non-numeric or expired claims so a
+  // captured relay JWT cannot verify forever after TTL.
+  if (typeof payload.exp !== "number" || !Number.isFinite(payload.exp)) {
+    return false;
+  }
+  const now = fromMiliseconds(Date.now());
+  if (payload.exp <= now) {
+    return false;
+  }
+  return true;
 }
