@@ -23,5 +23,19 @@ export function isWsUrl(url: string): boolean {
 }
 
 export function isLocalhostUrl(url: string): boolean {
-  return new RegExp("wss?://localhost(:d{2,5})?").test(url);
+  // Used to relax TLS verification for local websockets only. Must match an
+  // exact loopback host — an unanchored "localhost" prefix would treat
+  // wss://localhost.evil.example as local and disable certificate checks.
+  if (!isWsUrl(url)) return false;
+  try {
+    const { hostname } = new URL(url);
+    return (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "[::1]" ||
+      hostname === "::1"
+    );
+  } catch {
+    return false;
+  }
 }
