@@ -47,6 +47,13 @@ export const formatMessage = (cacao: CacaoPayload, iss: string) => {
       ? `Resources:\n${cacao.resources.map((resource) => `- ${resource}`).join("\n")}`
       : undefined;
 
+  // Per EIP-4361 the statement is a single line. Reject embedded breaks so a
+  // caller-supplied statement cannot forge later fields (URI, Nonce, etc.).
+  // Parity with @walletconnect/utils formatMessage in walletconnect-monorepo.
+  if (statement && /\r|\n/.test(statement)) {
+    throw new Error("Statement must not contain line breaks (`\\r` or `\\n`)");
+  }
+
   const message = [
     header,
     walletAddress,
