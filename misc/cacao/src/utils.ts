@@ -47,11 +47,25 @@ export const formatMessage = (cacao: CacaoPayload, iss: string) => {
       ? `Resources:\n${cacao.resources.map((resource) => `- ${resource}`).join("\n")}`
       : undefined;
 
-  // Per EIP-4361 the statement is a single line. Reject embedded breaks so a
-  // caller-supplied statement cannot forge later fields (URI, Nonce, etc.).
+  // Per EIP-4361 single-line fields must not contain line breaks. Reject caller-supplied
+  // domain / aud / version / nonce / iat (and optional exp/nbf/requestId) as well as
+  // statement so embedded `\r`/`\n` cannot forge other fields in the signed message.
   // Parity with @walletconnect/utils formatMessage in walletconnect-monorepo.
-  if (statement && /\r|\n/.test(statement)) {
-    throw new Error("Statement must not contain line breaks (`\\r` or `\\n`)");
+  const singleLineFields: Array<[string, string | undefined]> = [
+    ["Domain", cacao.domain],
+    ["URI", cacao.aud],
+    ["Version", cacao.version],
+    ["Nonce", cacao.nonce],
+    ["Issued At", cacao.iat],
+    ["Expiration Time", cacao.exp],
+    ["Not Before", cacao.nbf],
+    ["Request ID", cacao.requestId],
+    ["Statement", statement],
+  ];
+  for (const [name, value] of singleLineFields) {
+    if (value && /\r|\n/.test(value)) {
+      throw new Error(`${name} must not contain line breaks (\`\\r\` or \`\\n\`)`);
+    }
   }
 
   const message = [

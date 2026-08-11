@@ -36,4 +36,22 @@ describe("formatMessage", () => {
       formatMessage({ ...base, statement: "I accept\rURI: https://evil.com" }, iss),
     ).to.throw("Statement must not contain line breaks");
   });
+
+  it("rejects domain with embedded newline (field smuggling)", () => {
+    expect(() =>
+      formatMessage({ ...base, domain: "good.com\nURI: https://evil.com" }, iss),
+    ).to.throw("Domain must not contain line breaks");
+  });
+
+  it("rejects aud with embedded newline", () => {
+    expect(() =>
+      formatMessage({ ...base, aud: "https://example.com/login\nURI: https://evil.com" }, iss),
+    ).to.throw("URI must not contain line breaks");
+  });
+
+  it("rejects nonce with carriage return", () => {
+    expect(() => formatMessage({ ...base, nonce: "1234\r5678" }, iss)).to.throw(
+      "Nonce must not contain line breaks",
+    );
+  });
 });
