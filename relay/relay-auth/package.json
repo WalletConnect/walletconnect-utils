@@ -52,7 +52,7 @@
     "webpack-cli": "5.1.4"
   },
   "dependencies": {
-    "@noble/curves": "1.8.1",
+    "@noble/curves": "1.9.7",
     "@noble/hashes": "1.7.1",
     "@walletconnect/safe-json": "^1.0.1",
     "@walletconnect/time": "^1.0.2",

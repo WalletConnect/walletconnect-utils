@@ -50,7 +50,7 @@
     "format": "prettier --config ../../.prettierrc --write {src,test}/**/*.ts"
   },
   "dependencies": {
-    "@noble/curves": "1.8.1",
+    "@noble/curves": "1.9.7",
     "@walletconnect/crypto": "^1.0.3",
     "@walletconnect/encoding": "^1.0.2",
     "tslib": "1.14.1"
