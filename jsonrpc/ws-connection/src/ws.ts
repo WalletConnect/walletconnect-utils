@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import { safeJsonParse, safeJsonStringify } from "@walletconnect/safe-json";
 import {
   formatJsonRpcError,
-  IJsonRpcConnection,
+  ITerminalJsonRpcConnection,
   JsonRpcPayload,
   isReactNative,
   isWsUrl,
@@ -11,17 +11,30 @@ import {
 } from "@walletconnect/jsonrpc-utils";
 import { truncateQuery, resolveWebSocketImplementation, hasBuiltInWebSocket } from "./utils";
 
-// Source: https://nodejs.org/api/events.html#emittersetmaxlistenersn
-const EVENT_EMITTER_MAX_LISTENERS_DEFAULT = 10;
-
 const WS = resolveWebSocketImplementation();
 
-export class WsConnection implements IJsonRpcConnection {
+type SocketConnection = {
+  socket: WebSocket;
+  opened: boolean;
+  closing: boolean;
+  registration: Promise<WebSocket>;
+  resolveRegistration(socket: WebSocket): void;
+  rejectRegistration(error: Error): void;
+  close?: Promise<void>;
+  resolveClose?: () => void;
+  removeErrorListener?: () => void;
+};
+
+export class WsConnection implements ITerminalJsonRpcConnection {
   public events = new EventEmitter();
 
   private socket: WebSocket | undefined;
 
-  private registering = false;
+  private current: SocketConnection | undefined;
+
+  private disposed = false;
+
+  private disposal: Promise<void> | undefined;
 
   constructor(public url: string) {
     if (!isWsUrl(url)) {
@@ -35,7 +48,7 @@ export class WsConnection implements IJsonRpcConnection {
   }
 
   get connecting(): boolean {
-    return this.registering;
+    return !!this.current && !this.current.opened && !this.current.closing;
   }
 
   public on(event: string, listener: any): void {
@@ -59,27 +72,48 @@ export class WsConnection implements IJsonRpcConnection {
   }
 
   public async close(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      if (typeof this.socket === "undefined") {
-        reject(new Error("Connection already closed"));
-        return;
+    const connection = this.current;
+    if (!connection) throw new Error("Connection already closed");
+    if (connection.close) return connection.close;
+    connection.closing = true;
+    this.socket = undefined;
+    connection.rejectRegistration(new Error("Connection closed"));
+    connection.close = new Promise<void>((resolve, reject) => {
+      connection.resolveClose = resolve;
+      try {
+        if (connection.socket.readyState === 3) this.onClose(connection);
+        else connection.socket.close();
+      } catch (error) {
+        reject(error);
       }
-
-      this.socket.onclose = (event) => {
-        this.onClose(event);
-        resolve();
-      };
-
-      this.socket.close();
     });
+    return connection.close;
+  }
+
+  public dispose(): Promise<void> {
+    if (this.disposal) return this.disposal;
+    this.disposed = true;
+    let resolve!: () => void;
+    let reject!: (error: unknown) => void;
+    this.disposal = new Promise<void>((_resolve, _reject) => {
+      resolve = _resolve;
+      reject = _reject;
+    });
+    // Reserve the terminal promise before close can invoke an event listener.
+    (this.current ? this.close() : Promise.resolve()).then(() => {
+      this.events.removeAllListeners();
+      resolve();
+    }, reject);
+    return this.disposal;
   }
 
   public async send(payload: JsonRpcPayload): Promise<void> {
-    if (typeof this.socket === "undefined") {
-      this.socket = await this.register();
-    }
+    this.assertActive();
+    const socket = this.socket ?? (await this.register());
+    this.assertActive();
+    if (this.socket !== socket || this.current?.closing) throw new Error("Connection closed");
     try {
-      this.socket.send(safeJsonStringify(payload));
+      socket.send(safeJsonStringify(payload));
     } catch (e) {
       this.onError(payload.id, e as Error);
     }
@@ -88,69 +122,89 @@ export class WsConnection implements IJsonRpcConnection {
   // ---------- Private ----------------------------------------------- //
 
   private register(url = this.url): Promise<WebSocket> {
+    this.assertActive();
     if (!isWsUrl(url)) {
       throw new Error(`Provided URL is not compatible with WebSocket connection: ${url}`);
     }
-    if (this.registering) {
-      const currentMaxListeners = this.events.getMaxListeners();
-      if (
-        this.events.listenerCount("register_error") >= currentMaxListeners ||
-        this.events.listenerCount("open") >= currentMaxListeners
-      ) {
-        this.events.setMaxListeners(currentMaxListeners + 1);
-      }
-      return new Promise((resolve, reject) => {
-        this.events.once("register_error", (error) => {
-          this.resetMaxListeners();
-          reject(error);
-        });
-        this.events.once("open", () => {
-          this.resetMaxListeners();
-          if (typeof this.socket === "undefined") {
-            return reject(new Error("WebSocket connection is missing or invalid"));
-          }
-          resolve(this.socket);
-        });
-      });
+    if (this.current?.closing) {
+      return this.current.close!.then(() => this.register(url));
     }
+    if (this.current && url !== this.url) {
+      return this.close().then(() => this.register(url));
+    }
+    if (this.current) return this.current.registration;
     this.url = url;
-    this.registering = true;
-
-    return new Promise((resolve, reject) => {
-      const opts = !isReactNative() ? { rejectUnauthorized: !isLocalhostUrl(url) } : undefined;
-      const socket: WebSocket = new WS(url, [], opts);
-      if (hasBuiltInWebSocket()) {
-        socket.onerror = (event: Event) => {
-          const errorEvent = event as ErrorEvent;
-          reject(this.emitError(errorEvent.error));
-        };
-      } else {
-        (socket as any).on("error", (errorEvent: any) => {
-          reject(this.emitError(errorEvent));
-        });
-      }
-      socket.onopen = () => {
-        this.onOpen(socket);
-        resolve(socket);
-      };
+    let resolveRegistration!: (socket: WebSocket) => void;
+    let rejectRegistration!: (error: Error) => void;
+    const registration = new Promise<WebSocket>((resolve, reject) => {
+      resolveRegistration = resolve;
+      rejectRegistration = reject;
     });
+    // close/dispose can reject registration before a consumer attaches its handler.
+    registration.catch(() => undefined);
+    const opts = !isReactNative() ? { rejectUnauthorized: !isLocalhostUrl(url) } : undefined;
+    const socket: WebSocket = new WS(url, [], opts);
+    const connection: SocketConnection = {
+      socket,
+      opened: false,
+      closing: false,
+      registration,
+      resolveRegistration,
+      rejectRegistration,
+    };
+    this.current = connection;
+    const onError = (error: Error) => {
+      if (this.current !== connection || connection.closing || this.disposed) return;
+      rejectRegistration(this.emitError(error));
+    };
+    if (hasBuiltInWebSocket()) {
+      socket.onerror = (event: Event) => onError((event as ErrorEvent).error);
+    } else {
+      (socket as any).on("error", onError);
+      connection.removeErrorListener = () => (socket as any).removeListener("error", onError);
+    }
+    socket.onopen = () => this.onOpen(connection);
+    socket.onclose = (event) => this.onClose(connection, event);
+    return registration;
   }
 
-  private onOpen(socket: WebSocket) {
-    socket.onmessage = (event: MessageEvent) => this.onPayload(event);
-    socket.onclose = (event) => this.onClose(event);
+  private onOpen(connection: SocketConnection) {
+    const { socket } = connection;
+    if (this.current !== connection || connection.closing || this.disposed) {
+      if (socket.readyState !== 2 && socket.readyState !== 3) socket.close();
+      return;
+    }
+    socket.onmessage = (event: MessageEvent) => {
+      if (this.current === connection) this.onPayload(event);
+    };
     this.socket = socket;
-    this.registering = false;
+    connection.opened = true;
     this.events.emit("open");
+    connection.resolveRegistration(socket);
   }
 
-  private onClose(event: CloseEvent) {
-    this.socket = undefined;
-    this.registering = false;
-    this.events.emit("close", event);
+  private onClose(connection: SocketConnection, event?: CloseEvent) {
+    connection.rejectRegistration(new Error("Connection closed"));
+    connection.removeErrorListener?.();
+    connection.socket.onopen = null;
+    connection.socket.onclose = null;
+    connection.socket.onmessage = null;
+    connection.socket.onerror = null;
+    if (this.current === connection) {
+      this.socket = undefined;
+      this.current = undefined;
+      try {
+        this.events.emit("close", event);
+      } finally {
+        connection.resolveClose?.();
+      }
+      return;
+    }
+    connection.resolveClose?.();
   }
 
   private onPayload(e: { data: any }) {
+    if (this.disposed || !this.current?.opened || this.current.closing) return;
     if (typeof e.data === "undefined") return;
     const payload: JsonRpcPayload = typeof e.data === "string" ? safeJsonParse(e.data) : e.data;
     this.events.emit("payload", payload);
@@ -167,10 +221,8 @@ export class WsConnection implements IJsonRpcConnection {
     return parseConnectionError(e, truncateQuery(url), "WS");
   }
 
-  private resetMaxListeners() {
-    if (this.events.getMaxListeners() > EVENT_EMITTER_MAX_LISTENERS_DEFAULT) {
-      this.events.setMaxListeners(EVENT_EMITTER_MAX_LISTENERS_DEFAULT);
-    }
+  private assertActive() {
+    if (this.disposed) throw new Error("Connection disposed");
   }
 
   private emitError(errorEvent: Error) {

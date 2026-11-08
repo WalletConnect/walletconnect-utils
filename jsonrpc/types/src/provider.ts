@@ -14,6 +14,11 @@ export abstract class IJsonRpcConnection extends IEvents {
   public abstract send(payload: JsonRpcPayload, context?: any): Promise<void>;
 }
 
+/** A connection that can permanently retire all of its transport resources. */
+export interface ITerminalJsonRpcConnection extends IJsonRpcConnection {
+  dispose(): Promise<void>;
+}
+
 export abstract class IBaseJsonRpcProvider extends IEvents {
   // eslint-disable-next-line no-useless-constructor
   constructor() {
@@ -27,6 +32,7 @@ export abstract class IBaseJsonRpcProvider extends IEvents {
   public abstract request<Result = any, Params = any>(
     request: RequestArguments<Params>,
     context?: any,
+    signal?: AbortSignal,
   ): Promise<Result>;
 
   // ---------- Protected ----------------------------------------------- //
@@ -34,6 +40,7 @@ export abstract class IBaseJsonRpcProvider extends IEvents {
   protected abstract requestStrict<Result = any, Params = any>(
     request: JsonRpcRequest<Params>,
     context?: any,
+    signal?: AbortSignal,
   ): Promise<Result>;
 }
 
@@ -56,4 +63,9 @@ export abstract class IJsonRpcProvider extends IBaseJsonRpcProvider {
   protected abstract open(connection?: string | IJsonRpcConnection): Promise<void>;
 
   protected abstract close(): Promise<void>;
+}
+
+/** A provider whose disposal rejects outstanding work and retires its connection. */
+export interface ITerminalJsonRpcProvider extends IJsonRpcProvider {
+  dispose(): Promise<void>;
 }
